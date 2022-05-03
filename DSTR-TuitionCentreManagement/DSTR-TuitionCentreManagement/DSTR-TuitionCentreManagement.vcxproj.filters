@@ -24,5 +24,13 @@
     <ClCompile Include="Ryan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="law.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="General.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
