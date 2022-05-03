@@ -29,13 +29,14 @@ void DisplayHRMenu() {
 
 	switch (option) {
 	default:
-	case 0: 
+	case 0: role == "";
+		Login();
 		break;
-	case 1: loginAsHr();
+	case 1: TutorManagementMenu();
 		break;
-	case 2: loginAsAdmin();
+	case 2: displaySubject();
 		break;
-	case 3: loginAsStudent();
+	case 3: displayTuitionCentre();
 		break;
 	}
 
@@ -50,7 +51,40 @@ void DisplayStudentMenu() {
 }
 
 void TutorManagementMenu() {
+	string input;
+	int option = -1;
 
+	try {
+		cout << "Choose an option below:" << endl;
+		cout << "0. Back" << endl;
+		cout << "1. Tutor List" << endl;
+		cout << "2. Add Tutor" << endl;
+		cout << "3. Edit Tutor" << endl;
+		cout << "3. Terminate Tutor" << endl;
+
+		cin >> input;
+		option = stoi(input);
+
+	}
+	catch (exception) {
+		TutorManagementMenu();
+	}
+
+	if (option == -1) {
+		TutorManagementMenu();
+	}
+
+	switch (option) {
+	default:
+	case 0: role == "HR" ? DisplayHRMenu() : Login();
+		break;
+	case 1: AddTutor();
+		break;
+	case 2: EditTutor();
+		break;
+	case 3: TerminateTutor();
+		break;
+	}
 }
 
 
