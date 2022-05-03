@@ -37,13 +37,13 @@ Student::Student(int id, string firstname, string lastname, string username, str
 	this->next = NULL;
 }
 
-int main() {
-	//predefineStudent();
-	struct Student* studentList = NULL;
-	retrieveStudents(&studentList);
-	displayStudents(&studentList);
-
-}
+//int main() {
+//	//predefineStudent();
+//	struct Student* studentList = NULL;
+//	retrieveStudents(&studentList);
+//	displayStudents(&studentList);
+//
+//}
 
 std::string genPhone() {
 	string result = "01";
