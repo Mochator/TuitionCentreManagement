@@ -37,21 +37,6 @@ Student::Student(int id, string firstname, string lastname, string username, str
 	this->next = NULL;
 }
 
-<<<<<<< HEAD
-//int main() {
-//	//predefineStudent();
-//	struct Student* studentList = NULL;
-//	retrieveStudents(&studentList);
-//	displayStudents(&studentList);
-//
-//}
-=======
-/*
-int main() {
-	predefineStudent();
-}
-*/
->>>>>>> origin/Subject
 
 std::string genPhone() {
 	string result = "01";
