@@ -5,6 +5,8 @@
 using namespace std;
 
 void predefineStudent();
+void retrieveStudents(struct Student**);
+void displayStudents(struct Student**);
 
 struct Student {
 
@@ -20,11 +22,10 @@ public:
 	struct Student* next;
 	Student(int id, string firstname, string lastname, string username, string password, string contact);
 	void addStudent(struct Student** head, struct Student* newStudent);
-	void predefineStudent();
 	void printFile();
-
-
+	void printInfo();
 };
+
 
 Student::Student(int id, string firstname, string lastname, string username, string password, string contact) {
 	this->id = id;
@@ -37,7 +38,11 @@ Student::Student(int id, string firstname, string lastname, string username, str
 }
 
 int main() {
-	predefineStudent();
+	//predefineStudent();
+	struct Student* studentList = NULL;
+	retrieveStudents(&studentList);
+	displayStudents(&studentList);
+
 }
 
 std::string genPhone() {
@@ -109,5 +114,65 @@ void Student::printFile() {
 		outData << node->id << "\t" << node->firstname << "\t" << node->lastname << "\t" << node->username << "\t" << node->password << "\t" << node->contact << endl;
 		node = node->next;
 	}
+
+}
+
+void AddStudent(struct Student** head, struct Student* newStudent) {
+	struct Student* node = *head;
+
+	if (*head == NULL) {
+		*head = newStudent;
+	}
+	else {
+		while (node->next != NULL) {
+			node = node->next;
+		}
+
+		node->next = newStudent;
+	}
+}
+
+void retrieveStudents(struct Student** head) {
+	ifstream inData;
+	inData.open("Students.txt");
+
+	struct Student* node = *head;
+
+	int id;
+	string strid, firstname, lastname, username, contact, password;
+
+	while (inData >> strid >> firstname >> lastname >> username >> password >> contact) {
+		id = stoi(strid);
+		struct Student* inpStudent = new Student(id, firstname, lastname, username, password, contact);
+
+		if (*head == NULL) {
+			*head = inpStudent;
+			node = *head;
+		}
+		else {
+			node->next = inpStudent;
+			node = node->next;
+
+		}
+
+
+
+	}
+
+}
+
+void displayStudents(struct Student** head) {
+	struct Student* node = *head;
+
+	if (*head == NULL) return;
+
+	while (node != NULL) {
+		node->printInfo();
+		node = node->next;
+	}
+}
+
+void Student::printInfo() {
+	cout << this->id << "\t" << this->firstname << "\t" << this->lastname << "\t" << this->username << "\t" << this->password << "\t" << this->contact << endl;
 
 }
