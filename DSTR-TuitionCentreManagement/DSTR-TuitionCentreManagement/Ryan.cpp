@@ -29,9 +29,11 @@ Subject::Subject(string code, string name, float hourly_pay_rate) {
 	this->next = NULL;
 }
 
+/*
 int main() {
 	predefineSubject();
 }
+*/
 
 void predefineSubject() {
 	struct Subject* newSubject = NULL;
