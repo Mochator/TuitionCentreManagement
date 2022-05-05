@@ -6,6 +6,10 @@ using namespace std;
 
 void predefineTutor();
 
+int main() {
+	predefineTutor();
+}
+
 struct Tutor {
 
 private:
