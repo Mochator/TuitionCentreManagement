@@ -1,0 +1,3 @@
+TCBJ	eXcel Bukit Jalil	Bukit Jalil	tcbj123
+TCPUC	eXcel Puchong	Puchong	tcpuc123
+TCSUB	eXcel Subang	Subang	tcsub123

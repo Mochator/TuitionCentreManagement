@@ -140,8 +140,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="carmen.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="law.cpp" />
     <ClCompile Include="Login.cpp" />
+=======
+    <ClCompile Include="keith.cpp" />
+>>>>>>> origin/TutionCentre
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="Ryan.cpp" />
