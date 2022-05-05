@@ -140,12 +140,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="carmen.cpp" />
+<<<<<<< HEAD
     <ClCompile Include="law.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Ryan.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="General.h" />
+=======
+    <ClCompile Include="Login.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Menu.cpp" />
+>>>>>>> Login-Carmen
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
