@@ -21,7 +21,6 @@
     <ClCompile Include="carmen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="Ryan.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -42,10 +41,5 @@
     <ClInclude Include="General.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-=======
-    <ClCompile Include="keith.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
->>>>>>> origin/TutionCentre
   </ItemGroup>
 </Project>
