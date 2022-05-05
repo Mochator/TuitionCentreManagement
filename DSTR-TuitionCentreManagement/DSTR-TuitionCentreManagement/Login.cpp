@@ -1,10 +1,10 @@
-#include <iostream>
-#include <string>
-
-
-using namespace std;
+#include "General.h"
 
 string hrPass = "hr12345";
+
+void loginAsHr();
+void loginAsAdmin();
+void loginAsStudent();
 
 void Login() {
 
@@ -54,7 +54,7 @@ void loginAsHr() {
 	else {
 		if (password == hrPass) {
 			cout << "Welcome back HR!" << endl;
-			//TODO: set role
+			setRole("HR");
 			//TODO: display menu
 		}
 		else {

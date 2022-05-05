@@ -139,13 +139,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="carmen.cpp" />
-    <ClCompile Include="law.cpp" />
     <ClCompile Include="Login.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
-    <ClCompile Include="Ryan.cpp" />
     <ClCompile Include="Student.cpp" />
+    <ClCompile Include="Subject.cpp" />
+    <ClCompile Include="TuitionCentre.cpp" />
+    <ClCompile Include="Tutor.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="General.h" />

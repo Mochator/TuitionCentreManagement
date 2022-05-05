@@ -1,18 +1,12 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-
-using namespace std;
-
-void predefineSubject();
+#include "General.h"
 
 
-
-/*
-int main() {
-	predefineSubject();
+Subject::Subject(string code, string name, float hourly_pay_rate) {
+	this->code = code;
+	this->name = name;
+	this->hourly_pay_rate = hourly_pay_rate;
+	this->next = NULL;
 }
-*/
 
 void predefineSubject() {
 	struct Subject* newSubject = NULL;
@@ -43,6 +37,7 @@ void Subject::addSubject(struct Subject** head, struct Subject* newSubject) {
 
 }
 
+//To predefine subject only not included in any functions
 void Subject::printFile() {
 
 	struct Subject* node = this;
@@ -58,5 +53,9 @@ void Subject::printFile() {
 		outData << node->code << "\t" << node->name << "\t" << node->hourly_pay_rate << "\t" << endl;
 		node = node->next;
 	}
+
+}
+
+void displaySubjects() {
 
 }

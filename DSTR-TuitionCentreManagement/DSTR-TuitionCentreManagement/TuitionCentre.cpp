@@ -1,29 +1,4 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-
-using namespace std;
-
-void predefineTuitionCentre();
-
-struct TuitionCentre {
-
-private:
-
-	string code;
-	string name;
-	string address;
-	string password;
-
-public:
-	struct TuitionCentre* next;
-	TuitionCentre(string code, string name, string address, string password);
-	void addTuitionCentre(struct TuitionCentre** head, struct TuitionCentre* newTuitionCentre);
-	void predefineTuitionCentre();
-	void printFile();
-
-
-};
+#include "General.h"
 
 TuitionCentre::TuitionCentre(string code, string name, string address, string password) {
 
@@ -33,10 +8,6 @@ TuitionCentre::TuitionCentre(string code, string name, string address, string pa
 	this->password = password;
 	this->next = NULL;
 }
-
-
-
-
 
 
 void predefineTuitionCentre() {
@@ -81,5 +52,9 @@ void TuitionCentre::printFile() {
 		outData << node->code << "\t" << node->name << "\t" << node->address << "\t" << node->password << endl;
 		node = node->next;
 	}
+
+}
+
+void displayTuitionCentre() {
 
 }

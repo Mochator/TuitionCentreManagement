@@ -1,7 +1,15 @@
-#include <iostream>
+#include "General.h"
 
-using namespace std;
+string role = "";
 
 int main() {
 
+}
+
+string getRole() {
+	return role;
+}
+
+void setRole(string r) {
+	role = r;
 }

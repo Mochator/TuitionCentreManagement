@@ -1,7 +1,4 @@
-#include <iostream>
-#include <string>
-
-using namespace std;
+#include "General.h"
 
 void DisplayHRMenu() {
 	//TODO: role check
@@ -29,12 +26,12 @@ void DisplayHRMenu() {
 
 	switch (option) {
 	default:
-	case 0: role == "";
+	case 0: //role == "";
 		Login();
 		break;
 	case 1: TutorManagementMenu();
 		break;
-	case 2: displaySubject();
+	case 2: displaySubjects();
 		break;
 	case 3: displayTuitionCentre();
 		break;
@@ -76,13 +73,13 @@ void TutorManagementMenu() {
 
 	switch (option) {
 	default:
-	case 0: role == "HR" ? DisplayHRMenu() : Login();
+	case 0: getRole() == "HR" ? DisplayHRMenu() : Login();
 		break;
-	case 1: AddTutor();
+	case 1: //TODO: add tutor
 		break;
-	case 2: EditTutor();
+	case 2: //TODO: edit tutor
 		break;
-	case 3: TerminateTutor();
+	case 3: //TODO: terminate tutor
 		break;
 	}
 }

@@ -1,10 +1,5 @@
-#include <iostream>
-#include <string>
-#include <fstream>
+#include "General.h"
 
-using namespace std;
-
-void predefineTutor();
 
 Tutor::Tutor(int id, string firstname, string lastname, char gender, string phone, string address, string date_Joined, string date_Terminated, string subject_Code, string tuition_Centre_code, float rating) {
 	this->id = id;
@@ -88,3 +83,8 @@ void Tutor::printFile() {
 	}
 
 }
+
+void Tutor::editTutor(struct Tutor** head, string field, string newData) {
+
+}
+
