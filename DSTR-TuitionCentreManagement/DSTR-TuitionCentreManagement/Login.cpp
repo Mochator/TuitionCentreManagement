@@ -90,7 +90,7 @@ void loginAsStudent() {
 			cout << "Welcome back " << student->getFullName() << " !";
 
 			//free up memory space
-			DeleteTuitionCentreList(&tuitionCentreList);
+			DeleteStudentList(&studentList);
 
 			DisplayStudentMenu();
 			return;

@@ -106,8 +106,6 @@ void DeleteTuitionCentreList(struct TuitionCentre** head)
 		free(current);
 		current = next;
 	}
-
-	*head == NULL;
 }
 
 //External Functions (Not in Struct)

@@ -169,8 +169,6 @@ void RetrieveStudents(struct Student** head) {
 
 		}
 
-
-
 	}
 
 }
