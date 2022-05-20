@@ -21,49 +21,62 @@ std::string genPhone() {
 	return result;
 }
 
-void predefineStudent() {
-	int i = 1;
-	struct Student* newStudent = NULL;
+//void predefineStudent() {
+//	int i = 1;
+//	struct Student* newStudent = NULL;
+//
+//	newStudent->addStudent(&newStudent, new Student(i++, "Carmen", "Lim", "carmenlim", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Keith", "Koh", "keithkoh", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Ryan", "Lim", "ryanlim", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Law", "LiYaw", "lawliyaw", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "David", "Tee", "davidtee", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Ben", "Tan", "bentan", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Jessi", "J", "jessij", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Amanda", "Ooi", "amandaooi", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Irene", "Tang", "irenetang", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Grace", "Ong", "graceong", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Boh", "Leong", "bohleong", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Shawn", "Lee", "shawnlee", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Bryan", "Lo", "bryanlo", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Loh", "WeiWei", "lohweiwei", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Ong", "Ann", "ongann", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Teoh", "WeiQing", "teohweiqing", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Park", "CheeYee", "parkcheeyee", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Soon", "Nam", "soonnam", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Prince", "Lee", "princelee", "apu12345", genPhone()));
+//	newStudent->addStudent(&newStudent, new Student(i++, "Kingsten", "Liew", "kingstenliew", "apu12345", genPhone()));
+//
+//	newStudent->printFile();
+//
+//}
 
-	newStudent->addStudent(&newStudent, new Student(i++, "Carmen", "Lim", "carmenlim", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Keith", "Koh", "keithkoh", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Ryan", "Lim", "ryanlim", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Law", "LiYaw", "lawliyaw", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "David", "Tee", "davidtee", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Ben", "Tan", "bentan", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Jessi", "J", "jessij", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Amanda", "Ooi", "amandaooi", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Irene", "Tang", "irenetang", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Grace", "Ong", "graceong", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Boh", "Leong", "bohleong", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Shawn", "Lee", "shawnlee", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Bryan", "Lo", "bryanlo", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Loh", "WeiWei", "lohweiwei", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Ong", "Ann", "ongann", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Teoh", "WeiQing", "teohweiqing", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Park", "CheeYee", "parkcheeyee", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Soon", "Nam", "soonnam", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Prince", "Lee", "princelee", "apu12345", genPhone()));
-	newStudent->addStudent(&newStudent, new Student(i++, "Kingsten", "Liew", "kingstenliew", "apu12345", genPhone()));
+//void Student::addStudent(struct Student* newStudent) {
+//	struct Student* node = *head;
+//
+//	if (*head == NULL) {
+//		*head = newStudent;
+//	}
+//	else {
+//		while (node->next != NULL) {
+//			node = node->next;
+//		}
+//
+//		node->next = newStudent;
+//	}
+//
+//}
 
-	newStudent->printFile();
+void Student::displayStudents() {
+	//struct Student* node = *head;
 
-}
+	if (this == NULL) return;
 
-void Student::addStudent(struct Student** head, struct Student* newStudent) {
-	struct Student* node = *head;
+	struct Student* node = this;
 
-	if (*head == NULL) {
-		*head = newStudent;
+	while (node != NULL) {
+		node->printInfo();
+		node = node->next;
 	}
-	else {
-		while (node->next != NULL) {
-			node = node->next;
-		}
-
-		node->next = newStudent;
-	}
-
 }
 
 void Student::printFile() {
@@ -84,6 +97,40 @@ void Student::printFile() {
 
 }
 
+void Student::printInfo() {
+	cout << this->id << "\t" << this->firstname << " " << this->lastname << " (" << this->username << "\t" << ")" << endl;
+
+}
+
+struct Student** Student::searchByUsername(string username) {
+	struct Student* node = this;
+	struct Student** result = NULL;
+
+	if (node == NULL) return result;
+
+	while (node != NULL) {
+		if (node->username == username) {
+			result = &node;
+			return result;
+		}
+		else {
+			node = node->next;
+		}
+	}
+
+	return result;
+}
+
+bool Student::passwordComparison(string pw) {
+	return password == pw;
+}
+
+string Student::getFullName() {
+	string fullName = this->firstname + " " + this->lastname;
+	return fullName;
+}
+
+//External Functions (Not in Struct)
 void AddStudent(struct Student** head, struct Student* newStudent) {
 	struct Student* node = *head;
 
@@ -99,7 +146,7 @@ void AddStudent(struct Student** head, struct Student* newStudent) {
 	}
 }
 
-void retrieveStudents(struct Student** head) {
+void RetrieveStudents(struct Student** head) {
 	ifstream inData;
 	inData.open("Students.txt");
 
@@ -128,18 +175,21 @@ void retrieveStudents(struct Student** head) {
 
 }
 
-void displayStudents(struct Student** head) {
-	struct Student* node = *head;
+void DeleteStudentList(struct Student** head) {
+	if (*head == NULL) {
+		return;
+	}
 
-	if (*head == NULL) return;
+	Student* current = *head;
+	Student* next = NULL;
 
-	while (node != NULL) {
-		node->printInfo();
-		node = node->next;
+	while (current != NULL)
+	{
+		next = current->next;
+		free(current);
+		current = next;
 	}
 }
 
-void Student::printInfo() {
-	cout << this->id << "\t" << this->firstname << "\t" << this->lastname << "\t" << this->username << "\t" << this->password << "\t" << this->contact << endl;
 
-}
+

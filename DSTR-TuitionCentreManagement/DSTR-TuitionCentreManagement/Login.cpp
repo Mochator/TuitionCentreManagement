@@ -13,12 +13,16 @@ void Login() {
 
 	try {
 		cout << "Pick a role to login or press \"0\" to exit system." << endl;
-		cout << "0. System exit" << endl;
-		cout << "1. HR" << endl;
-		cout << "2. Admin" << endl;
-		cout << "3. Student" << endl;
+		cout << "0. \tSystem exit" << endl;
+		cout << "1. \tHR" << endl;
+		cout << "2. \tAdmin" << endl;
+		cout << "3. \tStudent" << endl << endl;
+
+		cout << "Enter your choice: ";
 
 		cin >> input;
+
+		cout << endl;
 
 		option = stoi(input);
 	}
@@ -45,7 +49,7 @@ void Login() {
 
 void loginAsHr() {
 	string password;
-	cout << "Enter the HR's password:";
+	cout << "Enter the HR's password: ";
 	cin >> password;
 
 	if (password == "0") {
@@ -55,7 +59,7 @@ void loginAsHr() {
 		if (password == hrPass) {
 			cout << "Welcome back HR!" << endl;
 			setRole("HR");
-			//TODO: display menu
+			DisplayHRMenu();
 		}
 		else {
 			cout << "Incorrect HR password!" << endl;
@@ -65,9 +69,100 @@ void loginAsHr() {
 }
 
 void loginAsStudent() {
+	string username, password;
+	cout << "Enter the your username: ";
+	cin >> username;
+
+	cout << "Enter your password: ";
+	cin >> password;
+
+	//Retrieve students
+	struct Student* studentList = NULL;
+	RetrieveStudents(&studentList);
+
+	//Find student based on username
+	struct Student** studentPtr = studentList->searchByUsername(username);
+
+	if (studentPtr != NULL) {
+		struct Student* student = *studentPtr;
+		if (student->passwordComparison(password)) {
+			setRole("Student");
+			cout << "Welcome back " << student->getFullName() << " !";
+
+			//free up memory space
+			DeleteTuitionCentreList(&tuitionCentreList);
+
+			DisplayStudentMenu();
+			return;
+		}
+		else {
+			cout << "Invalid username or password!" << endl;
+		}
+	}
+	else {
+		cout << "Invalid username or password!" << endl;
+	}
+
+	Login();
 
 }
 
 void loginAsAdmin() {
+	string strTuitionCentre, password;
 
+	//Retrieve tuition centres
+	struct TuitionCentre *tuitionCentreList = NULL;
+	RetrieveTuitionCentres(&tuitionCentreList);
+
+	DisplayTuitionCentres(&tuitionCentreList, 1);
+
+	cout << "Enter the index: ";
+	cin >> strTuitionCentre;
+
+	cout << "Enter the password: ";
+	cin >> password;
+
+	int idxTuitionCentre = 0;
+
+	try {
+		int idxTuitionCentre = stoi(strTuitionCentre);
+
+	}
+	catch (exception) {
+		loginAsAdmin();
+		return;
+	}
+
+	if (idxTuitionCentre != 0) {
+		//Find tuition centre based on index
+		struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByIndex(idxTuitionCentre);
+
+		if (tuitionCentrePtr != NULL) {
+			struct TuitionCentre* tuitionCentre = *tuitionCentrePtr;
+
+			if (tuitionCentre->passwordComparison(password)) {
+				setRole("Admin");
+				setTuitionCentreCode(tuitionCentre->getCode());
+				cout << "Welcome back Admin - " << tuitionCentre->getCodeName() << " !" << endl;
+
+				//free up memory space
+				DeleteTuitionCentreList(&tuitionCentreList);
+
+				//Display admin menu
+				DisplayAdminMenu();
+
+				return;
+			}
+			else {
+				cout << "Invalid centre or password!" << endl;
+			}
+		}
+		else {
+			cout << "Invalid centre or password!" << endl;
+		}
+
+		//free up memory space
+		DeleteTuitionCentreList(&tuitionCentreList);
+		Login();
+	}
 }

@@ -33,7 +33,7 @@ void DisplayHRMenu() {
 		break;
 	case 2: displaySubjects();
 		break;
-	case 3: displayTuitionCentre();
+	case 3: 
 		break;
 	}
 
