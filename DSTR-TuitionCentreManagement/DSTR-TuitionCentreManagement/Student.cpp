@@ -130,22 +130,39 @@ string Student::getFullName() {
 	return fullName;
 }
 
-//External Functions (Not in Struct)
-void AddStudent(struct Student** head, struct Student* newStudent) {
-	struct Student* node = *head;
+void Student::deleteStudentList() {
 
-	if (*head == NULL) {
-		*head = newStudent;
+	if (this == NULL) {
+		return;
 	}
-	else {
-		while (node->next != NULL) {
-			node = node->next;
-		}
 
-		node->next = newStudent;
+	Student* current = this;
+	Student* next = NULL;
+
+	while (current != NULL)
+	{
+		next = current->next;
+		free(current);
+		current = next;
 	}
 }
 
+//External Functions (Not in Struct)
+//void AddStudent(struct Student** head, struct Student* newStudent) {
+//	struct Student* node = *head;
+//
+//	if (*head == NULL) {
+//		*head = newStudent;
+//	}
+//	else {
+//		while (node->next != NULL) {
+//			node = node->next;
+//		}
+//
+//		node->next = newStudent;
+//	}
+//}
+//
 void RetrieveStudents(struct Student** head) {
 	ifstream inData;
 	inData.open("Students.txt");
@@ -172,22 +189,22 @@ void RetrieveStudents(struct Student** head) {
 	}
 
 }
-
-void DeleteStudentList(struct Student** head) {
-	if (*head == NULL) {
-		return;
-	}
-
-	Student* current = *head;
-	Student* next = NULL;
-
-	while (current != NULL)
-	{
-		next = current->next;
-		free(current);
-		current = next;
-	}
-}
+//
+//void DeleteStudentList(struct Student** head) {
+//	if (*head == NULL) {
+//		return;
+//	}
+//
+//	Student* current = *head;
+//	Student* next = NULL;
+//
+//	while (current != NULL)
+//	{
+//		next = current->next;
+//		free(current);
+//		current = next;
+//	}
+//}
 
 
 

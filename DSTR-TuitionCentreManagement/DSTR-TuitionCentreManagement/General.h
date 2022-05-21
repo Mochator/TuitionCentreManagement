@@ -21,7 +21,7 @@ void setTuitionCentreCode(string);
 //Students
 //void DisplayStudentsOption(struct Student**);
 void RetrieveStudents(struct Student**);
-void DeleteStudentList(struct Student**);
+//void DeleteStudentList(struct Student**);
 
 //Menu
 void DisplayHRMenu();
@@ -31,13 +31,17 @@ void TutorManagementMenu();
 
 
 //Subjects
-void displaySubjects();
+void RetrieveSubjects(struct Subject**);
+//void DisplaySubjects(struct Subject**, int, bool);
+//void DeleteSubjectList(struct Subject**);
+void DisplayAllSubjects();
+
 
 //Tuition Centre
 void RetrieveTuitionCentres(struct TuitionCentre**);
-void DisplayTuitionCentres(struct TuitionCentre**, int);
-void DeleteTuitionCentreList(struct TuitionCentre**);
-
+//void DisplayTuitionCentres(struct TuitionCentre**, int, bool);
+//void DeleteTuitionCentreList(struct TuitionCentre**);
+void DisplayAllTuitionCentres();
 
 
 //---end::All main method headers---
@@ -93,9 +97,11 @@ public:
 	//Functions
 	//void addStudent(struct Student**, struct Student*);
 	void printFile();
-	//void predefineStudent();
 	void printInfo();
+
 	void displayStudents();
+	void deleteStudentList();
+
 	struct Student** searchByUsername(string);
 
 	bool passwordComparison(string);
@@ -117,7 +123,13 @@ public:
 
 	//Functions
 	void addSubject(struct Subject** head, struct Subject* newSubject);
+
+	void displaySubjects(int, bool);
+	void deleteSubjectList();
+
 	void printFile();
+	void printCodeName(int);
+	void printCodeNamePay(int);
 
 
 };
@@ -140,11 +152,18 @@ public:
 
 	//Functions
 	void addTuitionCentre(struct TuitionCentre** head, struct TuitionCentre* newTuitionCentre);
-	//void predefineTuitionCentre();
-	void printInfo(int);
+
+	void displayTuitionCentres(int, bool);
+	void deleteTuitionCentreList();
+
+	void printCodeName(int);
+	void printCodeNameAddress(int);
 	void printFile();
+
 	struct TuitionCentre** searchByIndex(int);
+
 	bool passwordComparison(string);
+
 	string getCodeName();
 	string getCode();
 

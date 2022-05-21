@@ -1,7 +1,15 @@
 #include "General.h"
 
 void DisplayHRMenu() {
-	//TODO: role check
+
+	//Role Check
+	if (getRole() != "HR") {
+		setRole("");
+		setTuitionCentreCode("");
+		Login();
+		return;
+	}
+
 	string input;
 	int option = -1;
 
@@ -26,14 +34,20 @@ void DisplayHRMenu() {
 
 	switch (option) {
 	default:
-	case 0: //role == "";
+	case 0: 
+		setRole("");
+		setTuitionCentreCode("");
 		Login();
 		break;
 	case 1: TutorManagementMenu();
 		break;
-	case 2: displaySubjects();
+	case 2: 
+		DisplayAllSubjects();
+		DisplayHRMenu();
 		break;
 	case 3: 
+		DisplayAllTuitionCentres();
+		DisplayHRMenu();
 		break;
 	}
 

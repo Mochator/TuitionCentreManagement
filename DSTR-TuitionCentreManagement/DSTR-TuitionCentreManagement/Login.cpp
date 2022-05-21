@@ -38,16 +38,21 @@ void Login() {
 	default:
 	case 0: exit(0);
 		break;
-	case 1: loginAsHr();
+	case 1:
+		loginAsHr();
 		break;
-	case 2: loginAsAdmin();
+	case 2:
+		loginAsAdmin();
 		break;
-	case 3: loginAsStudent();
+	case 3:
+		loginAsStudent();
 		break;
 	}
 }
 
 void loginAsHr() {
+	system("CLS");
+
 	string password;
 	cout << "Enter the HR's password: ";
 	cin >> password;
@@ -59,6 +64,7 @@ void loginAsHr() {
 		if (password == hrPass) {
 			cout << "Welcome back HR!" << endl;
 			setRole("HR");
+			system("CLS");
 			DisplayHRMenu();
 		}
 		else {
@@ -69,6 +75,8 @@ void loginAsHr() {
 }
 
 void loginAsStudent() {
+	system("CLS");
+
 	string username, password;
 	cout << "Enter the your username: ";
 	cin >> username;
@@ -87,10 +95,11 @@ void loginAsStudent() {
 		struct Student* student = *studentPtr;
 		if (student->passwordComparison(password)) {
 			setRole("Student");
+			system("CLS");
 			cout << "Welcome back " << student->getFullName() << " !";
 
 			//free up memory space
-			DeleteStudentList(&studentList);
+			studentList->deleteStudentList();
 
 			DisplayStudentMenu();
 			return;
@@ -108,13 +117,15 @@ void loginAsStudent() {
 }
 
 void loginAsAdmin() {
+	system("CLS");
+
 	string strTuitionCentre, password;
 
 	//Retrieve tuition centres
-	struct TuitionCentre *tuitionCentreList = NULL;
+	struct TuitionCentre* tuitionCentreList = NULL;
 	RetrieveTuitionCentres(&tuitionCentreList);
 
-	DisplayTuitionCentres(&tuitionCentreList, 1);
+	tuitionCentreList->displayTuitionCentres(1, false);
 
 	cout << "Enter the index: ";
 	cin >> strTuitionCentre;
@@ -125,8 +136,7 @@ void loginAsAdmin() {
 	int idxTuitionCentre = 0;
 
 	try {
-		int idxTuitionCentre = stoi(strTuitionCentre);
-
+		idxTuitionCentre = stoi(strTuitionCentre);
 	}
 	catch (exception) {
 		loginAsAdmin();
@@ -143,10 +153,11 @@ void loginAsAdmin() {
 			if (tuitionCentre->passwordComparison(password)) {
 				setRole("Admin");
 				setTuitionCentreCode(tuitionCentre->getCode());
+				system("CLS");
 				cout << "Welcome back Admin - " << tuitionCentre->getCodeName() << " !" << endl;
 
 				//free up memory space
-				DeleteTuitionCentreList(&tuitionCentreList);
+				tuitionCentreList->deleteTuitionCentreList();
 
 				//Display admin menu
 				DisplayAdminMenu();
@@ -162,7 +173,7 @@ void loginAsAdmin() {
 		}
 
 		//free up memory space
-		DeleteTuitionCentreList(&tuitionCentreList);
+		tuitionCentreList->deleteTuitionCentreList();
 		Login();
 	}
 }
