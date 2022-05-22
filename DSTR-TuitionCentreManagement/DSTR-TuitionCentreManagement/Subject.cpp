@@ -88,6 +88,10 @@ string Subject::getCode() {
 	return this->code;
 }
 
+float Subject::getHourlyPayRate() {
+	return this->hourly_pay_rate;
+}
+
 struct Subject** Subject::searchByIndex(int index) {
 	struct Subject* node = this;
 	struct Subject** result = NULL;
@@ -100,6 +104,25 @@ struct Subject** Subject::searchByIndex(int index) {
 	}
 
 	result = &node;
+
+	return result;
+}
+
+struct Subject** Subject::searchByCode(string code) {
+	struct Subject* node = this;
+	struct Subject** result = NULL;
+
+	if (node == NULL) return result;
+
+	while (node != NULL) {
+		if (node->code == code) {
+			result = &node;
+			return result;
+		}
+		else {
+			node = node->next;
+		}
+	}
 
 	return result;
 }

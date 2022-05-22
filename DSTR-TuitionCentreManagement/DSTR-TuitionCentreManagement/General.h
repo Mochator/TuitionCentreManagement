@@ -19,11 +19,15 @@ void setTuitionCentreCode(string);
 //Tutor
 void RetrieveTutors(struct Tutor**);
 void DisplayAllTutors();
+
 void SearchTutorById(struct Tutor**);
 void SearchTutorByRating(struct Tutor**);
 void SearchTutorByTuitionCentre(struct Tutor**);
 void SearchTutorBySubject(struct Tutor**);
 
+void SortTutorById(struct Tutor**);
+void SortTutorByRating(struct Tutor**);
+void SortTutorByHourlyPayRate(struct Tutor**);
 
 //Students
 //void DisplayStudentsOption(struct Student**);
@@ -81,6 +85,7 @@ public:
 
 	//Tutor Constructor: id, firstname, lastname, gender, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code, rating
 	struct Tutor(int id, string, string, char, string, string, string, string, string, string, float);
+	struct Tutor();
 
 	//Functions
 	void addTutor(struct Tutor**, struct Tutor*);
@@ -100,6 +105,9 @@ public:
 	bool searchByRating(int, int);
 	bool searchByTuitionCentre(string);
 	bool searchBySubject(string);
+	bool sortById();
+	bool sortByRating();
+	bool sortByHourlyPayRate(struct Subject**);
 
 };
 
@@ -157,7 +165,9 @@ public:
 	void printCodeNamePay(int);
 
 	struct Subject** searchByIndex(int);
+	struct Subject** searchByCode(string);
 	string getCode();
+	float getHourlyPayRate();
 
 };
 

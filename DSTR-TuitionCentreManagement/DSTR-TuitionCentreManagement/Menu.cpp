@@ -291,5 +291,46 @@ void SearchMenu(struct Tutor** head) {
 }
 
 void SortMenu(struct Tutor** head) {
+	string input;
+	int option = -1;
 
+	try {
+		cout << "Choose a sort-by option below:" << endl;
+		cout << "0. Back" << endl;
+		cout << "1. ID" << endl;
+		cout << "2. Overall Rating" << endl;
+		cout << "3. Hourly Pay Rate" << endl << endl;
+		cout << "Enter your option: ";
+
+		cin >> input;
+		option = stoi(input);
+
+	}
+	catch (exception) {
+		SortMenu(head);
+	}
+
+	if (option == -1) {
+		SortMenu(head);
+	}
+
+	switch (option) {
+	default:
+	case 0:
+		(*head)->displayTutors();
+		TutorListMenu(head);
+		break;
+	case 1:
+		SortTutorById(head);
+		TutorListMenu(head);
+		break;
+	case 2:
+		SortTutorByRating(head);
+		TutorListMenu(head);
+		break;
+	case 3:
+		SortTutorByHourlyPayRate(head);
+		TutorListMenu(head);
+		break;
+	}
 }

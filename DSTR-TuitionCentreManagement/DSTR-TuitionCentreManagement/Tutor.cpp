@@ -16,6 +16,8 @@ Tutor::Tutor(int id, string firstname, string lastname, char gender, string phon
 	this->next = NULL;
 }
 
+Tutor::Tutor() {}
+
 std::string genPhoneNo() {
 	string result = "01";
 
@@ -93,7 +95,7 @@ void Tutor::editTutor(struct Tutor** head, string field, string newData) {
 }
 
 void Tutor::printIdName() {
-	cout << this->id << "\t" << this->firstname << " " << this->lastname << "\t\t" << this->subject_Code << "\t" << this->tuition_Centre_code << endl;
+	cout << this->id << "\t" << this->firstname << " " << this->lastname << "\t\t" << this->subject_Code << "\t" << this->tuition_Centre_code << "\t\t" << this->rating << endl;
 }
 
 void Tutor::displayTutors() {
@@ -103,10 +105,10 @@ void Tutor::displayTutors() {
 
 	if (this == NULL) return;
 
-	cout << "ID" << "\t" << "Name" << "\t\t\t" << "Subject" << "\t" << "Tuition Centre" << endl;
+	cout << "ID" << "\t" << "Name" << "\t\t\t" << "Subject" << "\t" << "Tuition Centre" << "\t" << "Rating" << endl;
 
 	while (node != NULL) {
-			node->printIdName();
+		node->printIdName();
 		node = node->next;
 	}
 
@@ -131,6 +133,32 @@ bool Tutor::searchByTuitionCentre(string code) {
 
 bool Tutor::searchBySubject(string code) {
 	return (this->subject_Code == code);
+}
+
+//sorting
+bool Tutor::sortById() {
+	return (this->id > this->next->id);
+}
+
+bool Tutor::sortByRating() {
+	return (this->rating > this->next->rating);
+}
+
+bool Tutor::sortByHourlyPayRate(struct Subject** head) {
+	bool result = false;
+
+	float current_rate = 0, next_rate = 0;
+
+	struct Subject** current_subject = (*head)->searchByCode(this->subject_Code);
+	current_rate = current_subject == NULL ? 0 : (*current_subject)->getHourlyPayRate();
+
+	struct Subject** next_subject = (*head)->searchByCode(this->next->subject_Code);
+	next_rate = next_subject == NULL ? 0 : (*next_subject)->getHourlyPayRate();
+
+	//compare hourly pay rate
+	result = current_rate > next_rate;
+
+	return result;
 }
 
 //Free up memory
@@ -180,14 +208,14 @@ void RetrieveTutors(struct Tutor** head) {
 		//-Retrieve-
 		struct Rating* ratingList = NULL;
 		RetrieveRatings(&ratingList);
-		
+
 		float rating = 0;
 
 		if (ratingList != NULL) {
 			//-Calculate-
 			rating = CalculateRatings(&ratingList, id);
 		}
-		
+
 		struct Tutor* input = new Tutor(id, firstname, lastname, gender, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code, rating);
 
 		input->printIdName();
@@ -384,3 +412,128 @@ void SearchTutorBySubject(struct Tutor** head) {
 
 }
 
+
+void SortTutorById(struct Tutor** head) {
+	if (*head == NULL) return;
+
+	struct Tutor* node = *head;
+
+	bool pass = false;
+
+	while (!pass) {
+
+		pass = true;
+		struct Tutor* current_node = *head;
+		struct Tutor* next_node = current_node->next;
+		struct Tutor temp_node;
+
+		while (next_node != NULL) {
+
+			if (current_node->sortById()) {
+				pass = false;
+				temp_node = *current_node;
+				*current_node = *next_node;
+				*next_node = temp_node;
+
+				next_node->next = current_node->next;
+				current_node->next = next_node;
+			}
+
+			current_node = current_node->next;
+			next_node = current_node->next;
+		}
+	}
+
+	while (node != NULL) {
+		node->printIdName();
+		node = node->next;
+	}
+}
+
+void SortTutorByRating(struct Tutor** head) {
+	if (*head == NULL) return;
+
+	struct Tutor* node = *head;
+
+	bool pass = false;
+
+	while (!pass) {
+
+		pass = true;
+		struct Tutor* current_node = *head;
+		struct Tutor* next_node = current_node->next;
+		struct Tutor temp_node;
+
+		while (next_node != NULL) {
+
+			if (current_node->sortByRating()) {
+				pass = false;
+				temp_node = *current_node;
+				*current_node = *next_node;
+				*next_node = temp_node;
+
+				next_node->next = current_node->next;
+				current_node->next = next_node;
+			}
+
+			current_node = current_node->next;
+			next_node = current_node->next;
+		}
+	}
+
+	while (node != NULL) {
+		node->printIdName();
+		node = node->next;
+	}
+}
+
+void SortTutorByHourlyPayRate(struct Tutor** head) {
+	if (*head == NULL) return;
+
+	struct Tutor* node = *head;
+
+	//retrieve subjects
+	struct Subject* subjectList = NULL;
+	RetrieveSubjects(&subjectList);
+
+	if (subjectList == NULL) {
+		subjectList->deleteSubjectList();
+		node->displayTutors();
+		return;
+	}
+
+	bool pass = false;
+
+	while (!pass) {
+
+		pass = true;
+		struct Tutor* current_node = *head;
+		struct Tutor* next_node = current_node->next;
+		struct Tutor temp_node;
+
+		while (next_node != NULL) {
+
+			if (current_node->sortByHourlyPayRate(&subjectList)) {
+				pass = false;
+				temp_node = *current_node;
+				*current_node = *next_node;
+				*next_node = temp_node;
+
+				next_node->next = current_node->next;
+				current_node->next = next_node;
+			}
+
+			current_node = current_node->next;
+			next_node = current_node->next;
+		}
+	}
+
+	while (node != NULL) {
+		node->printIdName();
+		node = node->next;
+	}
+
+	//delete subject list
+	subjectList->deleteSubjectList();
+
+}
