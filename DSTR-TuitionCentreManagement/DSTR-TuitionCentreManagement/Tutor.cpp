@@ -416,8 +416,6 @@ void SearchTutorBySubject(struct Tutor** head) {
 void SortTutorById(struct Tutor** head) {
 	if (*head == NULL) return;
 
-	struct Tutor* node = *head;
-
 	bool pass = false;
 
 	while (!pass) {
@@ -444,10 +442,8 @@ void SortTutorById(struct Tutor** head) {
 		}
 	}
 
-	while (node != NULL) {
-		node->printIdName();
-		node = node->next;
-	}
+	(*head)->displayTutors();
+	
 }
 
 void SortTutorByRating(struct Tutor** head) {
@@ -481,10 +477,8 @@ void SortTutorByRating(struct Tutor** head) {
 		}
 	}
 
-	while (node != NULL) {
-		node->printIdName();
-		node = node->next;
-	}
+	(*head)->displayTutors();
+
 }
 
 void SortTutorByHourlyPayRate(struct Tutor** head) {
@@ -528,12 +522,9 @@ void SortTutorByHourlyPayRate(struct Tutor** head) {
 		}
 	}
 
-	while (node != NULL) {
-		node->printIdName();
-		node = node->next;
-	}
-
 	//delete subject list
 	subjectList->deleteSubjectList();
+
+	(*head)->displayTutors();
 
 }
