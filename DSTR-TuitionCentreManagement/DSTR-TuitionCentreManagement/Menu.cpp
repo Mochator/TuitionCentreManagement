@@ -183,6 +183,7 @@ void TutorManagementMenu() {
 		DisplayAllTutors();
 		break;
 	case 2: //TODO: add tutor
+
 		break;
 	case 3: //TODO: edit tutor
 		break;
@@ -268,7 +269,7 @@ void SearchMenu(struct Tutor** head) {
 	switch (option) {
 	default:
 	case 0: 
-		(*head)->displayTutors();
+		(*head)->displayTutors(false);
 		TutorListMenu(head);
 		break;
 	case 1:
@@ -317,7 +318,7 @@ void SortMenu(struct Tutor** head) {
 	switch (option) {
 	default:
 	case 0:
-		(*head)->displayTutors();
+		(*head)->displayTutors(false);
 		TutorListMenu(head);
 		break;
 	case 1:

@@ -94,11 +94,16 @@ void Tutor::editTutor(struct Tutor** head, string field, string newData) {
 
 }
 
-void Tutor::printIdName() {
+void Tutor::printTutorFull() {
 	cout << this->id << "\t" << this->firstname << " " << this->lastname << "\t\t" << this->subject_Code << "\t" << this->tuition_Centre_code << "\t\t" << this->rating << endl;
 }
 
-void Tutor::displayTutors() {
+void Tutor::printTutorBrief() {
+	cout << this->id << "\t" << this->firstname << " " << this->lastname << endl;
+
+}
+
+void Tutor::displayTutors(bool isBrief) {
 	system("CLS");
 
 	struct Tutor* node = this;
@@ -108,7 +113,20 @@ void Tutor::displayTutors() {
 	cout << "ID" << "\t" << "Name" << "\t\t\t" << "Subject" << "\t" << "Tuition Centre" << "\t" << "Rating" << endl;
 
 	while (node != NULL) {
-		node->printIdName();
+
+		//check role to determine if should print terminated
+		if (node->isTerminated()) {
+			node = node->next;
+			continue;
+		}
+
+		if (isBrief) {
+			node->printTutorBrief();
+		}
+		else {
+			node->printTutorFull();
+		}
+
 		node = node->next;
 	}
 
@@ -161,6 +179,10 @@ bool Tutor::sortByHourlyPayRate(struct Subject** head) {
 	return result;
 }
 
+bool Tutor::isTerminated() {
+	return this->date_Terminated != "0/0/0";
+}
+
 //Free up memory
 void Tutor::deleteTutorList()
 {
@@ -184,7 +206,7 @@ void DisplayAllTutors() {
 	RetrieveTutors(&tutorList);
 
 	//Display Tutor
-	tutorList->displayTutors();
+	tutorList->displayTutors(false);
 	TutorListMenu(&tutorList);
 
 }
@@ -218,7 +240,6 @@ void RetrieveTutors(struct Tutor** head) {
 
 		struct Tutor* input = new Tutor(id, firstname, lastname, gender, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code, rating);
 
-		input->printIdName();
 
 		if (*head == NULL) {
 			*head = input;
@@ -233,7 +254,6 @@ void RetrieveTutors(struct Tutor** head) {
 	}
 
 }
-
 
 void SearchTutorById(struct Tutor** head) {
 
@@ -252,13 +272,13 @@ void SearchTutorById(struct Tutor** head) {
 	}
 	catch (exception) {
 		cout << "Invalid Input!" << endl;
-		node->displayTutors();
+		node->displayTutors(false);
 		return;
 	}
 
 	while (node != NULL) {
 		if (node->searchById(id)) {
-			node->printIdName();
+			node->printTutorFull();
 			return;
 		}
 
@@ -287,13 +307,13 @@ void SearchTutorByRating(struct Tutor** head) {
 	}
 	catch (exception) {
 		cout << "Invalid Input!" << endl;
-		node->displayTutors();
+		node->displayTutors(false);
 		return;
 	}
 
 	while (node != NULL) {
 		if (node->searchByRating(min, max)) {
-			node->printIdName();
+			node->printTutorFull();
 		}
 
 		node = node->next;
@@ -315,7 +335,7 @@ void SearchTutorByTuitionCentre(struct Tutor** head) {
 
 	if (tc_node == NULL) {
 		tc_node->deleteTuitionCentreList();
-		node->displayTutors();
+		node->displayTutors(false);
 		return;
 	}
 
@@ -333,13 +353,13 @@ void SearchTutorByTuitionCentre(struct Tutor** head) {
 	catch (exception) {
 		tc_node->deleteTuitionCentreList();
 		cout << "Invalid Input!" << endl;
-		node->displayTutors();
+		node->displayTutors(false);
 		return;
 	}
 
 	if (tc_ptr == NULL) {
 		tc_node->deleteTuitionCentreList();
-		node->displayTutors();
+		node->displayTutors(false);
 		return;
 	}
 
@@ -348,7 +368,7 @@ void SearchTutorByTuitionCentre(struct Tutor** head) {
 
 	while (node != NULL) {
 		if (node->searchByTuitionCentre(tc_code)) {
-			node->printIdName();
+			node->printTutorFull();
 		}
 
 		node = node->next;
@@ -371,7 +391,7 @@ void SearchTutorBySubject(struct Tutor** head) {
 
 	if (sub_node == NULL) {
 		sub_node->deleteSubjectList();
-		node->displayTutors();
+		node->displayTutors(false);
 		return;
 	}
 
@@ -389,13 +409,13 @@ void SearchTutorBySubject(struct Tutor** head) {
 	catch (exception) {
 		sub_node->deleteSubjectList();
 		cout << "Invalid Input!" << endl;
-		node->displayTutors();
+		node->displayTutors(false);
 		return;
 	}
 
 	if (sub_ptr == NULL) {
 		sub_node->deleteSubjectList();
-		node->displayTutors();
+		node->displayTutors(false);
 		return;
 	}
 
@@ -404,7 +424,7 @@ void SearchTutorBySubject(struct Tutor** head) {
 
 	while (node != NULL) {
 		if (node->searchBySubject(sub_code)) {
-			node->printIdName();
+			node->printTutorFull();
 		}
 
 		node = node->next;
@@ -442,8 +462,8 @@ void SortTutorById(struct Tutor** head) {
 		}
 	}
 
-	(*head)->displayTutors();
-	
+	(*head)->displayTutors(false);
+
 }
 
 void SortTutorByRating(struct Tutor** head) {
@@ -477,7 +497,7 @@ void SortTutorByRating(struct Tutor** head) {
 		}
 	}
 
-	(*head)->displayTutors();
+	(*head)->displayTutors(false);
 
 }
 
@@ -492,7 +512,7 @@ void SortTutorByHourlyPayRate(struct Tutor** head) {
 
 	if (subjectList == NULL) {
 		subjectList->deleteSubjectList();
-		node->displayTutors();
+		node->displayTutors(false);
 		return;
 	}
 
@@ -525,6 +545,15 @@ void SortTutorByHourlyPayRate(struct Tutor** head) {
 	//delete subject list
 	subjectList->deleteSubjectList();
 
-	(*head)->displayTutors();
+	(*head)->displayTutors(false);
+
+}
+
+
+void AddTutor() {
+
+	struct Tutor* tutorList = NULL;
+	RetrieveTutors(&tutorList);
+
 
 }

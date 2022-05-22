@@ -95,9 +95,10 @@ public:
 	//void predefineTutor();
 
 	void printFile();
-	void printIdName();
+	void printTutorFull();
+	void printTutorBrief();
 
-	void displayTutors();
+	void displayTutors(bool);
 	void deleteTutorList();
 
 	int getId();
@@ -108,6 +109,7 @@ public:
 	bool sortById();
 	bool sortByRating();
 	bool sortByHourlyPayRate(struct Subject**);
+	bool isTerminated();
 
 };
 
