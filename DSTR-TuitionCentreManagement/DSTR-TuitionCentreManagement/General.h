@@ -17,6 +17,13 @@ void setTuitionCentreCode(string);
 
 
 //Tutor
+void RetrieveTutors(struct Tutor**);
+void DisplayAllTutors();
+void SearchTutorById(struct Tutor**);
+void SearchTutorByRating(struct Tutor**);
+void SearchTutorByTuitionCentre(struct Tutor**);
+void SearchTutorBySubject(struct Tutor**);
+
 
 //Students
 //void DisplayStudentsOption(struct Student**);
@@ -28,6 +35,9 @@ void DisplayHRMenu();
 void DisplayStudentMenu();
 void DisplayAdminMenu();
 void TutorManagementMenu();
+void TutorListMenu(struct Tutor**);
+void SearchMenu(struct Tutor**);
+void SortMenu(struct Tutor**);
 
 
 //Subjects
@@ -42,6 +52,10 @@ void RetrieveTuitionCentres(struct TuitionCentre**);
 //void DisplayTuitionCentres(struct TuitionCentre**, int, bool);
 //void DeleteTuitionCentreList(struct TuitionCentre**);
 void DisplayAllTuitionCentres();
+
+//Rating
+float CalculateRatings(struct Rating** , int);
+void RetrieveRatings(struct Rating**);
 
 
 //---end::All main method headers---
@@ -74,7 +88,18 @@ public:
 	void terminateTutor(struct Tutor**);
 	void deleteTutor(struct Tutor**);
 	//void predefineTutor();
+
 	void printFile();
+	void printIdName();
+
+	void displayTutors();
+	void deleteTutorList();
+
+	int getId();
+	bool searchById(int);
+	bool searchByRating(int, int);
+	bool searchByTuitionCentre(string);
+	bool searchBySubject(string);
 
 };
 
@@ -131,6 +156,8 @@ public:
 	void printCodeName(int);
 	void printCodeNamePay(int);
 
+	struct Subject** searchByIndex(int);
+	string getCode();
 
 };
 
@@ -189,9 +216,9 @@ public:
 
 struct Rating {
 private:
-	int tuition_Id;
-	int tutor_Id;
-	int student_Id;
+	int tuition_id;
+	int tutor_id;
+	int student_id;
 	int rating;
 
 public:
@@ -201,6 +228,9 @@ public:
 	struct Rating(int, int, int, int);
 
 	//Functions
+	int getTutorId();
+	int getRating();
+
 };
 
 

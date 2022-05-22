@@ -4,7 +4,10 @@ string role = "";
 string tuitionCentreCode = "";
 
 int main() {
-	Login();
+	//Login();
+
+	setRole("HR");
+	TutorManagementMenu();
 
 }
 

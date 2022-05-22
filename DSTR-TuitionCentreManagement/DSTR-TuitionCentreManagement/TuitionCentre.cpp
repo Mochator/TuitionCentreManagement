@@ -155,7 +155,6 @@ void RetrieveTuitionCentres(struct TuitionCentre** head) {
 
 	struct TuitionCentre* node = *head;
 
-	int id;
 	string code, name, address, password;
 
 	while (inData >> code >> name >> address >> password) {
@@ -171,10 +170,9 @@ void RetrieveTuitionCentres(struct TuitionCentre** head) {
 			node = node->next;
 
 		}
-
 	}
-
 }
+
 //
 ////Free up memory
 //void DeleteTuitionCentreList(struct TuitionCentre** head)

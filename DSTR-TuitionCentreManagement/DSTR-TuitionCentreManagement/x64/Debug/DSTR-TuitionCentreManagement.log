@@ -1,7 +1,4 @@
-﻿  main.cpp
-  TuitionCentre.cpp
-C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement\DSTR-TuitionCentreManagement\TuitionCentre.cpp(158,6): warning C4101: 'id': unreferenced local variable
+﻿  Menu.cpp
   Tutor.cpp
   Generating Code...
-C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement\DSTR-TuitionCentreManagement\TuitionCentre.cpp(91): warning C4172: returning address of local variable or temporary: node
   DSTR-TuitionCentreManagement.vcxproj -> C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement\x64\Debug\DSTR-TuitionCentreManagement.exe

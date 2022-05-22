@@ -36,6 +36,9 @@
     <ClCompile Include="Tutor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Rating.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="General.h">

@@ -18,7 +18,8 @@ void DisplayHRMenu() {
 		cout << "0. Logout" << endl;
 		cout << "1. Tutor Management Menu" << endl;
 		cout << "2. View Subject" << endl;
-		cout << "3. View Tuition Centre" << endl;
+		cout << "3. View Tuition Centre" << endl << endl;
+		cout << "Enter your option: ";
 
 		cin >> input;
 		option = stoi(input);
@@ -54,14 +55,102 @@ void DisplayHRMenu() {
 }
 
 void DisplayAdminMenu() {
+	//Role Check
+	if (getRole() != "Admin") {
+		setRole("");
+		setTuitionCentreCode("");
+		Login();
+		return;
+	}
 
+	string input;
+	int option = -1;
+
+	try {
+		cout << "Choose an option below:" << endl;
+		cout << "0. Logout" << endl;
+		cout << "1. View Tutors" << endl;
+		cout << "2. Add Tuition" << endl << endl;
+		cout << "Enter your option: ";
+
+		cin >> input;
+		option = stoi(input);
+
+	}
+	catch (exception) {
+		DisplayAdminMenu();
+	}
+
+	if (option == -1) {
+		DisplayAdminMenu();
+	}
+
+	switch (option) {
+	default:
+	case 0:
+		setRole("");
+		setTuitionCentreCode("");
+		Login();
+		break;
+	case 1: 
+		//TODO: view tutors
+		break;
+	case 2:
+		//TODO: add tuition
+		break;
+	}
 }
 
 void DisplayStudentMenu() {
+	//Role Check
+	if (getRole() != "Student") {
+		setRole("");
+		setTuitionCentreCode("");
+		Login();
+		return;
+	}
 
+	string input;
+	int option = -1;
+
+	try {
+		cout << "Choose an option below:" << endl;
+		cout << "0. Logout" << endl;
+		cout << "1. View Tutors" << endl;
+		cout << "2. Give Ratings" << endl << endl;
+		cout << "Enter your option: ";
+
+		cin >> input;
+		option = stoi(input);
+
+	}
+	catch (exception) {
+		DisplayStudentMenu();
+	}
+
+	if (option == -1) {
+		DisplayStudentMenu();
+	}
+
+	switch (option) {
+	default:
+	case 0:
+		setRole("");
+		setTuitionCentreCode("");
+		Login();
+		break;
+	case 1:
+		//TODO: view tutors
+		break;
+	case 2:
+		//TODO: give ratings
+		break;
+	}
 }
 
 void TutorManagementMenu() {
+	system("CLS");
+
 	string input;
 	int option = -1;
 
@@ -71,7 +160,8 @@ void TutorManagementMenu() {
 		cout << "1. Tutor List" << endl;
 		cout << "2. Add Tutor" << endl;
 		cout << "3. Edit Tutor" << endl;
-		cout << "3. Terminate Tutor" << endl;
+		cout << "4. Terminate Tutor" << endl << endl;
+		cout << "Enter your option: ";
 
 		cin >> input;
 		option = stoi(input);
@@ -89,13 +179,117 @@ void TutorManagementMenu() {
 	default:
 	case 0: getRole() == "HR" ? DisplayHRMenu() : Login();
 		break;
-	case 1: //TODO: add tutor
+	case 1: 
+		DisplayAllTutors();
 		break;
-	case 2: //TODO: edit tutor
+	case 2: //TODO: add tutor
 		break;
-	case 3: //TODO: terminate tutor
+	case 3: //TODO: edit tutor
+		break;
+	case 4: //TODO: terminate tutor
 		break;
 	}
 }
 
+void TutorListMenu(struct Tutor** head) {
+	string input;
+	int option = -1;
 
+	try {
+		cout << "Choose an action below:" << endl;
+		cout << "0. Back" << endl;
+		cout << "1. Search Tutor" << endl;
+		cout << "2. Sort Tutor" << endl;
+		cout << "3. View Specific Tutor" << endl << endl;
+		cout << "Enter your option: ";
+
+		cin >> input;
+		option = stoi(input);
+
+	}
+	catch (exception) {
+		TutorListMenu(head);
+	}
+
+	if (option == -1) {
+		TutorListMenu(head);
+	}
+
+	switch (option) {
+	default:
+	case 0: 
+		(*head)->deleteTutorList();
+		if (getRole() == "HR") {
+			TutorManagementMenu();
+		}
+		else if (getRole() == "Admin") {
+			DisplayAdminMenu();
+		}
+		else {
+			DisplayStudentMenu();
+		}
+		break;
+	case 1:
+		SearchMenu(head);
+		break;
+	case 2: 
+		SortMenu(head);
+		break;
+	case 3: //TODO: view single tutor
+		break;
+	}
+}
+
+void SearchMenu(struct Tutor** head) {
+	string input;
+	int option = -1;
+
+	try {
+		cout << "Choose a search-by option below:" << endl;
+		cout << "0. Back" << endl;
+		cout << "1. ID" << endl;
+		cout << "2. Rating" << endl;
+		cout << "3. Tuition Centre" << endl;
+		cout << "4. Subject" << endl << endl;
+		cout << "Enter your option: ";
+
+		cin >> input;
+		option = stoi(input);
+
+	}
+	catch (exception) {
+		SearchMenu(head);
+	}
+
+	if (option == -1) {
+		SearchMenu(head);
+	}
+
+	switch (option) {
+	default:
+	case 0: 
+		(*head)->displayTutors();
+		TutorListMenu(head);
+		break;
+	case 1:
+		SearchTutorById(head);
+		TutorListMenu(head);
+		break;
+	case 2:
+		SearchTutorByRating(head);
+		TutorListMenu(head);
+		break;
+	case 3: 
+		SearchTutorByTuitionCentre(head);
+		TutorListMenu(head);
+		break;
+	case 4: 
+		SearchTutorBySubject(head);
+		TutorListMenu(head);
+		break;
+	}
+}
+
+void SortMenu(struct Tutor** head) {
+
+}

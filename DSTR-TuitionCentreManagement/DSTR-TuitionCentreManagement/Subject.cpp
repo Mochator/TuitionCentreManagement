@@ -84,6 +84,26 @@ void Subject::displaySubjects(int indexStart, bool withPayRate) {
 	}
 }
 
+string Subject::getCode() {
+	return this->code;
+}
+
+struct Subject** Subject::searchByIndex(int index) {
+	struct Subject* node = this;
+	struct Subject** result = NULL;
+
+	if (this == NULL) return result;
+
+	while (index > 1) {
+		node = node->next;
+		index--;
+	}
+
+	result = &node;
+
+	return result;
+}
+
 //Free up memory
 void Subject::deleteSubjectList()
 {
@@ -125,7 +145,6 @@ void RetrieveSubjects(struct Subject** head) {
 
 	struct Subject* node = *head;
 
-	int id;
 	string code, name, str_hourly_pay_rate;
 
 	while (inData >> code >> name >> str_hourly_pay_rate) {
