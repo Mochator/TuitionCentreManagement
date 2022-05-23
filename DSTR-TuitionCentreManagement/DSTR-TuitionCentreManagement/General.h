@@ -4,9 +4,16 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <algorithm>
+#include <time.h>
+#include <stdio.h>
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 
+
+const string no_termination_date = "00/00/0000";
 
 //---begin::All main method headers---
 void Login();
@@ -14,7 +21,7 @@ string getRole();
 void setRole(string);
 string getTuitionCentreCode();
 void setTuitionCentreCode(string);
-
+string today();
 
 //Tutor
 void RetrieveTutors(struct Tutor**);
@@ -28,6 +35,9 @@ void SearchTutorBySubject(struct Tutor**);
 void SortTutorById(struct Tutor**);
 void SortTutorByRating(struct Tutor**);
 void SortTutorByHourlyPayRate(struct Tutor**);
+
+void AddTutorToLast(struct Tutor**, struct Tutor*);
+void AddTutor();
 
 //Students
 //void DisplayStudentsOption(struct Student**);
@@ -88,13 +98,13 @@ public:
 	struct Tutor();
 
 	//Functions
-	void addTutor(struct Tutor**, struct Tutor*);
+	void addTutor(struct Tutor*);
 	void editTutor(struct Tutor**, string, string);
 	void terminateTutor(struct Tutor**);
 	void deleteTutor(struct Tutor**);
 	//void predefineTutor();
 
-	void printFile();
+	bool printFile();
 	void printTutorFull();
 	void printTutorBrief();
 
@@ -110,6 +120,7 @@ public:
 	bool sortByRating();
 	bool sortByHourlyPayRate(struct Subject**);
 	bool isTerminated();
+	int generateId();
 
 };
 

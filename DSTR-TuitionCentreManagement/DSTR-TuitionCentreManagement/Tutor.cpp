@@ -18,14 +18,14 @@ Tutor::Tutor(int id, string firstname, string lastname, char gender, string phon
 
 Tutor::Tutor() {}
 
-std::string genPhoneNo() {
-	string result = "01";
-
-	for (int i = 0; i < 8; i++) {
-		result += to_string(rand() % 10);
-	}
-	return result;
-}
+//std::string genPhoneNo() {
+//	string result = "01";
+//
+//	for (int i = 0; i < 8; i++) {
+//		result += to_string(rand() % 10);
+//	}
+//	return result;
+//}
 
 //void predefineTutor() {
 //	int i = 1;
@@ -51,28 +51,14 @@ std::string genPhoneNo() {
 //
 //}
 
-void Tutor::addTutor(struct Tutor** head, struct Tutor* newTutor) {
-	struct Tutor* node = *head;
+bool Tutor::printFile() {
 
-	if (*head == NULL) {
-		*head = newTutor;
-	}
-	else {
-		while (node->next != NULL) {
-			node = node->next;
-		}
-
-		node->next = newTutor;
-	}
-
-}
-
-void Tutor::printFile() {
+	bool success = false;
 
 	struct Tutor* node = this;
 
 	if (node == NULL) {
-		return;
+		return success;
 	}
 
 	ofstream outData;
@@ -84,6 +70,9 @@ void Tutor::printFile() {
 		node = node->next;
 	}
 
+	success = true;
+
+	return success;
 }
 
 int Tutor::getId() {
@@ -114,7 +103,7 @@ void Tutor::displayTutors(bool isBrief) {
 
 	while (node != NULL) {
 
-		//check role to determine if should print terminated
+		//check termination status don't print if terminated
 		if (node->isTerminated()) {
 			node = node->next;
 			continue;
@@ -180,7 +169,27 @@ bool Tutor::sortByHourlyPayRate(struct Subject** head) {
 }
 
 bool Tutor::isTerminated() {
-	return this->date_Terminated != "0/0/0";
+	return this->date_Terminated != no_termination_date;
+}
+
+//getLargestId
+int Tutor::generateId() {
+	int current = 1;
+
+	struct Tutor* node = this;
+
+	if (this == NULL) return current;
+
+	while (node != NULL) {
+
+		if (node->id > current) {
+			current = node->id;
+		}
+
+		node = node->next;
+	}
+
+	return current + 1;
 }
 
 //Free up memory
@@ -218,11 +227,11 @@ void RetrieveTutors(struct Tutor** head) {
 	struct Tutor* node = *head;
 
 	int id;
-	string str_id, firstname, lastname, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code;
+	string str_id, firstname, lastname, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code, str_rating;
 	char gender;
 
 
-	while (inData >> str_id >> firstname >> lastname >> gender >> phone >> address >> date_Joined >> date_Terminated >> subject_Code >> tuition_Centre_Code) {
+	while (inData >> str_id >> firstname >> lastname >> gender >> phone >> address >> date_Joined >> date_Terminated >> subject_Code >> tuition_Centre_Code >> str_rating) {
 
 		id = stoi(str_id);
 
@@ -555,5 +564,209 @@ void AddTutor() {
 	struct Tutor* tutorList = NULL;
 	RetrieveTutors(&tutorList);
 
+	if (tutorList == NULL) {
+		tutorList->deleteTutorList();
+		return;
+	}
+
+	//count active tutors
+	int count = 0;
+	struct Tutor* node = tutorList;
+
+	while (node != NULL) {
+
+		if (!node->isTerminated()) count++;
+
+		node = node->next;
+	}
+
+	if (count >= 10) {
+		cout << "Maximum number of tutors has reached!" << endl;
+		tutorList->deleteTutorList();
+		return;
+	}
+
+	//free memory
+	tutorList->deleteTutorList();
+
+
+	//retrieve tuition centres
+	string tuition_centre_code = "";
+	struct TuitionCentre* tuitionCentreList = NULL;
+	RetrieveTuitionCentres(&tuitionCentreList);
+
+	if (tuitionCentreList == NULL) {
+		tuitionCentreList->deleteTuitionCentreList();
+		return;
+	}
+
+	//retrieve subjects
+	string subject_code = "";
+	struct Subject* subjectList = NULL;
+	RetrieveSubjects(&subjectList);
+
+	if (subjectList == NULL) {
+		tuitionCentreList->deleteTuitionCentreList();
+		subjectList->deleteSubjectList();
+		return;
+	}
+
+	//select tuition centre & subject
+	string str_input_tc, str_input_sub;
+	int input_tc = -1, input_sub = -1;
+
+	//-request tuition centre-
+	tuitionCentreList->displayTuitionCentres(1, false);
+	cout << "Enter the index: ";
+	cin >> str_input_tc;
+
+	//-process tuition centre-
+	try {
+		input_tc = stoi(str_input_tc);
+	}
+	catch (exception) {
+		tuitionCentreList->deleteTuitionCentreList();
+		subjectList->deleteSubjectList();
+		system("CLS");
+		cout << "Invalid Input!" << endl;
+		return;
+	}
+
+	struct TuitionCentre** tuitionCentrePtr = NULL;
+
+	if (input_tc > 0) {
+		tuitionCentrePtr = tuitionCentreList->searchByIndex(input_tc);
+	}
+
+	//tuition centre retrieval check, if unavailable back to tutor management menu
+	if (tuitionCentrePtr == NULL) {
+		tuitionCentreList->deleteTuitionCentreList();
+		subjectList->deleteSubjectList();
+		system("CLS");
+		cout << "Invalid Input!" << endl;
+		return;
+	}
+
+	tuition_centre_code = (*tuitionCentrePtr)->getCode();
+	tuitionCentreList->deleteTuitionCentreList();
+
+	//-request subject-
+	subjectList->displaySubjects(1, false);
+	cout << "Enter the index: ";
+	cin >> str_input_sub;
+
+	//-process subject-
+	try {
+		input_sub = stoi(str_input_sub);
+	}
+	catch (exception) {
+		subjectList->deleteSubjectList();
+		system("CLS");
+		cout << "Invalid Input!" << endl;
+		return;
+	}
+
+	struct Subject** subjectPtr = NULL;
+
+	if (input_sub > 0) {
+		subjectPtr = subjectList->searchByIndex(input_sub);
+	}
+
+	//-subject retrieval check, if unavailable back to tutor management menu-
+	if (subjectPtr == NULL) {
+		subjectList->deleteSubjectList();
+		system("CLS");
+		cout << "Invalid Input!" << endl;
+		return;
+	}
+
+	subject_code = (*subjectPtr)->getCode();
+	subjectList->deleteSubjectList();
+
+	string firstname, lastname, phone, address, date_joined, str_gender;
+	char gender;
+	date_joined = today();
+
+	system("CLS");
+
+	//request tutor's info
+	cout << "Enter Tutor's First Name: ";
+	cin >> firstname;
+
+	cout << endl << "Enter Tutor's Last Name: ";
+	cin >> lastname;
+
+	cout << endl << "Enter Tutor's Phone: ";
+	cin >> phone;
+
+	//flush cin
+	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+	cout << endl << "Enter Tutor's Address: ";
+	getline(cin, address);
+
+	replace(address.begin(), address.end(), ' ', '_');
+
+	//-gender request & process-
+	cout << endl << "Select Tutor Gender" << endl;
+	cout << "1. Male" << endl;
+	cout << "2. Female" << endl << endl;
+	cout << "Enter your option: ";
+	cin >> str_gender;
+
+	if (str_gender == "1") {
+		gender = 'M';
+	}
+	else if (str_gender == "2") {
+		gender = 'F';
+	}
+	else {
+		system("CLS");
+		cout << "Invalid Input!" << endl;
+		return;
+	}
+
+	//re-retrieve tutor list
+	tutorList = NULL;
+	RetrieveTutors(&tutorList);
+
+	//get id
+	int id = tutorList->generateId(); 
+
+	//create new struct
+	struct Tutor* newTutor = new Tutor(id, firstname, lastname, gender, phone, address, date_joined, no_termination_date, subject_code, tuition_centre_code, 0.0f);
+
+	//add to list
+	AddTutorToLast(&tutorList, newTutor);
+
+	system("CLS");
+
+	//write to file
+	if (tutorList->printFile()) {
+		newTutor->printTutorBrief();
+		cout << "Tutor is added!" << endl << endl;
+	}
+	else {
+		cout << "Error adding new tutor!" << endl << endl;
+	}
+
+	//free memory space
+	tutorList->deleteTutorList();
+
+}
+
+void AddTutorToLast(struct Tutor** head, struct Tutor* newTutor) {
+	struct Tutor* node = *head;
+
+	if (node == NULL) {
+		*head = newTutor;
+	}
+	else {
+		while (node->next != NULL) {
+			node = node->next;
+		}
+
+		node->next = newTutor;
+	}
 
 }

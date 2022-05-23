@@ -143,7 +143,7 @@ void loginAsAdmin() {
 		return;
 	}
 
-	if (idxTuitionCentre != 0) {
+	if (idxTuitionCentre > 0) {
 		//Find tuition centre based on index
 		struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByIndex(idxTuitionCentre);
 

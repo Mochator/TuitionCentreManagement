@@ -40,7 +40,9 @@ void DisplayHRMenu() {
 		setTuitionCentreCode("");
 		Login();
 		break;
-	case 1: TutorManagementMenu();
+	case 1:
+		system("CLS");
+		TutorManagementMenu();
 		break;
 	case 2: 
 		DisplayAllSubjects();
@@ -149,8 +151,6 @@ void DisplayStudentMenu() {
 }
 
 void TutorManagementMenu() {
-	system("CLS");
-
 	string input;
 	int option = -1;
 
@@ -182,8 +182,9 @@ void TutorManagementMenu() {
 	case 1: 
 		DisplayAllTutors();
 		break;
-	case 2: //TODO: add tutor
-
+	case 2: 
+		AddTutor();
+		TutorManagementMenu();
 		break;
 	case 3: //TODO: edit tutor
 		break;

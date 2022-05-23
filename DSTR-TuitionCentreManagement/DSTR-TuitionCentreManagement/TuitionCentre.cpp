@@ -172,22 +172,3 @@ void RetrieveTuitionCentres(struct TuitionCentre** head) {
 		}
 	}
 }
-
-//
-////Free up memory
-//void DeleteTuitionCentreList(struct TuitionCentre** head)
-//{
-//	if (*head == NULL) {
-//		return;
-//	}
-//
-//	TuitionCentre* current = *head;
-//	TuitionCentre* next = NULL;
-//
-//	while (current != NULL)
-//	{
-//		next = current->next;
-//		free(current);
-//		current = next;
-//	}
-//}
