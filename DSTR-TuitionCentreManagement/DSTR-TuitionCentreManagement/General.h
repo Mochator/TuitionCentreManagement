@@ -38,6 +38,8 @@ void SortTutorByHourlyPayRate(struct Tutor**);
 
 void AddTutorToLast(struct Tutor**, struct Tutor*);
 void AddTutor();
+void EditTutor();
+void TerminateTutor();
 
 //Students
 //void DisplayStudentsOption(struct Student**);
@@ -99,9 +101,10 @@ public:
 
 	//Functions
 	void addTutor(struct Tutor*);
-	void editTutor(struct Tutor**, string, string);
-	void terminateTutor(struct Tutor**);
+	void terminateTutor();
 	void deleteTutor(struct Tutor**);
+	void editPhone(string);
+	void editAddress(string);
 	//void predefineTutor();
 
 	bool printFile();
@@ -110,6 +113,7 @@ public:
 
 	void displayTutors(bool);
 	void deleteTutorList();
+
 
 	int getId();
 	bool searchById(int);
@@ -121,6 +125,8 @@ public:
 	bool sortByHourlyPayRate(struct Subject**);
 	bool isTerminated();
 	int generateId();
+
+	struct Tutor** retrieveById(int);
 
 };
 

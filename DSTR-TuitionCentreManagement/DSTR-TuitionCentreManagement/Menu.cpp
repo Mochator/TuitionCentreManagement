@@ -186,9 +186,13 @@ void TutorManagementMenu() {
 		AddTutor();
 		TutorManagementMenu();
 		break;
-	case 3: //TODO: edit tutor
+	case 3:
+		EditTutor();
+		TutorManagementMenu();
 		break;
-	case 4: //TODO: terminate tutor
+	case 4:
+		TerminateTutor();
+		TutorManagementMenu();
 		break;
 	}
 }
@@ -336,3 +340,4 @@ void SortMenu(struct Tutor** head) {
 		break;
 	}
 }
+

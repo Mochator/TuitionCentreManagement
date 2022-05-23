@@ -79,10 +79,6 @@ int Tutor::getId() {
 	return this->id;
 }
 
-void Tutor::editTutor(struct Tutor** head, string field, string newData) {
-
-}
-
 void Tutor::printTutorFull() {
 	cout << this->id << "\t" << this->firstname << " " << this->lastname << "\t\t" << this->subject_Code << "\t" << this->tuition_Centre_code << "\t\t" << this->rating << endl;
 }
@@ -99,7 +95,12 @@ void Tutor::displayTutors(bool isBrief) {
 
 	if (this == NULL) return;
 
-	cout << "ID" << "\t" << "Name" << "\t\t\t" << "Subject" << "\t" << "Tuition Centre" << "\t" << "Rating" << endl;
+	if (isBrief) {
+		cout << "ID" << "\t" << "Name" << endl;
+	}
+	else {
+		cout << "ID" << "\t" << "Name" << "\t\t\t" << "Subject" << "\t" << "Tuition Centre" << "\t" << "Rating" << endl;
+	}
 
 	while (node != NULL) {
 
@@ -124,6 +125,25 @@ void Tutor::displayTutors(bool isBrief) {
 
 //view specific tutor all info
 
+//retrieval
+struct Tutor** Tutor::retrieveById(int id) {
+	struct Tutor* node = this;
+	struct Tutor** result = NULL;
+
+	if (node == NULL) return result;
+
+	while (node != NULL) {
+		if (node->searchById(id)) {
+			result = &node;
+			return result;
+		}
+		else {
+			node = node->next;
+		}
+	}
+
+	return result;
+}
 
 //searches
 bool Tutor::searchById(int id) {
@@ -169,7 +189,22 @@ bool Tutor::sortByHourlyPayRate(struct Subject** head) {
 }
 
 bool Tutor::isTerminated() {
-	return this->date_Terminated != no_termination_date;
+	bool result = this->date_Terminated != no_termination_date;
+	return result;
+}
+
+//edit
+void Tutor::editAddress(string address) {
+	this->address = address;
+}
+
+void Tutor::editPhone(string phone) {
+	this->phone = phone;
+}
+
+//terminate
+void Tutor::terminateTutor() {
+	this->date_Terminated = today();
 }
 
 //getLargestId
@@ -731,7 +766,7 @@ void AddTutor() {
 	RetrieveTutors(&tutorList);
 
 	//get id
-	int id = tutorList->generateId(); 
+	int id = tutorList->generateId();
 
 	//create new struct
 	struct Tutor* newTutor = new Tutor(id, firstname, lastname, gender, phone, address, date_joined, no_termination_date, subject_code, tuition_centre_code, 0.0f);
@@ -769,4 +804,202 @@ void AddTutorToLast(struct Tutor** head, struct Tutor* newTutor) {
 		node->next = newTutor;
 	}
 
+}
+
+
+void EditTutor() {
+	struct Tutor* tutorList = NULL;
+	RetrieveTutors(&tutorList);
+
+	string str_tutor_id;
+	int tutor_id = -1;
+
+	tutorList->displayTutors(true);
+
+	cout << "Enter a tutor ID to edit: ";
+	cin >> str_tutor_id;
+
+	try {
+		tutor_id = stoi(str_tutor_id);
+	}
+	catch (exception) {
+		tutorList->deleteTutorList();
+		system("CLS");
+		cout << "Invalid Input" << endl << endl;
+		TutorManagementMenu();
+		return;
+	}
+
+
+	//availability check
+	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id);
+
+	if (tutorPtr == NULL) {
+		tutorList->deleteTutorList();
+		system("CLS");
+		cout << "Tutor not found!" << endl;
+		return;
+	}
+	struct Tutor* tutorNode = *tutorPtr;
+
+	//termination check
+	if (tutorNode->isTerminated()) {
+		tutorList->deleteTutorList();
+		system("CLS");
+		cout << "Tutor was already terminated!" << endl;
+		return;
+	}
+
+	//edit field
+	string input;
+	int option = -1;
+
+	try {
+		cout << "Choose a sort-by option below:" << endl;
+		cout << "0. Back" << endl;
+		cout << "1. Address" << endl;
+		cout << "2. Contact" << endl << endl;
+		cout << "Enter your option: ";
+
+		cin >> input;
+		option = stoi(input);
+
+	}
+	catch (exception) {
+		tutorList->deleteTutorList();
+		cout << "Invalid Input!" << endl;
+		return;
+	}
+
+	//flush cin
+	cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+	string newData;
+
+	switch (option) {
+	default:
+	case 0:
+		tutorList->deleteTutorList();
+		return;
+	case 1:
+		system("CLS");
+		cout << "Enter Tutor's New Address: " << endl;
+		getline(cin, newData);
+		replace(newData.begin(), newData.end(), ' ', '_');
+		tutorNode->editAddress(newData);
+		break;
+	case 2:
+		system("CLS");
+		cout << "Enter Tutor's New Contact: " << endl;
+		cin >> newData;
+		tutorNode->editPhone(newData);
+		break;
+	}
+
+	//save to file
+	system("CLS");
+
+	if (tutorList->printFile()) {
+		tutorNode->printTutorFull();
+		cout << "Tutor's information updated!" << endl << endl;;
+	}
+	else {
+		cout << "Error in updating tutor's information" << endl << endl;;
+	}
+
+	//free memory
+	tutorList->deleteTutorList();
+
+}
+
+void TerminateTutor() {
+	struct Tutor* tutorList = NULL;
+	RetrieveTutors(&tutorList);
+
+	string str_tutor_id;
+	int tutor_id = -1;
+
+	tutorList->displayTutors(true);
+
+	cout << "Enter a tutor ID to terminate: ";
+	cin >> str_tutor_id;
+
+	try {
+		tutor_id = stoi(str_tutor_id);
+	}
+	catch (exception) {
+		tutorList->deleteTutorList();
+		system("CLS");
+		cout << "Invalid Input" << endl << endl;
+		TutorManagementMenu();
+		return;
+	}
+
+
+	//availability check
+	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id);
+
+	if (tutorPtr == NULL) {
+		tutorList->deleteTutorList();
+		system("CLS");
+		cout << "Tutor not found!" << endl;
+		return;
+	}
+	struct Tutor* tutorNode = *tutorPtr;
+
+	//termination check
+	if (tutorNode->isTerminated()) {
+		tutorList->deleteTutorList();
+		system("CLS");
+		cout << "Tutor was already terminated!" << endl;
+		return;
+	}
+
+	//edit field
+	string input;
+	int option = -1;
+
+	try {
+		cout << "Confirm to terminate tutor?" << endl;
+		cout << "1. Yes" << endl;
+		cout << "2. No" << endl << endl;
+		cout << "Enter your option: ";
+
+		cin >> input;
+		option = stoi(input);
+
+	}
+	catch (exception) {
+		tutorList->deleteTutorList();
+		cout << "Invalid Input!" << endl;
+		return;
+	}
+
+	string newData;
+
+	switch (option) {
+	case 2:
+	default:
+		system("CLS");
+		cout << "Tutor was not terminated!" << endl << endl;
+		tutorList->deleteTutorList();
+		return;
+	case 1:
+		tutorNode->terminateTutor();
+		break;
+	}
+
+	//save to file
+	system("CLS");
+
+	if (tutorList->printFile()) {
+		tutorNode->printTutorFull();
+		cout << "Tutor's has been terminated!" << endl << endl;;
+	}
+	else {
+		cout << "Error in terminating tutor." << endl << endl;;
+	}
+
+	//free memory
+	tutorList->deleteTutorList();
 }
