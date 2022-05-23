@@ -193,15 +193,6 @@ bool Tutor::isTerminated() {
 	return result;
 }
 
-//edit
-void Tutor::editAddress(string address) {
-	this->address = address;
-}
-
-void Tutor::editPhone(string phone) {
-	this->phone = phone;
-}
-
 //terminate
 void Tutor::terminateTutor() {
 	this->date_Terminated = today();
@@ -886,13 +877,13 @@ void EditTutor() {
 		cout << "Enter Tutor's New Address: " << endl;
 		getline(cin, newData);
 		replace(newData.begin(), newData.end(), ' ', '_');
-		tutorNode->editAddress(newData);
+		tutorNode->address = newData;
 		break;
 	case 2:
 		system("CLS");
 		cout << "Enter Tutor's New Contact: " << endl;
 		cin >> newData;
-		tutorNode->editPhone(newData);
+		tutorNode->phone = newData;
 		break;
 	}
 

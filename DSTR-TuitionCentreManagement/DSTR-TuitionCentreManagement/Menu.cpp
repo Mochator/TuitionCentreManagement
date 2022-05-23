@@ -95,7 +95,7 @@ void DisplayAdminMenu() {
 		Login();
 		break;
 	case 1: 
-		//TODO: view tutors
+		DisplayAllTutors();
 		break;
 	case 2:
 		//TODO: add tuition
@@ -142,7 +142,7 @@ void DisplayStudentMenu() {
 		Login();
 		break;
 	case 1:
-		//TODO: view tutors
+		DisplayAllTutors();
 		break;
 	case 2:
 		//TODO: give ratings

@@ -100,11 +100,8 @@ public:
 	struct Tutor();
 
 	//Functions
-	void addTutor(struct Tutor*);
 	void terminateTutor();
 	void deleteTutor(struct Tutor**);
-	void editPhone(string);
-	void editAddress(string);
 	//void predefineTutor();
 
 	bool printFile();
