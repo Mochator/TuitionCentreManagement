@@ -51,7 +51,7 @@ int Tuition::generateId() {
 
 //get info
 string Tuition::getInfo() {
-	string result = to_string(this->id) + "\t" + this->date;
+	string result = to_string(this->id) + "\t\t" + this->date;
 	return result;
 }
 

@@ -1,4 +1,4 @@
 ﻿  Rating.cpp
-C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement\DSTR-TuitionCentreManagement\Rating.cpp(183,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement\DSTR-TuitionCentreManagement\Rating.cpp(129): warning C4172: returning address of local variable or temporary: node
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement\DSTR-TuitionCentreManagement\Rating.cpp(182,17): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement\DSTR-TuitionCentreManagement\Rating.cpp(128): warning C4172: returning address of local variable or temporary: node
   DSTR-TuitionCentreManagement.vcxproj -> C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement\x64\Debug\DSTR-TuitionCentreManagement.exe

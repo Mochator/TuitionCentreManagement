@@ -62,7 +62,6 @@ bool Rating::editRating(int rate) {
 	result = (*head)->printFile();
 
 	ratingList->deleteRatingList();
-	delete head;
 
 	return result;
 }
@@ -245,7 +244,7 @@ void GiveRating() {
 		return;
 	}
 
-	cout << "Tuition_ID" << "\t\t" << "Date" << "\t" << "Tutor" << "\t\t" << "Subject" << endl;;
+	cout << "Tuition_ID" << "\t" << "Date" << "\t\t" << "Tutor" << "\t\t" << "Subject" << endl;;
 	FilterRating(&ratingList);
 	ratingList->displayRatings();
 
@@ -295,7 +294,7 @@ void GiveRating() {
 	//rated check
 	struct Rating* ratingNode = *ratingPtr;
 
-	if (ratingNode->getRating() == 0) {
+	if (ratingNode->getRating() != 0) {
 		system("CLS");
 		ratingList->deleteRatingList();
 		cout << "Invalid Input!" << endl << endl;
@@ -331,7 +330,7 @@ void GiveRating() {
 
 	system("CLS");
 
-	if ((*ratingPtr)->editRating(rating)) {
+	if (ratingNode->editRating(rating)) {
 		cout << "Rated!" << endl;
 	}
 	else {
