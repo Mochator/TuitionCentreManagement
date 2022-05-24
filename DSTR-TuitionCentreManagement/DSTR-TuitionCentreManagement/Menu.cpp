@@ -111,6 +111,7 @@ void DisplayStudentMenu() {
 	if (getRole() != "Student") {
 		setRole("");
 		setTuitionCentreCode("");
+		setStudentId(-1);
 		Login();
 		return;
 	}
@@ -149,7 +150,7 @@ void DisplayStudentMenu() {
 		DisplayAllTutors();
 		break;
 	case 2:
-		//TODO: give ratings
+		GiveRating();
 		break;
 	}
 }

@@ -18,7 +18,7 @@ bool Tuition::printFile() {
 	}
 
 	ofstream outData;
-	outData.open("TuitionCentre.txt");
+	outData.open("Tuition.txt");
 
 	while (node != NULL) {
 		outData << node->id << "\t" << node->tutor_id << "\t" << node->hour << "\t" << node->date << endl;
@@ -29,7 +29,7 @@ bool Tuition::printFile() {
 
 }
 
-//get id
+//generate id based on last record
 int Tuition::generateId() {
 	int current = 1;
 
@@ -49,6 +49,31 @@ int Tuition::generateId() {
 	return current + 1;
 }
 
+//get info
+string Tuition::getInfo() {
+	string result = to_string(this->id) + "\t" + this->date;
+	return result;
+}
+
+//retrieve by id
+struct Tuition** Tuition::retrieveById(int id) {
+	struct Tuition* node = this;
+	struct Tuition** result = NULL;
+
+	if (node == NULL) return result;
+
+	while (node != NULL) {
+		if (node->id == id) {
+			result = &node;
+			return result;
+		}
+		else {
+			node = node->next;
+		}
+	}
+
+	return result;
+}
 
 //Free up memory
 void Tuition::deleteTuitionList()

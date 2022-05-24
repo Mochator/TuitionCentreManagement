@@ -13,6 +13,10 @@ int Rating::getTutorId() {
 	return this->tutor_id;
 }
 
+int Rating::getStudentId() {
+	return this->student_id;
+}
+
 int Rating::getRating() {
 	return this->rating;
 }
@@ -36,6 +40,120 @@ bool Rating::printFile() {
 	return true;
 }
 
+bool Rating::editRating(int rate) {
+	this->rating = rate;
+
+	bool result = false;
+	struct Rating* modifiedRating = this;
+
+	struct Rating* ratingList = NULL;
+	RetrieveRatings(&ratingList);
+	struct Rating** head = &ratingList;
+
+	while (ratingList != NULL) {
+		if (ratingList->tuition_id == modifiedRating->tuition_id && ratingList->tutor_id == modifiedRating->tutor_id && ratingList->student_id == modifiedRating->student_id) {
+			ratingList->rating = modifiedRating->rating;
+			break;
+		}
+
+		ratingList = ratingList->next;
+	}
+
+	result = (*head)->printFile();
+
+	ratingList->deleteRatingList();
+	delete head;
+
+	return result;
+}
+
+void Rating::displayRatings() {
+
+	if (this == NULL) return;
+
+	struct Rating* node = this;
+
+	//retrieve tuitions
+	struct Tuition* tuitionList = NULL;
+	RetrieveTuitions(&tuitionList);
+
+	//retrieve tutors
+	struct Tutor* tutorList = NULL;
+	RetrieveTutors(&tutorList);
+
+	//retrieve tutors
+	struct Subject* subjectList = NULL;
+	RetrieveSubjects(&subjectList);
+
+	while (node != NULL) {
+
+		if (node->rating != 0) {
+			node = node->next;
+			continue;
+		}
+
+		struct Tuition** tuitionPtr = tuitionList->retrieveById(node->tuition_id);
+		struct Tuition* tuitionNode = *tuitionPtr;
+
+		struct Tutor** tutorPtr = tutorList->retrieveById(node->tutor_id);
+		struct Tutor* tutorNode = *tutorPtr;
+
+		string subject_code = tutorNode->getSubject();
+		struct Subject** subjectPtr = subjectList->searchByCode(subject_code);
+		struct Subject* subjectNode = *subjectPtr;
+
+		node->printInfo(tuitionNode, tutorNode, subjectNode);
+		node = node->next;
+	}
+
+	//free memory
+	tuitionList->deleteTuitionList();
+	tutorList->deleteTutorList();
+	subjectList->deleteSubjectList();
+}
+
+void Rating::printInfo(struct Tuition* tuition, struct Tutor* tutor, struct Subject* subject) {
+	cout << tuition->getInfo() << "\t" << tutor->getFullName() << "\t" << subject->getInfo() << endl;
+}
+
+//retrieve by id
+struct Rating** Rating::retrieveByTuitionId(int id) {
+	struct Rating* node = this;
+	struct Rating** result = NULL;
+
+	if (node == NULL) return result;
+
+	while (node != NULL) {
+		if (node->tuition_id == id) {
+			result = &node;
+			return result;
+		}
+		else {
+			node = node->next;
+		}
+	}
+
+	return result;
+}
+
+//free memory
+void Rating::deleteRatingList() {
+
+	if (this == NULL) {
+		return;
+	}
+
+	Rating* current = this;
+	Rating* next = NULL;
+
+	while (current != NULL)
+	{
+		next = current->next;
+		free(current);
+		current = next;
+	}
+}
+
 //External function
 float CalculateRatings(struct Rating** head, int tutor_Id) {
 
@@ -48,13 +166,21 @@ float CalculateRatings(struct Rating** head, int tutor_Id) {
 	int total = 0, count = 0;
 
 	while (node != NULL) {
+
+		if (node->getRating() == 0) {
+			node = node->next;
+			continue;
+		}
+
 		if (node->getTutorId() == tutor_Id) {
 			total = total + node->getRating();
 			count++;
 		}
+
+		node = node->next;
 	}
 
-	result = total / count;
+	result = count != 0? total / count : 0;
 
 	return result;
 }
@@ -105,4 +231,144 @@ void AddRatingToLast(struct Rating** head, struct Rating* newRating) {
 		node->next = newRating;
 	}
 
+}
+
+void GiveRating() {
+	system("CLS");
+
+	//Retrieve rating list;
+	struct Rating* ratingList = NULL;
+	RetrieveRatings(&ratingList);
+
+	if (ratingList == NULL) {
+		DisplayStudentMenu();
+		return;
+	}
+
+	cout << "Tuition_ID" << "\t\t" << "Date" << "\t" << "Tutor" << "\t\t" << "Subject" << endl;;
+	FilterRating(&ratingList);
+	ratingList->displayRatings();
+
+	string str_tuition_id, str_rating;
+	int tuition_id = -1, rating = 0;
+
+	cout << endl;
+	cout << "Enter the tuition ID to give rating or 0 to exit: ";
+	cin >> str_tuition_id;
+
+	try {
+		tuition_id = stoi(str_tuition_id);
+	}
+	catch (exception) {
+		system("CLS");
+		ratingList->deleteRatingList();
+		cout << "Invalid Input!" << endl << endl;
+		DisplayStudentMenu();
+		return;
+	}
+
+	if (tuition_id == 0) {
+		system("CLS");
+		ratingList->deleteRatingList();
+		DisplayStudentMenu();
+	}
+
+	if (tuition_id < 0) {
+		system("CLS");
+		ratingList->deleteRatingList();
+		cout << "Invalid Input!" << endl << endl;
+		DisplayStudentMenu();
+		return;
+	}
+
+	//retrieve rating record based on tuition id
+	struct Rating** ratingPtr = ratingList->retrieveByTuitionId(tuition_id);
+
+	if (ratingPtr == NULL) {
+		system("CLS");
+		ratingList->deleteRatingList();
+		cout << "Invalid Input!" << endl << endl;
+		DisplayStudentMenu();
+		return;
+	}
+
+	//rated check
+	struct Rating* ratingNode = *ratingPtr;
+
+	if (ratingNode->getRating() == 0) {
+		system("CLS");
+		ratingList->deleteRatingList();
+		cout << "Invalid Input!" << endl << endl;
+		DisplayStudentMenu();
+		return;
+	}
+
+	//request rating
+	cout << endl;
+	cout << "Rating Scale: 1 (lowest) to 5 (highest)" << endl;
+	cout << "Whole number only - eg. 4" << endl << endl;
+	cout << "Enter your rating: ";
+	cin >> str_rating;
+
+	try {
+		rating = stoi(str_rating);
+	}
+	catch (exception) {
+		system("CLS");
+		ratingList->deleteRatingList();
+		cout << "Invalid Input!" << endl << endl;
+		DisplayStudentMenu();
+		return;
+	}
+
+	if (rating < 1 || rating > 5) {
+		system("CLS");
+		ratingList->deleteRatingList();
+		cout << "Invalid Input!" << endl << endl;
+		DisplayStudentMenu();
+		return;
+	}
+
+	system("CLS");
+
+	if ((*ratingPtr)->editRating(rating)) {
+		cout << "Rated!" << endl;
+	}
+	else {
+		cout << "Fail to rate, please try again later!" << endl;
+	}
+
+	//Free memory;
+	ratingList->deleteRatingList();
+	GiveRating();
+
+}
+
+//for student only
+void FilterRating(struct Rating** head) {
+
+	struct Rating* toDelete = *head;
+	struct Rating* prev_node = NULL;
+	struct Rating* next_node = NULL;
+
+	if (*head == NULL) return;
+
+	while (toDelete != NULL) {
+		if (toDelete->getStudentId() == getStudentId()) {
+			prev_node = toDelete;
+			toDelete = toDelete->next;
+			continue;
+		}
+
+		//delete current node
+		next_node = toDelete->next;
+		if (prev_node != NULL) {
+			prev_node->next = next_node;
+		}
+		else {
+			*head = next_node;
+		}
+		free(toDelete);
+		toDelete = next_node;
+	}
 }

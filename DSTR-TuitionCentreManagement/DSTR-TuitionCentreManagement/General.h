@@ -80,6 +80,8 @@ void DisplayAllTuitionCentres();
 float CalculateRatings(struct Rating** , int);
 void RetrieveRatings(struct Rating**);
 void AddRatingToLast(struct Rating**, struct Rating*);
+void GiveRating();
+void FilterRating(struct Rating**);
 
 //Tuition
 void RetrieveTuitions(struct Tuition**);
@@ -126,6 +128,7 @@ public:
 
 	int getId();
 	string getTuitionCentre();
+	string getFullName();
 
 	bool searchById(int);
 	bool searchByRating(int, int);
@@ -138,6 +141,7 @@ public:
 
 	bool isTerminated();
 	int generateId();
+	string getSubject();
 
 	struct Tutor** retrieveById(int);
 
@@ -202,6 +206,7 @@ public:
 	struct Subject** searchByIndex(int);
 	struct Subject** searchByCode(string);
 	string getCode();
+	string getInfo();
 	float getHourlyPayRate();
 
 };
@@ -260,6 +265,10 @@ public:
 	void deleteTuitionList();
 
 	int generateId();
+	string getInfo();
+
+	struct Tuition** retrieveById(int);
+
 
 };
 
@@ -277,11 +286,18 @@ public:
 	struct Rating(int, int, int, int);
 
 	//Functions
+	void displayRatings();
+	void deleteRatingList();
+
+	void printInfo(struct Tuition*, struct Tutor*, struct Subject*);
 	bool printFile();
+	bool editRating(int);
 
 	int getTutorId();
 	int getRating();
+	int getStudentId();
 
+	struct Rating** retrieveByTuitionId(int);
 
 };
 

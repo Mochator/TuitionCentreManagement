@@ -88,6 +88,10 @@ string Subject::getCode() {
 	return this->code;
 }
 
+string Subject::getInfo() {
+	return (this->name + "(" + this->code + ")");
+}
+
 float Subject::getHourlyPayRate() {
 	return this->hourly_pay_rate;
 }

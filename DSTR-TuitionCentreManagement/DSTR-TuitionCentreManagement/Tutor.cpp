@@ -79,8 +79,16 @@ int Tutor::getId() {
 	return this->id;
 }
 
+string Tutor::getSubject() {
+	return this->subject_Code;
+}
+
 string Tutor::getTuitionCentre() {
 	return this->tuition_Centre_code;
+}
+
+string Tutor::getFullName() {
+	return this->firstname + " " + this->lastname;
 }
 
 void Tutor::printTutorFull() {
