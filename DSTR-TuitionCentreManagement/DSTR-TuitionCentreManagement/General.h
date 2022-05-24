@@ -41,10 +41,15 @@ void AddTutor();
 void EditTutor();
 void TerminateTutor();
 
+void FilterTutorByTermination(struct Tutor**, bool);
+void FilterTutorByTuitionCentre(struct Tutor**, string);
+
+int GetTutorSize(struct Tutor**, bool);
+
 //Students
-//void DisplayStudentsOption(struct Student**);
 void RetrieveStudents(struct Student**);
-//void DeleteStudentList(struct Student**);
+void AddStudentToLast(struct Student**, struct Student*);
+void RemoveStudentFromList(struct Student**, int);
 
 //Menu
 void DisplayHRMenu();
@@ -72,6 +77,12 @@ void DisplayAllTuitionCentres();
 //Rating
 float CalculateRatings(struct Rating** , int);
 void RetrieveRatings(struct Rating**);
+void AddRatingToLast(struct Rating**, struct Rating*);
+
+//Tuition
+void RetrieveTuitions(struct Tuition**);
+void AddTuition();
+void AddTuitionToLast(struct Tuition**, struct Tuition*);
 
 
 //---end::All main method headers---
@@ -111,15 +122,18 @@ public:
 	void displayTutors(bool);
 	void deleteTutorList();
 
-
 	int getId();
+	string getTuitionCentre();
+
 	bool searchById(int);
 	bool searchByRating(int, int);
 	bool searchByTuitionCentre(string);
 	bool searchBySubject(string);
+
 	bool sortById();
 	bool sortByRating();
 	bool sortByHourlyPayRate(struct Subject**);
+
 	bool isTerminated();
 	int generateId();
 
@@ -153,8 +167,11 @@ public:
 
 	struct Student** searchByUsername(string);
 
+	struct Student** retrieveById(int);
+
 	bool passwordComparison(string);
 	string getFullName();
+	int getId();
 };
 
 struct Subject {
@@ -225,7 +242,7 @@ public:
 struct Tuition {
 private:
 	int id;
-	int tutor_Id;
+	int tutor_id;
 	int hour;
 	string date;
 
@@ -236,7 +253,11 @@ public:
 	struct Tuition(int, int, int, string);
 
 	//Functions
+	bool printFile();
 
+	void deleteTuitionList();
+
+	int generateId();
 
 };
 
@@ -250,12 +271,15 @@ private:
 public:
 	struct Rating* next;
 
-	// Rating Constructor : id, tutor_Id, hour, date
+	// Rating Constructor : id, tutor_Id, student_id, rating
 	struct Rating(int, int, int, int);
 
 	//Functions
+	bool printFile();
+
 	int getTutorId();
 	int getRating();
+
 
 };
 

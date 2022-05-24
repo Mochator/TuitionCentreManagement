@@ -145,6 +145,7 @@
     <ClCompile Include="Rating.cpp" />
     <ClCompile Include="Student.cpp" />
     <ClCompile Include="Subject.cpp" />
+    <ClCompile Include="Tuition.cpp" />
     <ClCompile Include="TuitionCentre.cpp" />
     <ClCompile Include="Tutor.cpp" />
   </ItemGroup>

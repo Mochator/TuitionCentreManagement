@@ -79,6 +79,10 @@ int Tutor::getId() {
 	return this->id;
 }
 
+string Tutor::getTuitionCentre() {
+	return this->tuition_Centre_code;
+}
+
 void Tutor::printTutorFull() {
 	cout << this->id << "\t" << this->firstname << " " << this->lastname << "\t\t" << this->subject_Code << "\t" << this->tuition_Centre_code << "\t\t" << this->rating << endl;
 }
@@ -122,6 +126,8 @@ void Tutor::displayTutors(bool isBrief) {
 
 	cout << endl;
 }
+
+//filter
 
 //view specific tutor all info
 
@@ -198,7 +204,7 @@ void Tutor::terminateTutor() {
 	this->date_Terminated = today();
 }
 
-//getLargestId
+//get id
 int Tutor::generateId() {
 	int current = 1;
 
@@ -596,15 +602,7 @@ void AddTutor() {
 	}
 
 	//count active tutors
-	int count = 0;
-	struct Tutor* node = tutorList;
-
-	while (node != NULL) {
-
-		if (!node->isTerminated()) count++;
-
-		node = node->next;
-	}
+	int count = GetTutorSize(&tutorList, true);
 
 	if (count >= 10) {
 		cout << "Maximum number of tutors has reached!" << endl;
@@ -993,4 +991,77 @@ void TerminateTutor() {
 
 	//free memory
 	tutorList->deleteTutorList();
+}
+
+void FilterTutorByTermination(struct Tutor** head, bool isTerminated) {
+	struct Tutor* toDelete = *head;
+	struct Tutor* prev_node = NULL;
+	struct Tutor* next_node = NULL;
+
+	if (*head == NULL) return;
+
+	while (toDelete != NULL) {
+		if (toDelete->isTerminated() == isTerminated) {
+			prev_node = toDelete;
+			toDelete = toDelete->next;
+			continue;
+		}
+		
+		//delete current node
+		next_node = toDelete->next;
+		if (prev_node != NULL) {
+			prev_node->next = next_node;
+		}
+		else {
+			*head = next_node;
+		}
+		free(toDelete);
+		toDelete = next_node;
+	}
+}
+
+void FilterTutorByTuitionCentre(struct Tutor** head, string tuitionCentreCode) {
+	struct Tutor* toDelete = *head;
+	struct Tutor* prev_node = NULL;
+	struct Tutor* next_node = NULL;
+
+	if (*head == NULL) return;
+
+	while (toDelete != NULL) {
+		if (toDelete->getTuitionCentre() == tuitionCentreCode) {
+			prev_node = toDelete;
+			toDelete = toDelete->next;
+			continue;
+		}
+
+		//delete current node
+		next_node = toDelete->next;
+		if (prev_node != NULL) {
+			prev_node->next = next_node;
+		}
+		else {
+			*head = next_node;
+		}
+		free(toDelete);
+		toDelete = next_node;
+	}
+}
+
+int GetTutorSize(struct Tutor** head, bool terminationCondition) {
+	int count = 0;
+	struct Tutor* node = *head;
+
+	while (node != NULL) {
+
+		if (terminationCondition) {
+			if (!node->isTerminated()) count++;
+		}
+		else {
+			count++;
+		}
+
+		node = node->next;
+	}
+
+	return count;
 }

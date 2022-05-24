@@ -98,7 +98,7 @@ void Student::printFile() {
 }
 
 void Student::printInfo() {
-	cout << this->id << "\t" << this->firstname << " " << this->lastname << " (" << this->username << "\t" << ")" << endl;
+	cout << this->id << "\t" << this->firstname << " " << this->lastname << " (" << this->username << ")" << endl;
 
 }
 
@@ -121,6 +121,25 @@ struct Student** Student::searchByUsername(string username) {
 	return result;
 }
 
+struct Student** Student::retrieveById(int id) {
+	struct Student* node = this;
+	struct Student** result = NULL;
+
+	if (node == NULL) return result;
+
+	while (node != NULL) {
+		if (node->id == id) {
+			result = &node;
+			return result;
+		}
+		else {
+			node = node->next;
+		}
+	}
+
+	return result;
+}
+
 bool Student::passwordComparison(string pw) {
 	return password == pw;
 }
@@ -128,6 +147,10 @@ bool Student::passwordComparison(string pw) {
 string Student::getFullName() {
 	string fullName = this->firstname + " " + this->lastname;
 	return fullName;
+}
+
+int Student::getId() {
+	return this->id;
 }
 
 void Student::deleteStudentList() {
@@ -189,22 +212,49 @@ void RetrieveStudents(struct Student** head) {
 	}
 
 }
-//
-//void DeleteStudentList(struct Student** head) {
-//	if (*head == NULL) {
-//		return;
-//	}
-//
-//	Student* current = *head;
-//	Student* next = NULL;
-//
-//	while (current != NULL)
-//	{
-//		next = current->next;
-//		free(current);
-//		current = next;
-//	}
-//}
+
+void AddStudentToLast(struct Student** head, struct Student* newStudent) {
+	struct Student* node = *head;
+
+	if (node == NULL) {
+		*head = newStudent;
+	}
+	else {
+		while (node->next != NULL) {
+			node = node->next;
+		}
+
+		node->next = newStudent;
+	}
+
+}
+
+//remove not delete node
+void RemoveStudentFromList(struct Student** head, int id) {
+	struct Student* toDelete = *head;
+	struct Student* prev_node = NULL;
+	struct Student* next_node = NULL;
+
+	if (*head == NULL) return;
+
+	while (toDelete != NULL) {
+		if (toDelete->getId() != id) {
+			prev_node = toDelete;
+			toDelete = toDelete->next;
+			continue;
+		}
+
+		//delete current node
+		next_node = toDelete->next;
+		if (prev_node != NULL) {
+			prev_node->next = next_node;
+		}
+		else {
+			*head = next_node;
+		}
+		toDelete = next_node;
+	}
+}
 
 
 

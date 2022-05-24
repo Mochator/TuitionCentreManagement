@@ -17,6 +17,25 @@ int Rating::getRating() {
 	return this->rating;
 }
 
+bool Rating::printFile() {
+
+	struct Rating* node = this;
+
+	if (node == NULL) {
+		return false;
+	}
+
+	ofstream outData;
+	outData.open("Ratings.txt");
+
+	while (node != NULL) {
+		outData << node->tuition_id << "\t" << node->tutor_id << "\t" << node->student_id << "\t" << node->rating << endl;
+		node = node->next;
+	}
+
+	return true;
+}
+
 //External function
 float CalculateRatings(struct Rating** head, int tutor_Id) {
 
@@ -68,6 +87,22 @@ void RetrieveRatings(struct Rating** head) {
 
 		}
 
+	}
+
+}
+
+void AddRatingToLast(struct Rating** head, struct Rating* newRating) {
+	struct Rating* node = *head;
+
+	if (node == NULL) {
+		*head = newRating;
+	}
+	else {
+		while (node->next != NULL) {
+			node = node->next;
+		}
+
+		node->next = newRating;
 	}
 
 }

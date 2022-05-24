@@ -1,13 +1,13 @@
 #include "General.h"
 
 string role = "";
-string tuitionCentreCode = "";
+string tuitionCentreCode = "TCBJ";
 
 int main() {
 
 	//Login();
-	setRole("HR");
-	TutorManagementMenu();
+	setRole("Admin");
+	DisplayAdminMenu();
 
 }
 

@@ -98,7 +98,8 @@ void DisplayAdminMenu() {
 		DisplayAllTutors();
 		break;
 	case 2:
-		//TODO: add tuition
+		AddTuition();
+		DisplayAdminMenu();
 		break;
 	}
 }
@@ -226,12 +227,15 @@ void TutorListMenu(struct Tutor** head) {
 	case 0: 
 		(*head)->deleteTutorList();
 		if (getRole() == "HR") {
+			system("CLS");
 			TutorManagementMenu();
 		}
 		else if (getRole() == "Admin") {
+			system("CLS");
 			DisplayAdminMenu();
 		}
 		else {
+			system("CLS");
 			DisplayStudentMenu();
 		}
 		break;
