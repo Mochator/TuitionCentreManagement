@@ -14,6 +14,7 @@ Tutor::Tutor(int id, string firstname, string lastname, char gender, string phon
 	this->tuition_Centre_code = tuition_Centre_code;
 	this->rating = rating;
 	this->next = NULL;
+	this->prev = NULL;
 }
 
 Tutor::Tutor() {}
@@ -135,9 +136,82 @@ void Tutor::displayTutors(bool isBrief) {
 	cout << endl;
 }
 
-//filter
 
 //view specific tutor all info
+void Tutor::viewTutor(struct TuitionCentre* tuitionCentre, struct Subject* subject) {
+	system("CLS");
+	cout << "Tutor Information" << endl << endl;;
+	cout << "ID: " << this->id << endl;
+	cout << "Full Name: " << this->id << endl;
+	cout << "Subject: " << subject->getInfo() << endl;
+	cout << "Tuition Centre: " << tuitionCentre->getInfo() << endl;
+	cout << "Address: " << this->address << endl;
+	cout << "Contact: " << this->phone << endl;
+	cout << "Overall Rating: " << this->rating << endl << endl;;
+}
+
+void Tutor::previousTutor(struct Tutor** tutorList) {
+	struct Tutor* tutor = this->prev;
+
+	if (tutor == NULL) {
+		//head to last tutor
+		struct Tutor* node = *tutorList;
+
+		while (node->next != NULL) {
+			node = node->next;
+		}
+
+		tutor = node;
+	}
+
+	struct TuitionCentre* tuitionCentreList = NULL;
+	RetrieveTuitionCentres(&tuitionCentreList);
+	struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByCode(tutor->getTuitionCentre());
+	struct TuitionCentre* tuitionCentreNode = *tuitionCentrePtr;
+
+	struct Subject* subjectList = NULL;
+	RetrieveSubjects(&subjectList);
+	struct Subject** subjectPtr = subjectList->searchByCode(tutor->getSubject());
+	struct Subject* subjectNode = *subjectPtr;
+
+	tutor->viewTutor(tuitionCentreNode, subjectNode);
+
+	//Free memory
+	tuitionCentreList->deleteTuitionCentreList();
+	subjectList->deleteSubjectList();
+
+	TutorNavigationMenu(tutorList, tutor);
+
+}
+
+void Tutor::nextTutor(struct Tutor** tutorList) {
+	struct Tutor* tutor = this->next;
+
+	if (tutor == NULL) {
+		//head to first tutor
+		struct Tutor* node = *tutorList;
+		tutor = node;
+	}
+
+	struct TuitionCentre* tuitionCentreList = NULL;
+	RetrieveTuitionCentres(&tuitionCentreList);
+	struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByCode(tutor->tuition_Centre_code);
+	struct TuitionCentre* tuitionCentreNode = *tuitionCentrePtr;
+
+	struct Subject* subjectList = NULL;
+	RetrieveSubjects(&subjectList);
+	struct Subject** subjectPtr = subjectList->searchByCode(tutor->subject_Code);
+	struct Subject* subjectNode = *subjectPtr;
+
+	tutor->viewTutor(tuitionCentreNode, subjectNode);
+
+	//Free memory
+	tuitionCentreList->deleteTuitionCentreList();
+	subjectList->deleteSubjectList();
+
+	TutorNavigationMenu(tutorList, tutor);
+
+}
 
 //retrieval
 struct Tutor** Tutor::retrieveById(int id) {
@@ -253,6 +327,7 @@ void DisplayAllTutors() {
 
 	struct Tutor* tutorList = NULL;
 	RetrieveTutors(&tutorList);
+	FilterTutorByTermination(&tutorList, false);
 
 	//Display Tutor
 	tutorList->displayTutors(false);
@@ -265,6 +340,7 @@ void RetrieveTutors(struct Tutor** head) {
 	inData.open("Tutors.txt");
 
 	struct Tutor* node = *head;
+	struct Tutor* prev_node = NULL;
 
 	int id;
 	string str_id, firstname, lastname, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code, str_rating;
@@ -296,6 +372,8 @@ void RetrieveTutors(struct Tutor** head) {
 		}
 		else {
 			node->next = input;
+			node->prev = prev_node;
+			prev_node = node;
 			node = node->next;
 
 		}
@@ -504,6 +582,9 @@ void SortTutorById(struct Tutor** head) {
 
 				next_node->next = current_node->next;
 				current_node->next = next_node;
+
+				current_node->prev = next_node->prev;
+				next_node->prev = current_node;
 			}
 
 			current_node = current_node->next;
@@ -539,6 +620,9 @@ void SortTutorByRating(struct Tutor** head) {
 
 				next_node->next = current_node->next;
 				current_node->next = next_node;
+
+				current_node->prev = next_node->prev;
+				next_node->prev = current_node;
 			}
 
 			current_node = current_node->next;
@@ -584,6 +668,9 @@ void SortTutorByHourlyPayRate(struct Tutor** head) {
 
 				next_node->next = current_node->next;
 				current_node->next = next_node;
+
+				current_node->prev = next_node->prev;
+				next_node->prev = current_node;
 			}
 
 			current_node = current_node->next;
@@ -1014,15 +1101,21 @@ void FilterTutorByTermination(struct Tutor** head, bool isTerminated) {
 			toDelete = toDelete->next;
 			continue;
 		}
-		
+
 		//delete current node
 		next_node = toDelete->next;
+
+		if (next_node != NULL) {
+			next_node->prev = prev_node;
+		}
+
 		if (prev_node != NULL) {
 			prev_node->next = next_node;
 		}
 		else {
 			*head = next_node;
 		}
+
 		free(toDelete);
 		toDelete = next_node;
 	}
@@ -1072,4 +1165,28 @@ int GetTutorSize(struct Tutor** head, bool terminationCondition) {
 	}
 
 	return count;
+}
+
+void ViewTutor(struct Tutor** head) {
+	if (*head == NULL) return;
+
+	struct Tutor* tutor = *head;
+
+	struct TuitionCentre* tuitionCentreList = NULL;
+	RetrieveTuitionCentres(&tuitionCentreList);
+	struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByCode(tutor->getTuitionCentre());
+	struct TuitionCentre* tuitionCentreNode = *tuitionCentrePtr;
+
+	struct Subject* subjectList = NULL;
+	RetrieveSubjects(&subjectList);
+	struct Subject** subjectPtr = subjectList->searchByCode(tutor->getSubject());
+	struct Subject* subjectNode = *subjectPtr;
+
+	tutor->viewTutor(tuitionCentreNode, subjectNode);
+
+	//Free memory
+	tuitionCentreList->deleteTuitionCentreList();
+	subjectList->deleteSubjectList();
+
+	TutorNavigationMenu(head, tutor);
 }

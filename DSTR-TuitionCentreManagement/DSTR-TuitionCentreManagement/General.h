@@ -42,6 +42,8 @@ void AddTutorToLast(struct Tutor**, struct Tutor*);
 void AddTutor();
 void EditTutor();
 void TerminateTutor();
+void ViewTutor(struct Tutor**);
+
 
 void FilterTutorByTermination(struct Tutor**, bool);
 void FilterTutorByTuitionCentre(struct Tutor**, string);
@@ -61,7 +63,7 @@ void TutorManagementMenu();
 void TutorListMenu(struct Tutor**);
 void SearchMenu(struct Tutor**);
 void SortMenu(struct Tutor**);
-
+void TutorNavigationMenu(struct Tutor**, struct Tutor*);
 
 //Subjects
 void RetrieveSubjects(struct Subject**);
@@ -116,7 +118,10 @@ public:
 
 	//Functions
 	void terminateTutor();
+	void viewTutor(struct TuitionCentre*, struct Subject*);
 	void deleteTutor(struct Tutor**);
+	void nextTutor(struct Tutor**);
+	void previousTutor(struct Tutor**);
 	//void predefineTutor();
 
 	bool printFile();
@@ -125,6 +130,7 @@ public:
 
 	void displayTutors(bool);
 	void deleteTutorList();
+
 
 	int getId();
 	string getTuitionCentre();
@@ -243,6 +249,9 @@ public:
 
 	string getCodeName();
 	string getCode();
+	string getInfo();
+
+	struct TuitionCentre** searchByCode (string);
 
 };
 

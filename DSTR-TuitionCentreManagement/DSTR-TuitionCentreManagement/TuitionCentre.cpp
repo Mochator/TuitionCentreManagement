@@ -74,6 +74,10 @@ string TuitionCentre::getCode() {
 	return this->code;
 }
 
+string TuitionCentre::getInfo() {
+	return this->name + "(" + this->code + ") - " + this->address ;
+}
+
 
 struct TuitionCentre** TuitionCentre::searchByIndex(int index) {
 	struct TuitionCentre* node = this;
@@ -87,6 +91,25 @@ struct TuitionCentre** TuitionCentre::searchByIndex(int index) {
 	}
 
 	result = &node;
+
+	return result;
+}
+
+struct TuitionCentre** TuitionCentre::searchByCode(string code) {
+	struct TuitionCentre* node = this;
+	struct TuitionCentre** result = NULL;
+
+	if (node == NULL) return result;
+
+	while (node != NULL) {
+		if (node->code == code) {
+			result = &node;
+			return result;
+		}
+		else {
+			node = node->next;
+		}
+	}
 
 	return result;
 }

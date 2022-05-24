@@ -249,7 +249,8 @@ void TutorListMenu(struct Tutor** head) {
 	case 2: 
 		SortMenu(head);
 		break;
-	case 3: //TODO: view single tutor
+	case 3:
+		ViewTutor(head);
 		break;
 	}
 }
@@ -349,3 +350,40 @@ void SortMenu(struct Tutor** head) {
 	}
 }
 
+void TutorNavigationMenu(struct Tutor** head, struct Tutor* current) {
+	string input;
+	int option = -1;
+
+	try {
+		cout << "Choose an option below:" << endl;
+		cout << "0. Back" << endl;
+		cout << "1. Previous Tutor" << endl;
+		cout << "2. Next Tutor" << endl;
+		cout << "Enter your option: ";
+
+		cin >> input;
+		option = stoi(input);
+
+	}
+	catch (exception) {
+		TutorNavigationMenu(head, current);
+	}
+
+	if (option == -1) {
+		TutorNavigationMenu(head, current);
+	}
+
+	switch (option) {
+	default:
+	case 0:
+		(*head)->displayTutors(false);
+		TutorListMenu(head);
+		break;
+	case 1:
+		current->previousTutor(head);
+		break;
+	case 2:
+		current->nextTutor(head);
+		break;
+	}
+}
