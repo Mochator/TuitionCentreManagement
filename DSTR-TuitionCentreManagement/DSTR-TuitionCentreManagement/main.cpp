@@ -2,6 +2,7 @@
 
 string role = "";
 string tuitionCentreCode = "TCBJ";
+int student_id = -1;
 
 int main() {
 
@@ -25,6 +26,14 @@ string getTuitionCentreCode() {
 
 void setTuitionCentreCode(string code) {
 	tuitionCentreCode = code;
+}
+
+int getStudentId() {
+	return student_id;
+}
+
+void setStudentId(int id) {
+	student_id = id;
 }
 
 string today() {

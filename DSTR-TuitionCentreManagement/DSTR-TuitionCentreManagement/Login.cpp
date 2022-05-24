@@ -95,6 +95,7 @@ void loginAsStudent() {
 		struct Student* student = *studentPtr;
 		if (student->passwordComparison(password)) {
 			setRole("Student");
+			setStudentId(student->getId());
 			system("CLS");
 			cout << "Welcome back " << student->getFullName() << " !";
 

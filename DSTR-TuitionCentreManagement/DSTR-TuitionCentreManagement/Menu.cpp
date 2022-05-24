@@ -38,6 +38,7 @@ void DisplayHRMenu() {
 	case 0: 
 		setRole("");
 		setTuitionCentreCode("");
+		setStudentId(-1);
 		Login();
 		break;
 	case 1:
@@ -92,6 +93,7 @@ void DisplayAdminMenu() {
 	case 0:
 		setRole("");
 		setTuitionCentreCode("");
+		setStudentId(-1);
 		Login();
 		break;
 	case 1: 
@@ -140,6 +142,7 @@ void DisplayStudentMenu() {
 	case 0:
 		setRole("");
 		setTuitionCentreCode("");
+		setStudentId(-1);
 		Login();
 		break;
 	case 1:

@@ -21,6 +21,8 @@ string getRole();
 void setRole(string);
 string getTuitionCentreCode();
 void setTuitionCentreCode(string);
+int getStudentId();
+void setStudentId(int);
 string today();
 
 //Tutor
