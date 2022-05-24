@@ -55,6 +55,10 @@ string Tuition::getInfo() {
 	return result;
 }
 
+int Tuition::getTutorId(){
+	return this->tutor_id;
+}
+
 //retrieve by id
 struct Tuition** Tuition::retrieveById(int id) {
 	struct Tuition* node = this;
@@ -249,10 +253,10 @@ void AddTuition() {
 	int id = tuitionList->generateId();
 
 	//get today date
-	string date = today();
+	string now = date("/");
 
 	//create new struct
-	struct Tuition* newTuition = new Tuition(id, tutor_id, hour, date);
+	struct Tuition* newTuition = new Tuition(id, tutor_id, hour, now);
 
 	//add to list
 	AddTuitionToLast(&tuitionList, newTuition);

@@ -92,6 +92,14 @@ string Tutor::getFullName() {
 	return this->firstname + " " + this->lastname;
 }
 
+float Tutor::getRating() {
+	return this->rating;
+}
+
+string Tutor::getTerminationDate() {
+	return this->date_Terminated;
+}
+
 void Tutor::printTutorFull() {
 	cout << this->id << "\t" << this->firstname << " " << this->lastname << "\t\t" << this->subject_Code << "\t" << this->tuition_Centre_code << "\t\t" << this->rating << endl;
 }
@@ -283,7 +291,7 @@ bool Tutor::isTerminated() {
 
 //terminate
 void Tutor::terminateTutor() {
-	this->date_Terminated = today();
+	this->date_Terminated = date("/");
 }
 
 //get id
@@ -804,7 +812,7 @@ void AddTutor() {
 
 	string firstname, lastname, phone, address, date_joined, str_gender;
 	char gender;
-	date_joined = today();
+	date_joined = date("/");
 
 	system("CLS");
 

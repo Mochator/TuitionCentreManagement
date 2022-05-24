@@ -23,7 +23,9 @@ string getTuitionCentreCode();
 void setTuitionCentreCode(string);
 int getStudentId();
 void setStudentId(int);
-string today();
+string date(string);
+string date(string, int, int, int);
+tm todayStruct();
 
 //Tutor
 void RetrieveTutors(struct Tutor**);
@@ -119,7 +121,6 @@ public:
 	//Functions
 	void terminateTutor();
 	void viewTutor(struct TuitionCentre*, struct Subject*);
-	void deleteTutor(struct Tutor**);
 	void nextTutor(struct Tutor**);
 	void previousTutor(struct Tutor**);
 	//void predefineTutor();
@@ -135,6 +136,8 @@ public:
 	int getId();
 	string getTuitionCentre();
 	string getFullName();
+	float getRating();
+	string getTerminationDate();
 
 	bool searchById(int);
 	bool searchByRating(int, int);
@@ -274,6 +277,7 @@ public:
 	void deleteTuitionList();
 
 	int generateId();
+	int getId();
 	string getInfo();
 
 	struct Tuition** retrieveById(int);
