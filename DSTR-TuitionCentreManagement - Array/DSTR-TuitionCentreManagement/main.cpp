@@ -2,13 +2,12 @@
 
 string role = "";
 string tuitionCentreCode = "";
-int student_id = 2;
+int student_id = -1;
 
 int main() {
 
-	//Login();
-	setRole("Student");
-	DisplayStudentMenu();
+	Login();
+
 
 }
 
@@ -81,7 +80,7 @@ void GenerateReport() {
 
 	if (now.tm_wday == 0 && now.tm_hour == 0 && now.tm_min == 0 && now.tm_sec == 0) {
 		//Generate report
-		string fileName = today("") + "- Weekly Report.txt";
+		string fileName = date("", NULL, NULL, NULL) + "- Weekly Report.txt";
 
 		ofstream outData;
 		outData.open(fileName);

@@ -23,7 +23,6 @@ string getTuitionCentreCode();
 void setTuitionCentreCode(string);
 int getStudentId();
 void setStudentId(int);
-string date(string);
 string date(string, int, int, int);
 tm todayStruct();
 
@@ -277,7 +276,7 @@ public:
 	void deleteTuitionList();
 
 	int generateId();
-	int getId();
+	int getTutorId();
 	string getInfo();
 
 	struct Tuition** retrieveById(int);

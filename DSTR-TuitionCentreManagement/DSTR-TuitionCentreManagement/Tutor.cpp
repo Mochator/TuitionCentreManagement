@@ -291,7 +291,7 @@ bool Tutor::isTerminated() {
 
 //terminate
 void Tutor::terminateTutor() {
-	this->date_Terminated = date("/");
+	this->date_Terminated = date("/", NULL, NULL, NULL);
 }
 
 //get id
@@ -812,7 +812,7 @@ void AddTutor() {
 
 	string firstname, lastname, phone, address, date_joined, str_gender;
 	char gender;
-	date_joined = date("/");
+	date_joined = date("/", NULL, NULL, NULL);
 
 	system("CLS");
 

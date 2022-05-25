@@ -253,7 +253,7 @@ void AddTuition() {
 	int id = tuitionList->generateId();
 
 	//get today date
-	string now = date("/");
+	string now = date("/", NULL, NULL, NULL);
 
 	//create new struct
 	struct Tuition* newTuition = new Tuition(id, tutor_id, hour, now);
