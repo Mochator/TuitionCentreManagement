@@ -1,10 +1,5 @@
-#include <iostream>
-#include <string>
-#include <fstream>
+#include "General.h"
 
-using namespace std;
-
-void predefineTutor();
 
 Tutor::Tutor(int id, string firstname, string lastname, char gender, string phone, string address, string date_Joined, string date_Terminated, string subject_Code, string tuition_Centre_code, float rating) {
 	this->id = id;
@@ -19,72 +14,148 @@ Tutor::Tutor(int id, string firstname, string lastname, char gender, string phon
 	this->tuition_Centre_code = tuition_Centre_code;
 	this->rating = rating;
 	this->next = NULL;
+	this->prev = NULL;
 }
 
-std::string genPhoneNo() {
-	string result = "01";
+Tutor::Tutor() {}
 
-	for (int i = 0; i < 8; i++) {
-		result += to_string(rand() % 10);
+//getter and setter
+int Tutor::getId() {
+	return this->id;
+}
+
+string Tutor::getSubject() {
+	return this->subject_Code;
+}
+
+string Tutor::getTuitionCentre() {
+	return this->tuition_Centre_code;
+}
+
+string Tutor::getFullName() {
+	return this->firstname + " " + this->lastname;
+}
+
+float Tutor::getRating() {
+	return this->rating;
+}
+
+string Tutor::getTerminationDate() {
+	return this->date_Terminated;
+}
+
+void Tutor::printTutorFull() {
+	cout << this->id << "\t" << this->firstname << " " << this->lastname << "\t\t" << this->subject_Code << "\t" << this->tuition_Centre_code << "\t\t" << this->rating << endl;
+}
+
+void Tutor::printTutorBrief() {
+	cout << this->id << "\t" << this->firstname << " " << this->lastname << endl;
+}
+
+//functions
+void addTutor() {
+
+	string firstname, lastname, phone, address, date_Joined, date_Terminated;
+	char gender;
+	Subject* subject;
+	TuitionCentre *centre;
+	float rating;
+	cout << "Input First Name: ";
+	cin >> firstname;
+	cout << "Input Last Name: ";
+	cin >> lastname;
+	cout << "Input Phone: ";
+	cin >> phone;
+	cout << "Input Address: ";
+	cin >> address;
+	cout << "Input Date Joined: ";
+	cin >> date_Joined;
+	cout << "Input Date Terminated: ";
+	cin >> date_Terminated;
+	cout << "Tutor Rating: ";
+	cin >> rating;
+
+	RetrieveSubjects();
+	int choice = userChoice(1, 5, "Choose Subject: ");
+	subject = &(subjectArray[choice - 1]);
+
+	RetrieveTuitionCentres();
+	choice = userChoice(1, 5,"Choose Centres: ");
+	centre = &(tuitionCentreArray[choice - 1]);
+
+	// Constructor to create new instance
+	Tutor newTutor = Tutor(generateId(), string firstname, string lastname, char gender, string phone, string address, string date_Joined, string date_Terminated, string subject_Code, string tuition_Centre_code, float rating);
+	//newTutor.setTutorDateJoined(getCurrentDate());
+	//newTutor.setTutorDateTerminated(toTm(0, 0, 0));
+
+	// Increaase tutor Array size by 1
+	int count = sizeof(tutorArray);
+	
+	if(count >= 10)
+	{
+		cout << "Maximum number of tutors has reached!" << endl;
+	} else {
+		increaseArrSize(1);
 	}
-	return result;
-}
 
-void predefineTutor() {
-	int i = 1;
-	struct Tutor* newTutor = NULL;
+	// Set the last element (new element) as newTutor
+	tutorArray[arrSize - 1] = newTutor;
+	cout << "Tutor Succesfully Added!" << endl;
 
-	newTutor->addTutor(&newTutor, new Tutor(i++, "Charlie", "Puth", 'M', genPhoneNo(), "USA", "15/4/20", "15/4/25", "1", "1", 0.0f));
-	newTutor->addTutor(&newTutor, new Tutor(i++, "Helena", "Patel", 'F', genPhoneNo(), "Singapore", "20/8/20", "20/8/26", "1", "2", 4.8f));
-	newTutor->addTutor(&newTutor, new Tutor(i++, "Aniela", "Gibbs", 'F', genPhoneNo(), "Grenada", "13/10/20", "0/0/0", "2", "3", 4.9f));
-	newTutor->addTutor(&newTutor, new Tutor(i++, "Caelan", "Adamson", 'M', genPhoneNo(), "Malawi", "1/3/19", "15/4/25", "2", "1", 5.0f));
-	newTutor->addTutor(&newTutor, new Tutor(i++, "Kristian", "Reyna", 'F', genPhoneNo(), "Bermuda", "29/11/21", "0/0/0", "3", "2", 4.7f));
-	newTutor->addTutor(&newTutor, new Tutor(i++, "Kaden", "Mccann", 'M', genPhoneNo(), "El Salvador", "5/5/20", "5/5/26", "4", "3", 4.9f));
-	newTutor->addTutor(&newTutor, new Tutor(i++, "Ariel", "Choi", 'F', genPhoneNo(), "Syria", "11/4/21", "0/0/0", "5", "1", 4.8f));
-	newTutor->addTutor(&newTutor, new Tutor(i++, "Chad", "Hogg", 'M', genPhoneNo(), "Liberia", "3/10/22", "0/0/0", "5", "2", 3.5f));
-	newTutor->addTutor(&newTutor, new Tutor(i++, "Orion", "Flynn", 'M', genPhoneNo(), "Azerbajian", "14/12/20", "14/12/25", "6", "3", 3.7f));
-	newTutor->addTutor(&newTutor, new Tutor(i++, "Pamela", "Rubio", 'F', genPhoneNo(), "Eritrea", "23/12/21", "0/0/0", "7", "1", 3.8f));
-	newTutor->addTutor(&newTutor, new Tutor(i++, "Shahid", "Donald", 'M', genPhoneNo(), "Swenden", "30/11/22", "30/11/24", "7", "2", 3.9f));
-	newTutor->addTutor(&newTutor, new Tutor(i++, "Dawn", "Findlay", 'F', genPhoneNo(), "Indonesia", "24/8/21", "0/0/0", "8", "3", 4.5f));
-	newTutor->addTutor(&newTutor, new Tutor(i++, "Jimmie", "Wynn", 'M', genPhoneNo(), "Scotland", "12/7/20", "12/7/23", "9", "1", 5.0f));
-	newTutor->addTutor(&newTutor, new Tutor(i++, "Neha", "Magana", 'F', genPhoneNo(), "Portugal", "8/11/21", "8/11/25", "10", "2", 4.3f));
-	newTutor->addTutor(&newTutor, new Tutor(i++, "Oskar", "Carney", 'M', genPhoneNo(), "South Korea", "18/5/22", "0/0/0", "10", "3", 4.2f));
-
-	newTutor->printFile();
-
-}
-
-void Tutor::addTutor(struct Tutor** head, struct Tutor* newTutor) {
-	struct Tutor* node = *head;
-
-	if (*head == NULL) {
-		*head = newTutor;
-	}
-	else {
-		while (node->next != NULL) {
-			node = node->next;
+	//Print tutorArray into txt file
+	ofstream myfile ("Tutors.txt");
+	getTutorArray();
+	if (myfile.is_open())
+	{
+		for(int count = 0; count < 10; count ++){
+			myfile << tutorArray[count] << " " ;
 		}
-
-		node->next = newTutor;
+		myfile.close();
 	}
-
+	else cout << "Unable to open file";
+	return 0;
 }
 
-void Tutor::printFile() {
-
-	struct Tutor* node = this;
-
-	if (node == NULL) {
-		return;
+void RetrieveSubjects() {
+	subjectTableHead();
+	for (int i = 0; i < 5; i++) {
+		cout << setw(3)<<left<< i+1 << "|";
+		subjectArray[i].toString();
+		cout << board(10);
 	}
+}
 
-	ofstream outData;
-	outData.open("Tutors.txt");
-
-	while (node != NULL) {
-		outData << node->id << "\t" << node->firstname << "\t" << node->lastname << "\t" << node->gender << "\t" << node->phone << "\t" << node->address
-			<< "\t" << node->date_Joined << "\t" << node->date_Terminated << "\t" << node->subject_Code << "\t" << node->tuition_Centre_code << "\t" << node->rating << endl;
-		node = node->next;
+void RetrieveTuitionCentres() {
+	centreTableHead();
+	for (int i = 0; i < 5; i++) {
+		cout << setw(3) << left << i + 1 << "|";
+		tuitionCentreArray[i].toString();
+		cout << board(10);
 	}
+}
 
+int generateId() {
+	// Sort Array by Id then return last index id using random access
+	Tutor* t = sortById(true);
+	return (t[arrSize - 1].getTutorId())+1;
+}
+
+int getTutorId() {
+	return id;
+}
+
+Tutor* getTutorArray() {
+	return tutorArray;
+}
+
+TuitionCentre* getTuitionCentreArray() {
+	return tuitionCentreArray;
+}
+
+Subject* getSubjectArray() {
+	return subjectArray;
+}
+
+int getArrSize() {
+	return arrSize;
 }
