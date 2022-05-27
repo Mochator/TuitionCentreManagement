@@ -123,10 +123,11 @@ void loginAsAdmin() {
 	string strTuitionCentre, password;
 
 	//Retrieve tuition centres
-	struct TuitionCentre* tuitionCentreList = NULL;
+	int size = 3;
+	struct TuitionCentre* tuitionCentreList = new TuitionCentre[size];
 	RetrieveTuitionCentres(&tuitionCentreList);
 
-	tuitionCentreList->displayTuitionCentres(1, false);
+	tuitionCentreList->displayTuitionCentres( 1, false, 3);
 
 	cout << "Enter the index: ";
 	cin >> strTuitionCentre;
@@ -146,10 +147,10 @@ void loginAsAdmin() {
 
 	if (idxTuitionCentre > 0) {
 		//Find tuition centre based on index
-		struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByIndex(idxTuitionCentre);
+		int arrayIndex = tuitionCentreList->searchByIndex(idxTuitionCentre);
 
-		if (tuitionCentrePtr != NULL) {
-			struct TuitionCentre* tuitionCentre = *tuitionCentrePtr;
+		if (arrayIndex >= 0 && arrayIndex < size) {
+			struct TuitionCentre* tuitionCentre = &tuitionCentreList[arrayIndex];
 
 			if (tuitionCentre->passwordComparison(password)) {
 				setRole("Admin");
@@ -159,6 +160,7 @@ void loginAsAdmin() {
 
 				//free up memory space
 				tuitionCentreList->deleteTuitionCentreList();
+				//delete[size] tuitionCentreList;
 
 				//Display admin menu
 				DisplayAdminMenu();

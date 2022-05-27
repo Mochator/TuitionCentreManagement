@@ -32,10 +32,7 @@
 *.app
 
 # Directories
-<<<<<<< HEAD
 DSTR-TuitionCentreManagement/.vs/
 *.db
 *.ipch
-=======
-DSTR-TuitionCentreManagement/.vs/
->>>>>>> daeb0494ebbd83e7dcd3c22654b028a4b63ce0af
+DSTR-TuitionCentreManagement - Array/.vs/

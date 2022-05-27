@@ -1,5 +1,7 @@
 #include "General.h"
 
+TuitionCentre::TuitionCentre() {};
+
 TuitionCentre::TuitionCentre(string code, string name, string address, string password) {
 
 	this->code = code;
@@ -20,22 +22,6 @@ TuitionCentre::TuitionCentre(string code, string name, string address, string pa
 //	newTuitionCentre->printFile();
 //
 //}
-
-void TuitionCentre::addTuitionCentre(struct TuitionCentre** head, struct TuitionCentre* newTuitionCentre) {
-	struct TuitionCentre* node = *head;
-
-	if (*head == NULL) {
-		*head = newTuitionCentre;
-	}
-	else {
-		while (node->next != NULL) {
-			node = node->next;
-		}
-
-		node->next = newTuitionCentre;
-	}
-
-}
 
 void TuitionCentre::printFile() {
 
@@ -79,18 +65,19 @@ string TuitionCentre::getInfo() {
 }
 
 
-struct TuitionCentre** TuitionCentre::searchByIndex(int index) {
+int TuitionCentre::searchByIndex(int index) {
 	struct TuitionCentre* node = this;
-	struct TuitionCentre** result = NULL;
+	int result = -1;
 
 	if (this == NULL) return result;
+	int count = 0;
 
 	while (index > 1) {
-		node = node->next;
+		count++;
 		index--;
 	}
 
-	result = &node;
+	result = count;
 
 	return result;
 }
@@ -118,21 +105,21 @@ bool TuitionCentre::passwordComparison(string pw) {
 	return this->password == pw;
 }
 
-void TuitionCentre::displayTuitionCentres(int indexStart, bool withAddress) {
+void TuitionCentre::displayTuitionCentres(int indexStart, bool withAddress, int size) {
 	system("CLS");
 
 	struct TuitionCentre* node = this;
 
 	if (node == NULL) return;
 
-	while (node != NULL) {
+
+	while (indexStart - 1 < size) {
 		if (withAddress) {
-			node->printCodeNameAddress(indexStart);
+			node[indexStart - 1].printCodeNameAddress(indexStart);
 		}
 		else {
-			node->printCodeName(indexStart);
+			node[indexStart - 1].printCodeName(indexStart);
 		}
-		node = node->next;
 		indexStart++;
 	}
 }
@@ -142,15 +129,10 @@ void TuitionCentre::deleteTuitionCentreList()
 {
 	if (this == NULL) return;
 
-	TuitionCentre* current = this;
-	TuitionCentre* next = NULL;
+	TuitionCentre* node = this;
 
-	while (current != NULL)
-	{
-		next = current->next;
-		free(current);
-		current = next;
-	}
+	delete[3] node;
+
 }
 
 //External Functions (Not in Struct)
@@ -163,8 +145,8 @@ void DisplayAllTuitionCentres() {
 	if (tuitionCentreList == NULL) return;
 
 	cout << "All Tuition Centre:" << endl;
-	tuitionCentreList->displayTuitionCentres(1, true);
-
+	int size = 3;
+	tuitionCentreList->displayTuitionCentres(1, true, size);
 	cout << endl;
 
 	//free up memory
@@ -180,18 +162,14 @@ void RetrieveTuitionCentres(struct TuitionCentre** head) {
 
 	string code, name, address, password;
 
-	while (inData >> code >> name >> address >> password) {
+	int count = 0;
 
-		struct TuitionCentre* inpTuitionCentre = new TuitionCentre(code, name, address, password);
+	while ((inData >> code >> name >> address >> password) && count < 3) {
 
-		if (*head == NULL) {
-			*head = inpTuitionCentre;
-			node = *head;
-		}
-		else {
-			node->next = inpTuitionCentre;
-			node = node->next;
+		struct TuitionCentre inpTuitionCentre = TuitionCentre(code, name, address, password);
 
-		}
+		node[count] = inpTuitionCentre;
+
+		count++;
 	}
 }

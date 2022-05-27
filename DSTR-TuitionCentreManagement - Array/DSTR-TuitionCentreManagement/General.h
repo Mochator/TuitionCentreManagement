@@ -75,7 +75,6 @@ void DisplayAllSubjects();
 
 //Tuition Centre
 void RetrieveTuitionCentres(struct TuitionCentre**);
-//void DisplayTuitionCentres(struct TuitionCentre**, int, bool);
 //void DeleteTuitionCentreList(struct TuitionCentre**);
 void DisplayAllTuitionCentres();
 
@@ -232,20 +231,19 @@ public:
 
 	//Tuition Constructor: code, name, address, password
 	struct TuitionCentre(string, string, string, string);
+	struct TuitionCentre();
 
 	~TuitionCentre() {};
 
 	//Functions
-	void addTuitionCentre(struct TuitionCentre** head, struct TuitionCentre* newTuitionCentre);
-
-	void displayTuitionCentres(int, bool);
+	void displayTuitionCentres(int, bool, int);
 	void deleteTuitionCentreList();
 
 	void printCodeName(int);
 	void printCodeNameAddress(int);
 	void printFile();
 
-	struct TuitionCentre** searchByIndex(int);
+	int searchByIndex(int);
 
 	bool passwordComparison(string);
 
@@ -280,7 +278,6 @@ public:
 	string getInfo();
 
 	struct Tuition** retrieveById(int);
-
 
 };
 

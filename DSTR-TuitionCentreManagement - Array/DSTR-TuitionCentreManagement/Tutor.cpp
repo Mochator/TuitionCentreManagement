@@ -474,16 +474,17 @@ void SearchTutorByTuitionCentre(struct Tutor** head) {
 		return;
 	}
 
-	tc_node->displayTuitionCentres(1, false);
+	int size = 3;
+	tc_node->displayTuitionCentres(1, false, size);
 
 	cout << "Enter your option: ";
 	cin >> input;
 
-	struct TuitionCentre** tc_ptr = NULL;
+	int arrayIndex = -1;
 
 	try {
 		option = stoi(input);
-		tc_ptr = tc_node->searchByIndex(option);
+		arrayIndex = tc_node->searchByIndex(option);
 	}
 	catch (exception) {
 		tc_node->deleteTuitionCentreList();
@@ -492,13 +493,14 @@ void SearchTutorByTuitionCentre(struct Tutor** head) {
 		return;
 	}
 
-	if (tc_ptr == NULL) {
+	if (arrayIndex < 0 || arrayIndex >= size) {
 		tc_node->deleteTuitionCentreList();
 		node->displayTutors(false);
 		return;
 	}
 
-	string tc_code = (*tc_ptr)->getCode();
+	struct TuitionCentre* tc_ptr = &tc_node[arrayIndex];
+	string tc_code = tc_ptr->getCode();
 	tc_node->deleteTuitionCentreList();
 
 	while (node != NULL) {
@@ -743,7 +745,8 @@ void AddTutor() {
 	int input_tc = -1, input_sub = -1;
 
 	//-request tuition centre-
-	tuitionCentreList->displayTuitionCentres(1, false);
+	int size = 3;
+	tuitionCentreList->displayTuitionCentres(1, false, size);
 	cout << "Enter the index: ";
 	cin >> str_input_tc;
 
@@ -759,14 +762,14 @@ void AddTutor() {
 		return;
 	}
 
-	struct TuitionCentre** tuitionCentrePtr = NULL;
+	int arrayIndex = -1;
 
 	if (input_tc > 0) {
-		tuitionCentrePtr = tuitionCentreList->searchByIndex(input_tc);
+		arrayIndex = tuitionCentreList->searchByIndex(input_tc);
 	}
 
 	//tuition centre retrieval check, if unavailable back to tutor management menu
-	if (tuitionCentrePtr == NULL) {
+	if (arrayIndex < 0 || arrayIndex > size) {
 		tuitionCentreList->deleteTuitionCentreList();
 		subjectList->deleteSubjectList();
 		system("CLS");
@@ -774,7 +777,8 @@ void AddTutor() {
 		return;
 	}
 
-	tuition_centre_code = (*tuitionCentrePtr)->getCode();
+	struct TuitionCentre* tc_ptr = &tuitionCentreList[arrayIndex];
+	tuition_centre_code = tc_ptr->getCode();
 	tuitionCentreList->deleteTuitionCentreList();
 
 	//-request subject-
