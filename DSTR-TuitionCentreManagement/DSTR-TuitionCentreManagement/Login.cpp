@@ -153,7 +153,7 @@ void loginAsAdmin() {
 
 			if (tuitionCentre->passwordComparison(password)) {
 				setRole("Admin");
-				setTuitionCentreCode(tuitionCentre->getCode());
+				setTuitionCentreCode(tuitionCentre->code);
 				system("CLS");
 				cout << "Welcome back Admin - " << tuitionCentre->getCodeName() << " !" << endl;
 

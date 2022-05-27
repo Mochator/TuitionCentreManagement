@@ -70,14 +70,9 @@ string TuitionCentre::getCodeName() {
 	return codename;
 }
 
-string TuitionCentre::getCode() {
-	return this->code;
-}
-
 string TuitionCentre::getInfo() {
 	return this->name + "(" + this->code + ") - " + this->address ;
 }
-
 
 struct TuitionCentre** TuitionCentre::searchByIndex(int index) {
 	struct TuitionCentre* node = this;

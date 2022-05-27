@@ -273,10 +273,10 @@ bool Tutor::sortByHourlyPayRate(struct Subject** head) {
 	float current_rate = 0, next_rate = 0;
 
 	struct Subject** current_subject = (*head)->searchByCode(this->subject_Code);
-	current_rate = current_subject == NULL ? 0 : (*current_subject)->getHourlyPayRate();
+	current_rate = current_subject == NULL ? 0 : (*current_subject)->hourly_pay_rate;
 
 	struct Subject** next_subject = (*head)->searchByCode(this->next->subject_Code);
-	next_rate = next_subject == NULL ? 0 : (*next_subject)->getHourlyPayRate();
+	next_rate = next_subject == NULL ? 0 : (*next_subject)->hourly_pay_rate;
 
 	//compare hourly pay rate
 	result = current_rate > next_rate;
@@ -498,7 +498,7 @@ void SearchTutorByTuitionCentre(struct Tutor** head) {
 		return;
 	}
 
-	string tc_code = (*tc_ptr)->getCode();
+	string tc_code = (*tc_ptr)->code;
 	tc_node->deleteTuitionCentreList();
 
 	while (node != NULL) {
@@ -554,7 +554,7 @@ void SearchTutorBySubject(struct Tutor** head) {
 		return;
 	}
 
-	string sub_code = (*sub_ptr)->getCode();
+	string sub_code = (*sub_ptr)->code;
 	sub_node->deleteSubjectList();
 
 	while (node != NULL) {
@@ -774,7 +774,7 @@ void AddTutor() {
 		return;
 	}
 
-	tuition_centre_code = (*tuitionCentrePtr)->getCode();
+	tuition_centre_code = (*tuitionCentrePtr)->code;
 	tuitionCentreList->deleteTuitionCentreList();
 
 	//-request subject-
@@ -807,7 +807,7 @@ void AddTutor() {
 		return;
 	}
 
-	subject_code = (*subjectPtr)->getCode();
+	subject_code = (*subjectPtr)->code;
 	subjectList->deleteSubjectList();
 
 	string firstname, lastname, phone, address, date_joined, str_gender;
