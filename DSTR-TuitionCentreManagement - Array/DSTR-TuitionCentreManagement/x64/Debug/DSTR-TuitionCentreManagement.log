@@ -7,7 +7,9 @@ C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManage
 C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\General.h(308): message : see declaration of 'TutorDArray'
 C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\Tutor.cpp(1166,22): warning C4099: 'TutorDArray': type name first seen using 'class' now seen using 'struct'
 C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\General.h(308): message : see declaration of 'TutorDArray'
-C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\Tutor.cpp(215): warning C4172: returning address of local variable or temporary: node
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\Tutor.cpp(209): warning C4172: returning address of local variable or temporary: result
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\Tutor.cpp(215): warning C4172: returning address of local variable or temporary: result
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\Tutor.cpp(222): warning C4172: returning address of local variable or temporary: result
 C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\Tutor.cpp(1067): warning C4172: returning address of local variable or temporary: tutorArr
 C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\Tutor.cpp(1125): warning C4172: returning address of local variable or temporary: tutorArr
 C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\Tutor.cpp(1177): warning C4172: returning address of local variable or temporary: tutorArr

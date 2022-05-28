@@ -135,15 +135,15 @@ void TutorDArray::previousTutor(int current) {
 
 	TutorDArray* tutorDArrayPtr = this;
 
-	struct Tutor* tutor = data;
+	struct Tutor* tutor = NULL;
 	int prev = current - 1;
 
-	if (prev >= size) {
+	if (prev < 0) {
 		//head to first tutor
 		prev = size - 1;
 	}
 
-	tutor = &tutor[prev];
+	tutor = &data[prev];
 
 	struct TuitionCentre* tuitionCentreList = new TuitionCentre[3];
 	RetrieveTuitionCentres(&tuitionCentreList);
@@ -170,16 +170,16 @@ void TutorDArray::nextTutor(int current) {
 
 	TutorDArray* tutorDArrayPtr = this;
 
-	struct Tutor* tutor = data;
-	int prev = current - 1;
+	struct Tutor* tutor = NULL;
+	int next = current + 1;
 
 
-	if (prev >= size) {
+	if (next >= size) {
 		//head to first tutor
-		prev = 0;
+		next = 0;
 	}
 
-	tutor = &tutor[prev];
+	tutor = &data[next];
 
 	struct TuitionCentre* tuitionCentreList = new TuitionCentre[3];
 	RetrieveTuitionCentres(&tuitionCentreList);
@@ -197,29 +197,29 @@ void TutorDArray::nextTutor(int current) {
 	tuitionCentreList->deleteTuitionCentreList();
 	subjectList->deleteSubjectList();
 
-	TutorNavigationMenu(&tutorDArrayPtr, prev);
+	TutorNavigationMenu(&tutorDArrayPtr, next);
 
 }
 
 //retrieval
 struct Tutor** Tutor::retrieveById(int id, int size) {
 	struct Tutor* node = this;
-	struct Tutor** result = NULL;
+	struct Tutor* result = NULL;
 
-	if (node == NULL || size == 0) return result;
+	if (node == NULL || size == 0) return &result;
 
 	int count = 0;
 	while (count < size) {
 		if (node[count].searchById(id)) {
-			result = &node;
-			return result;
+			result = &node[count];
+			return &result;
 		}
 		else {
 			count++;
 		}
 	}
 
-	return result;
+	return &result;
 }
 
 //searches
@@ -818,8 +818,7 @@ void AddTutor() {
 
 
 void EditTutor() {
-	TutorDArray* tutorArr = new TutorDArray(100);
-	RetrieveTutors();
+	TutorDArray* tutorArr = *RetrieveTutors();
 	struct Tutor* tutorList = tutorArr->data;
 
 	string str_tutor_id;
@@ -907,6 +906,8 @@ void EditTutor() {
 		break;
 	}
 
+
+
 	//save to file
 	system("CLS");
 
@@ -924,8 +925,7 @@ void EditTutor() {
 }
 
 void TerminateTutor() {
-	TutorDArray* tutorArr = new TutorDArray(100);
-	RetrieveTutors();
+	TutorDArray* tutorArr = *RetrieveTutors();
 	struct Tutor* tutorList = tutorArr->data;
 
 	string str_tutor_id;
@@ -1210,15 +1210,15 @@ void ViewTutor(TutorDArray** tutorDArrayPtr) {
 
 	struct TuitionCentre* tuitionCentreList = new TuitionCentre[3];
 	RetrieveTuitionCentres(&tuitionCentreList);
-	struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByCode(tutor->getTuitionCentre());
+	struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByCode(tutor[0].getTuitionCentre());
 	struct TuitionCentre* tuitionCentreNode = *tuitionCentrePtr;
 
 	struct Subject* subjectList = new Subject[5];
 	RetrieveSubjects(&subjectList);
-	struct Subject** subjectPtr = subjectList->searchByCode(tutor->getSubject());
+	struct Subject** subjectPtr = subjectList->searchByCode(tutor[0].getSubject());
 	struct Subject* subjectNode = *subjectPtr;
 
-	tutor->viewTutor(tuitionCentreNode, subjectNode);
+	tutor[0].viewTutor(tuitionCentreNode, subjectNode);
 
 	//Free memory
 	tuitionCentreList->deleteTuitionCentreList();

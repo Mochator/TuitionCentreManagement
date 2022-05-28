@@ -51,8 +51,8 @@ struct TuitionCentre** TuitionCentre::searchByCode(string code) {
 	if (node == NULL) return &result;
 
 	int count = 0;
-	while (node != NULL) {
-		if (node->code == code) {
+	while (count < 3) {
+		if (node[count].code == code) {
 			result = &node[count];
 			return &result;
 		}
