@@ -1,12 +1,13 @@
 #include "General.h"
 
-string role = "";
+string role = "HR";
 string tuitionCentreCode = "";
 int student_id = -1;
 
 int main() {
 
-	Login();
+	//Login();
+	TutorManagementMenu();
 
 
 }
@@ -75,189 +76,193 @@ tm todayStruct() {
 	return today;
 }
 
-void GenerateReport() {
-	struct tm now = todayStruct();
-
-	if (now.tm_wday == 0 && now.tm_hour == 0 && now.tm_min == 0 && now.tm_sec == 0) {
-		//Generate report
-		string fileName = date("", NULL, NULL, NULL) + "- Weekly Report.txt";
-
-		ofstream outData;
-		outData.open(fileName);
-
-		//Retrieve tuition centres
-		struct TuitionCentre* tuitionCentreList = new TuitionCentre[3];
-		RetrieveTuitionCentres(&tuitionCentreList);
-
-		//Retrieve subjects
-		struct Subject* subjectList = new Subject[5];
-		RetrieveSubjects(&subjectList);
-
-		//Retrieve tutors
-		struct Tutor* tutorList = NULL;
-		RetrieveTutors(&tutorList);
-
-		//calculate number of active tutors
-		int count = GetTutorSize(&tutorList, false);
-
-		while (tutorList != NULL) {
-
-			struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByCode(tutorList->getTuitionCentre());
-			struct TuitionCentre* tuitionCentreNode = *tuitionCentrePtr;
-
-			struct Subject** subjectPtr = subjectList->searchByCode(tutorList->getSubject());
-			struct Subject* subjectNode = *subjectPtr;
-
-			outData << tutorList->getId() << "\t" << tutorList->getFullName() << "\t" << tutorList->phone << "\t" << tutorList->address
-				<< "\t" << subjectNode->getInfo() << "\t" << tuitionCentreNode->getInfo() << "\t" << tutorList->getRating() << endl;
-
-			tutorList = tutorList->next;
-		}
-		
-		cout << "================================================" << endl;
-		outData << "Number of active tutors: " + count;
-
-		//free memory
-		tuitionCentreList->deleteTuitionCentreList();
-		tutorList->deleteTutorList();
-		subjectList->deleteSubjectList();
-	}
-}
-
-void DeleteTutor() {
-	struct tm now = todayStruct();
-
-	if (now.tm_wday == 0 && now.tm_hour == 0 && now.tm_min == 0 && now.tm_sec == 0) {
-
-		struct tm dateToDelete = now;
-		
-		int monthToDelete = dateToDelete.tm_mon - 6;
-
-		if (monthToDelete < 0) {
-			monthToDelete += 11;
-			dateToDelete.tm_year -= 1;
-			dateToDelete.tm_mon = monthToDelete;
-		}
-
-		string toDelete = date("/", dateToDelete.tm_mday, dateToDelete.tm_mon + 1, dateToDelete.tm_year + 1990);
-
-
-		//Retrieve tutors
-		struct Tutor* tutorList = NULL;
-		struct Tutor* tutor_prev_node = NULL;
-		struct Tutor* tutor_next_node = NULL;
-		RetrieveTutors(&tutorList);
-
-		struct Tutor* deletedNodes = NULL;
-
-		//Retrieve tuition
-		struct Tuition* tuitionList = NULL;
-		struct Tuition* tuition_prev_node = NULL;
-		struct Tuition* tuition_next_node = NULL;
-		RetrieveTuitions(&tuitionList);
-
-		//Retrieve rating
-		struct Rating* ratingList = NULL;
-		struct Rating* rating_prev_node = NULL;
-		struct Rating* rating_next_node = NULL;
-		RetrieveRatings(&ratingList);
-
-
-		while (tutorList != NULL) {
-
-			if (tutorList->isTerminated() && tutorList->getTerminationDate() == toDelete) {
-				//delete current node
-				tutor_next_node = tutorList->next;
-
-				if (tutor_prev_node != NULL) {
-					tutor_prev_node->next = tutor_next_node;
-				}
-
-				//add to deleted node
-				tutorList->next = NULL;
-				AddTutorToLast(&deletedNodes, tutorList);
-
-				tutorList = tutor_next_node;
-				continue;
-			}
-			
-			tutor_prev_node = tutorList;
-			tutorList = tutorList->next;
-			
-		}
-
-		cout << "================================================" << endl;
-		
-		tutorList->printFile();
-
-		//free memory
-		tutorList->deleteTutorList();
-
-		//pointer of deleted tutors
-		struct Tutor** deletedNodePtr = &deletedNodes;
-
-		//delete tuition of deleted tutor
-		while (tuitionList != NULL) {
-
-			struct Tutor* deletedNode = *deletedNodePtr;
-
-			while (deletedNode) {
-				if (tuitionList->tutor_id == deletedNode->getId()) {
-					//delete current node
-					tuition_next_node = tuitionList->next;
-
-					if (tuition_prev_node != NULL) {
-						tuition_prev_node->next = tuition_next_node;
-					}
-
-					tuitionList = tuition_next_node;
-					break;
-				}
-
-				deletedNode = deletedNode->next;
-
-			}
-
-			tuition_prev_node = tuitionList;
-			tuitionList = tuitionList->next;
-
-		}
-
-		tuitionList->printFile();
-
-		//free memory
-		tuitionList->deleteTuitionList();
-
-
-		//delete rating of deleted tutor
-		while (ratingList != NULL) {
-
-			struct Tutor* deletedNode = *deletedNodePtr;
-
-			while (deletedNode != NULL) {
-				if (ratingList->tutor_id == deletedNode->getId()) {
-					//delete current node
-					rating_next_node = ratingList->next;
-
-					if (rating_prev_node != NULL) {
-						rating_prev_node->next = rating_next_node;
-					}
-
-					ratingList = rating_next_node;
-					break;;
-				}
-
-				deletedNode = deletedNode->next;
-			}
-
-			rating_prev_node = ratingList;
-			ratingList = ratingList->next;
-		}
-
-		ratingList->printFile();
-
-		//free memory
-		ratingList->deleteRatingList();
-
-	}
-}
+//void GenerateReport() {
+//	struct tm now = todayStruct();
+//
+//	if (now.tm_wday == 0 && now.tm_hour == 0 && now.tm_min == 0 && now.tm_sec == 0) {
+//		//Generate report
+//		string fileName = date("", NULL, NULL, NULL) + "- Weekly Report.txt";
+//
+//		ofstream outData;
+//		outData.open(fileName);
+//
+//		//Retrieve tuition centres
+//		struct TuitionCentre* tuitionCentreList = new TuitionCentre[3];
+//		RetrieveTuitionCentres(&tuitionCentreList);
+//
+//		//Retrieve subjects
+//		struct Subject* subjectList = new Subject[5];
+//		RetrieveSubjects(&subjectList);
+//
+//		//Retrieve tutors
+//		TutorDArray* tutorArr = new TutorDArray(100);
+//		tutorArr->RetrieveTutors();
+//		struct Tutor* tutorList = tutorArr->data;
+//
+//		//calculate number of active tutors
+//		int count = GetTutorSize(&tutorList, false, tutorArr->size);
+//
+//		while (tutorList != NULL) {
+//
+//			struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByCode(tutorList->getTuitionCentre());
+//			struct TuitionCentre* tuitionCentreNode = *tuitionCentrePtr;
+//
+//			struct Subject** subjectPtr = subjectList->searchByCode(tutorList->getSubject());
+//			struct Subject* subjectNode = *subjectPtr;
+//
+//			outData << tutorList->getId() << "\t" << tutorList->getFullName() << "\t" << tutorList->phone << "\t" << tutorList->address
+//				<< "\t" << subjectNode->getInfo() << "\t" << tuitionCentreNode->getInfo() << "\t" << tutorList->getRating() << endl;
+//
+//			tutorList = tutorList->next;
+//		}
+//		
+//		cout << "================================================" << endl;
+//		outData << "Number of active tutors: " + count;
+//
+//		//free memory
+//		tuitionCentreList->deleteTuitionCentreList();
+//		tutorArr->~TutorDArray();
+//		subjectList->deleteSubjectList();
+//	}
+//}
+//
+//void DeleteTutor() {
+//	struct tm now = todayStruct();
+//
+//	if (now.tm_wday == 0 && now.tm_hour == 0 && now.tm_min == 0 && now.tm_sec == 0) {
+//
+//		struct tm dateToDelete = now;
+//		
+//		int monthToDelete = dateToDelete.tm_mon - 6;
+//
+//		if (monthToDelete < 0) {
+//			monthToDelete += 11;
+//			dateToDelete.tm_year -= 1;
+//			dateToDelete.tm_mon = monthToDelete;
+//		}
+//
+//		string toDelete = date("/", dateToDelete.tm_mday, dateToDelete.tm_mon + 1, dateToDelete.tm_year + 1990);
+//
+//
+//		//Retrieve tutors
+//		TutorDArray* tutorArr = new TutorDArray(1);
+//		tutorArr->RetrieveTutors();
+//		struct Tutor* tutorList = tutorArr->data;
+//		
+//		if (tutorArr->data == NULL) return;
+//
+//		TutorDArray* deletedNodes = new TutorDArray(0);
+//
+//		//Retrieve tuition
+//		struct Tuition* tuitionList = NULL;
+//		struct Tuition* tuition_prev_node = NULL;
+//		struct Tuition* tuition_next_node = NULL;
+//		RetrieveTuitions(&tuitionList);
+//
+//		//Retrieve rating
+//		struct Rating* ratingList = NULL;
+//		struct Rating* rating_prev_node = NULL;
+//		struct Rating* rating_next_node = NULL;
+//		RetrieveRatings(&ratingList);
+//
+//		int count = 0;
+//
+//		while (count < tutorArr->size) {
+//
+//			if (tutorList[count].isTerminated() && tutorList[count].getTerminationDate() == toDelete) {
+//
+//				//add to deleted node
+//				deletedNodes->AddTutorToLast(&tutorList[count]);
+//
+//				//delete current node
+//				int index = count;
+//				while (index < tutorArr->size) {
+//					tutorList[index] = tutorList[index + 1];
+//					index++;
+//				}
+//
+//				tutorArr->decreaseSize(1);
+//
+//				count++;
+//				continue;
+//			}
+//			
+//			count++;
+//			
+//		}
+//
+//		cout << "================================================" << endl;
+//		
+//		tutorList->printFile(tutorArr->size);
+//
+//		//free memory
+//		tutorArr->~TutorDArray();
+//
+//		//pointer of deleted tutors
+//		class TutorDArray** deletedNodePtr = &deletedNodes;
+//
+//		//delete tuition of deleted tutor
+//		while (tuitionList != NULL) {
+//
+//			TutorDArray* deletedNode = *deletedNodePtr;
+//
+//			while (deletedNode) {
+//				if (tuitionList->tutor_id == deletedNode->getId()) {
+//					//delete current node
+//					tuition_next_node = tuitionList->next;
+//
+//					if (tuition_prev_node != NULL) {
+//						tuition_prev_node->next = tuition_next_node;
+//					}
+//
+//					tuitionList = tuition_next_node;
+//					break;
+//				}
+//
+//				deletedNode = deletedNode->next;
+//
+//			}
+//
+//			tuition_prev_node = tuitionList;
+//			tuitionList = tuitionList->next;
+//
+//		}
+//
+//		tuitionList->printFile();
+//
+//		//free memory
+//		tuitionList->deleteTuitionList();
+//
+//
+//		//delete rating of deleted tutor
+//		while (ratingList != NULL) {
+//
+//			struct Tutor* deletedNode = *deletedNodePtr;
+//
+//			while (deletedNode != NULL) {
+//				if (ratingList->tutor_id == deletedNode->getId()) {
+//					//delete current node
+//					rating_next_node = ratingList->next;
+//
+//					if (rating_prev_node != NULL) {
+//						rating_prev_node->next = rating_next_node;
+//					}
+//
+//					ratingList = rating_next_node;
+//					break;;
+//				}
+//
+//				deletedNode = deletedNode->next;
+//			}
+//
+//			rating_prev_node = ratingList;
+//			ratingList = ratingList->next;
+//		}
+//
+//		ratingList->printFile();
+//
+//		//free memory
+//		ratingList->deleteRatingList();
+//
+//	}
+//}

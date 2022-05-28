@@ -27,29 +27,28 @@ string date(string, int, int, int);
 tm todayStruct();
 
 //Tutor
-void RetrieveTutors(struct Tutor**);
 void DisplayAllTutors();
 
-void SearchTutorById(struct Tutor**);
-void SearchTutorByRating(struct Tutor**);
-void SearchTutorByTuitionCentre(struct Tutor**);
-void SearchTutorBySubject(struct Tutor**);
+void SearchTutorById(class TutorDArray**);
+void SearchTutorByRating(class TutorDArray**);
+void SearchTutorByTuitionCentre(class TutorDArray**);
+void SearchTutorBySubject(class TutorDArray**);
 
-void SortTutorById(struct Tutor**);
-void SortTutorByRating(struct Tutor**);
-void SortTutorByHourlyPayRate(struct Tutor**);
+void SortTutorById(class TutorDArray**);
+void SortTutorByRating(class TutorDArray**);
+void SortTutorByHourlyPayRate(class TutorDArray**);
 
-void AddTutorToLast(struct Tutor**, struct Tutor*);
+class TutorDArray** RetrieveTutors();
+class TutorDArray** RetrieveTutorByTermination(bool);
+class TutorDArray** RetrieveTutorByTuitionCentre(string);
+
+//void AddTutorToLast(struct Tutor**, struct Tutor*);
 void AddTutor();
 void EditTutor();
 void TerminateTutor();
-void ViewTutor(struct Tutor**);
+void ViewTutor(TutorDArray**);
 
-
-void FilterTutorByTermination(struct Tutor**, bool);
-void FilterTutorByTuitionCentre(struct Tutor**, string);
-
-int GetTutorSize(struct Tutor**, bool);
+int GetTutorSize(struct Tutor**, bool, int);
 
 //Students
 void RetrieveStudents(struct Student**);
@@ -61,10 +60,10 @@ void DisplayHRMenu();
 void DisplayStudentMenu();
 void DisplayAdminMenu();
 void TutorManagementMenu();
-void TutorListMenu(struct Tutor**);
-void SearchMenu(struct Tutor**);
-void SortMenu(struct Tutor**);
-void TutorNavigationMenu(struct Tutor**, struct Tutor*);
+void TutorListMenu(class TutorDArray**);
+void SearchMenu(class TutorDArray**);
+void SortMenu(class TutorDArray**);
+void TutorNavigationMenu(class TutorDArray**, int);
 
 //Subjects
 void RetrieveSubjects(struct Subject**);
@@ -80,7 +79,7 @@ void RetrieveTuitionCentres(struct TuitionCentre**);
 void DisplayAllTuitionCentres();
 
 //Rating
-float CalculateRatings(struct Rating** , int);
+float CalculateRatings(struct Rating**, int);
 void RetrieveRatings(struct Rating**);
 void AddRatingToLast(struct Rating**, struct Rating*);
 void GiveRating();
@@ -94,6 +93,7 @@ void AddTuitionToLast(struct Tuition**, struct Tuition*);
 
 //---end::All main method headers---
 
+//---begin::All data structs---
 struct Tutor {
 
 private:
@@ -120,16 +120,14 @@ public:
 	//Functions
 	void terminateTutor();
 	void viewTutor(struct TuitionCentre*, struct Subject*);
-	void nextTutor(struct Tutor**);
-	void previousTutor(struct Tutor**);
-	//void predefineTutor();
+	void nextTutor(class TutorDArray**, int);
+	void previousTutor(class TutorDArray**, int);
 
-	bool printFile();
+	bool printFile(int);
 	void printTutorFull();
 	void printTutorBrief();
 
-	void displayTutors(bool);
-	void deleteTutorList();
+	void displayTutors(bool, int);
 
 
 	int getId();
@@ -143,15 +141,14 @@ public:
 	bool searchByTuitionCentre(string);
 	bool searchBySubject(string);
 
-	bool sortById();
-	bool sortByRating();
-	bool sortByHourlyPayRate(struct Subject**);
+	bool sortById(struct Tutor**);
+	bool sortByRating(struct Tutor**);
+	bool sortByHourlyPayRate(struct Subject**, struct Tutor**);
 
 	bool isTerminated();
-	int generateId();
 	string getSubject();
 
-	struct Tutor** retrieveById(int);
+	struct Tutor** retrieveById(int, int);
 
 };
 
@@ -246,7 +243,7 @@ public:
 	string getCodeName();
 	string getInfo();
 
-	struct TuitionCentre** searchByCode (string);
+	struct TuitionCentre** searchByCode(string);
 
 };
 
@@ -303,5 +300,98 @@ struct Rating {
 
 };
 
+//---end::All data structs---
+
+
+//---begin::Dynamic array classes---
+
+class TutorDArray {
+public:
+	int size = 0;
+	struct Tutor* data = new Tutor[size];
+
+	TutorDArray(int s) {
+		size = s;
+		data = new Tutor[size];
+	}
+
+	TutorDArray(TutorDArray& tutorDArray) {
+		size = tutorDArray.size;
+		data = new Tutor[size];
+
+		for (int i = 0; i < size - 1; i++) {
+			data[i] = tutorDArray.data[i];
+		}
+	}
+
+	void increaseSize(int s) {
+		size += s;
+	}
+
+	void decreaseSize(int s) {
+		size -= s;
+	}
+
+
+	void AddTutorToLast(struct Tutor* newTutor) {
+		data[size - 1] = *newTutor;
+	}
+
+
+	int generateId() {
+		int current = 1;
+
+		if (data == NULL) return current;
+
+		int count = 0;
+		while (count < size) {
+
+			if (data[count].getId() > current) {
+				current = data[count].getId();
+			}
+
+			count++;
+		}
+
+		return current + 1;
+	}
+
+	void previousTutor(int);
+
+	void nextTutor(int);
+
+	~TutorDArray() {
+		delete[] data;
+	}
+};
+
+class StudentDArray {
+public:
+	int size;
+	struct Student* data;
+
+	StudentDArray(int s) {
+		size = s;
+		data = new Student[size];
+	}
+
+	void increaseSize(int s) {
+		size += s;
+		data = new Student[size];
+	}
+
+	void decreaseSize(int s) {
+		size -= s;
+		data = new Student[size];
+	}
+
+	~StudentDArray() {
+		delete[size] data;
+	}
+};
+
+
+
+//---end::Dynamic array classes---
 
 #endif

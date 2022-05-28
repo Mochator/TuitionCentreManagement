@@ -19,56 +19,26 @@ Tutor::Tutor(int id, string firstname, string lastname, char gender, string phon
 
 Tutor::Tutor() {}
 
-//std::string genPhoneNo() {
-//	string result = "01";
-//
-//	for (int i = 0; i < 8; i++) {
-//		result += to_string(rand() % 10);
-//	}
-//	return result;
-//}
 
-//void predefineTutor() {
-//	int i = 1;
-//	struct Tutor* newTutor = NULL;
-//
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Charlie", "Puth", 'M', genPhoneNo(), "USA", "15/4/20", "15/4/25", "1", "1", 0.0f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Helena", "Patel", 'F', genPhoneNo(), "Singapore", "20/8/20", "20/8/26", "1", "2", 4.8f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Aniela", "Gibbs", 'F', genPhoneNo(), "Grenada", "13/10/20", "0/0/0", "2", "3", 4.9f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Caelan", "Adamson", 'M', genPhoneNo(), "Malawi", "1/3/19", "15/4/25", "2", "1", 5.0f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Kristian", "Reyna", 'F', genPhoneNo(), "Bermuda", "29/11/21", "0/0/0", "3", "2", 4.7f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Kaden", "Mccann", 'M', genPhoneNo(), "El Salvador", "5/5/20", "5/5/26", "4", "3", 4.9f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Ariel", "Choi", 'F', genPhoneNo(), "Syria", "11/4/21", "0/0/0", "5", "1", 4.8f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Chad", "Hogg", 'M', genPhoneNo(), "Liberia", "3/10/22", "0/0/0", "5", "2", 3.5f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Orion", "Flynn", 'M', genPhoneNo(), "Azerbajian", "14/12/20", "14/12/25", "6", "3", 3.7f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Pamela", "Rubio", 'F', genPhoneNo(), "Eritrea", "23/12/21", "0/0/0", "7", "1", 3.8f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Shahid", "Donald", 'M', genPhoneNo(), "Swenden", "30/11/22", "30/11/24", "7", "2", 3.9f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Dawn", "Findlay", 'F', genPhoneNo(), "Indonesia", "24/8/21", "0/0/0", "8", "3", 4.5f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Jimmie", "Wynn", 'M', genPhoneNo(), "Scotland", "12/7/20", "12/7/23", "9", "1", 5.0f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Neha", "Magana", 'F', genPhoneNo(), "Portugal", "8/11/21", "8/11/25", "10", "2", 4.3f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Oskar", "Carney", 'M', genPhoneNo(), "South Korea", "18/5/22", "0/0/0", "10", "3", 4.2f));
-//
-//	newTutor->printFile();
-//
-//}
-
-bool Tutor::printFile() {
+bool Tutor::printFile(int size) {
 
 	bool success = false;
 
 	struct Tutor* node = this;
 
-	if (node == NULL) {
+	if (size == 0) {
 		return success;
 	}
 
 	ofstream outData;
 	outData.open("Tutors.txt");
+	int count = 0;
 
-	while (node != NULL) {
-		outData << node->id << "\t" << node->firstname << "\t" << node->lastname << "\t" << node->gender << "\t" << node->phone << "\t" << node->address
-			<< "\t" << node->date_Joined << "\t" << node->date_Terminated << "\t" << node->subject_Code << "\t" << node->tuition_Centre_code << "\t" << node->rating << endl;
-		node = node->next;
+	while (count < size) {
+		outData << node[count].id << "\t" << node[count].firstname << "\t" << node[count].lastname << "\t" << node[count].gender << "\t" << node[count].phone << "\t" << node[count].address
+			<< "\t" << node[count].date_Joined << "\t" << node[count].date_Terminated << "\t" << node[count].subject_Code << "\t" << node[count].tuition_Centre_code << "\t" << node[count].rating << endl;
+		
+		count++;
 	}
 
 	success = true;
@@ -109,12 +79,13 @@ void Tutor::printTutorBrief() {
 
 }
 
-void Tutor::displayTutors(bool isBrief) {
+void Tutor::displayTutors(bool isBrief, int size) {
 	system("CLS");
 
 	struct Tutor* node = this;
+	int count = 0;
 
-	if (this == NULL) return;
+	if (size == 0) return;
 
 	if (isBrief) {
 		cout << "ID" << "\t" << "Name" << endl;
@@ -123,22 +94,22 @@ void Tutor::displayTutors(bool isBrief) {
 		cout << "ID" << "\t" << "Name" << "\t\t\t" << "Subject" << "\t" << "Tuition Centre" << "\t" << "Rating" << endl;
 	}
 
-	while (node != NULL) {
+	while (count < size) {
 
 		//check termination status don't print if terminated
-		if (node->isTerminated()) {
-			node = node->next;
+		if (node[count].isTerminated()) {
+			count++;
 			continue;
 		}
 
 		if (isBrief) {
-			node->printTutorBrief();
+			node[count].printTutorBrief();
 		}
 		else {
-			node->printTutorFull();
+			node[count].printTutorFull();
 		}
 
-		node = node->next;
+		count++;
 	}
 
 	cout << endl;
@@ -158,19 +129,21 @@ void Tutor::viewTutor(struct TuitionCentre* tuitionCentre, struct Subject* subje
 	cout << "Overall Rating: " << this->rating << endl << endl;;
 }
 
-void Tutor::previousTutor(struct Tutor** tutorList) {
-	struct Tutor* tutor = this->prev;
+void TutorDArray::previousTutor(int current) {
 
-	if (tutor == NULL) {
-		//head to last tutor
-		struct Tutor* node = *tutorList;
+	if (size == 0) return;
 
-		while (node->next != NULL) {
-			node = node->next;
-		}
+	TutorDArray* tutorDArrayPtr = this;
 
-		tutor = node;
+	struct Tutor* tutor = data;
+	int prev = current - 1;
+
+	if (prev >= size) {
+		//head to first tutor
+		prev = size - 1;
 	}
+
+	tutor = &tutor[prev];
 
 	struct TuitionCentre* tuitionCentreList = new TuitionCentre[3];
 	RetrieveTuitionCentres(&tuitionCentreList);
@@ -188,27 +161,34 @@ void Tutor::previousTutor(struct Tutor** tutorList) {
 	tuitionCentreList->deleteTuitionCentreList();
 	subjectList->deleteSubjectList();
 
-	TutorNavigationMenu(tutorList, tutor);
+	TutorNavigationMenu(&tutorDArrayPtr, prev);
 
 }
 
-void Tutor::nextTutor(struct Tutor** tutorList) {
-	struct Tutor* tutor = this->next;
+void TutorDArray::nextTutor(int current) {
+	if (size == 0) return;
 
-	if (tutor == NULL) {
+	TutorDArray* tutorDArrayPtr = this;
+
+	struct Tutor* tutor = data;
+	int prev = current - 1;
+
+
+	if (prev >= size) {
 		//head to first tutor
-		struct Tutor* node = *tutorList;
-		tutor = node;
+		prev = 0;
 	}
+
+	tutor = &tutor[prev];
 
 	struct TuitionCentre* tuitionCentreList = new TuitionCentre[3];
 	RetrieveTuitionCentres(&tuitionCentreList);
-	struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByCode(tutor->tuition_Centre_code);
+	struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByCode(tutor->getTuitionCentre());
 	struct TuitionCentre* tuitionCentreNode = *tuitionCentrePtr;
 
 	struct Subject* subjectList = new Subject[5];
 	RetrieveSubjects(&subjectList);
-	struct Subject** subjectPtr = subjectList->searchByCode(tutor->subject_Code);
+	struct Subject** subjectPtr = subjectList->searchByCode(tutor->getSubject());
 	struct Subject* subjectNode = *subjectPtr;
 
 	tutor->viewTutor(tuitionCentreNode, subjectNode);
@@ -217,24 +197,25 @@ void Tutor::nextTutor(struct Tutor** tutorList) {
 	tuitionCentreList->deleteTuitionCentreList();
 	subjectList->deleteSubjectList();
 
-	TutorNavigationMenu(tutorList, tutor);
+	TutorNavigationMenu(&tutorDArrayPtr, prev);
 
 }
 
 //retrieval
-struct Tutor** Tutor::retrieveById(int id) {
+struct Tutor** Tutor::retrieveById(int id, int size) {
 	struct Tutor* node = this;
 	struct Tutor** result = NULL;
 
-	if (node == NULL) return result;
+	if (node == NULL || size == 0) return result;
 
-	while (node != NULL) {
-		if (node->searchById(id)) {
+	int count = 0;
+	while (count < size) {
+		if (node[count].searchById(id)) {
 			result = &node;
 			return result;
 		}
 		else {
-			node = node->next;
+			count++;
 		}
 	}
 
@@ -259,15 +240,15 @@ bool Tutor::searchBySubject(string code) {
 }
 
 //sorting
-bool Tutor::sortById() {
-	return (this->id > this->next->id);
+bool Tutor::sortById(struct Tutor** nextNodePtr) {
+	return (this->id > (*nextNodePtr)->id);
 }
 
-bool Tutor::sortByRating() {
-	return (this->rating > this->next->rating);
+bool Tutor::sortByRating(struct Tutor** nextNodePtr) {
+	return (this->rating > (*nextNodePtr)->rating);
 }
 
-bool Tutor::sortByHourlyPayRate(struct Subject** head) {
+bool Tutor::sortByHourlyPayRate(struct Subject** head, struct Tutor** nextNodePtr) {
 	bool result = false;
 
 	float current_rate = 0, next_rate = 0;
@@ -275,7 +256,8 @@ bool Tutor::sortByHourlyPayRate(struct Subject** head) {
 	struct Subject** current_subject = (*head)->searchByCode(this->subject_Code);
 	current_rate = current_subject == NULL ? 0 : (*current_subject)->hourly_pay_rate;
 
-	struct Subject** next_subject = (*head)->searchByCode(this->next->subject_Code);
+	struct Tutor* nextNode = *nextNodePtr;
+	struct Subject** next_subject = (*head)->searchByCode(nextNode->subject_Code);
 	next_rate = next_subject == NULL ? 0 : (*next_subject)->hourly_pay_rate;
 
 	//compare hourly pay rate
@@ -294,107 +276,27 @@ void Tutor::terminateTutor() {
 	this->date_Terminated = date("/", NULL, NULL, NULL);
 }
 
-//get id
-int Tutor::generateId() {
-	int current = 1;
-
-	struct Tutor* node = this;
-
-	if (this == NULL) return current;
-
-	while (node != NULL) {
-
-		if (node->id > current) {
-			current = node->id;
-		}
-
-		node = node->next;
-	}
-
-	return current + 1;
-}
-
-//Free up memory
-void Tutor::deleteTutorList()
-{
-	if (this == NULL) return;
-
-	Tutor* current = this;
-	Tutor* next = NULL;
-
-	while (current != NULL)
-	{
-		next = current->next;
-		free(current);
-		current = next;
-	}
-}
-
 //External functions
 void DisplayAllTutors() {
 
-	struct Tutor* tutorList = NULL;
-	RetrieveTutors(&tutorList);
-	FilterTutorByTermination(&tutorList, false);
+	TutorDArray* tutorArr = *RetrieveTutorByTermination(false);
+	struct Tutor* tutorList = tutorArr->data;
 
 	//Display Tutor
-	tutorList->displayTutors(false);
-	TutorListMenu(&tutorList);
+	tutorList->displayTutors(false, tutorArr->size);
+	TutorListMenu(&tutorArr);
 
 }
 
-void RetrieveTutors(struct Tutor** head) {
-	ifstream inData;
-	inData.open("Tutors.txt");
+void SearchTutorById(TutorDArray** tutorDArrayPtr) {
 
-	struct Tutor* node = *head;
-	struct Tutor* prev_node = NULL;
+	if (tutorDArrayPtr == NULL) return;
 
-	int id;
-	string str_id, firstname, lastname, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code, str_rating;
-	char gender;
+	TutorDArray* tutorArr = *tutorDArrayPtr;
 
+	if (tutorArr->size == 0) return;
 
-	while (inData >> str_id >> firstname >> lastname >> gender >> phone >> address >> date_Joined >> date_Terminated >> subject_Code >> tuition_Centre_Code >> str_rating) {
-
-		id = stoi(str_id);
-
-		//Calculatate rating
-		//-Retrieve-
-		struct Rating* ratingList = NULL;
-		RetrieveRatings(&ratingList);
-
-		float rating = 0;
-
-		if (ratingList != NULL) {
-			//-Calculate-
-			rating = CalculateRatings(&ratingList, id);
-		}
-
-		struct Tutor* input = new Tutor(id, firstname, lastname, gender, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code, rating);
-
-
-		if (*head == NULL) {
-			*head = input;
-			node = *head;
-		}
-		else {
-			node->next = input;
-			node->prev = prev_node;
-			prev_node = node;
-			node = node->next;
-
-		}
-
-	}
-
-}
-
-void SearchTutorById(struct Tutor** head) {
-
-	if (*head == NULL) return;
-
-	struct Tutor* node = *head;
+	struct Tutor* node = tutorArr->data;
 
 	string input;
 	int id = -1;
@@ -407,25 +309,31 @@ void SearchTutorById(struct Tutor** head) {
 	}
 	catch (exception) {
 		cout << "Invalid Input!" << endl;
-		node->displayTutors(false);
+		node->displayTutors(false, tutorArr->size);
 		return;
 	}
 
-	while (node != NULL) {
-		if (node->searchById(id)) {
-			node->printTutorFull();
+	int count = 0;
+
+	while (count < tutorArr->size) {
+		if (node[count].searchById(id)) {
+			node[count].printTutorFull();
 			return;
 		}
 
-		node = node->next;
+		count++;
 	}
 }
 
-void SearchTutorByRating(struct Tutor** head) {
+void SearchTutorByRating(TutorDArray** tutorDArrayPtr) {
 
-	if (*head == NULL) return;
+	if (tutorDArrayPtr == NULL) return;
 
-	struct Tutor* node = *head;
+	TutorDArray *tutorDArray = *tutorDArrayPtr;
+
+	if (tutorDArray->size == 0) return;
+
+	struct Tutor* node = tutorDArray->data;
 
 	string inp_min, inp_max;
 	int min, max = -1;
@@ -442,24 +350,32 @@ void SearchTutorByRating(struct Tutor** head) {
 	}
 	catch (exception) {
 		cout << "Invalid Input!" << endl;
-		node->displayTutors(false);
+		node->displayTutors(false,tutorDArray->size);
 		return;
 	}
 
-	while (node != NULL) {
-		if (node->searchByRating(min, max)) {
-			node->printTutorFull();
+	int count = 0;
+
+	while (count < tutorDArray->size) {
+		if (node[count].searchByRating(min, max)) {
+			node[count].printTutorFull();
 		}
 
-		node = node->next;
+		count++;
+		
 	}
 }
 
-void SearchTutorByTuitionCentre(struct Tutor** head) {
+void SearchTutorByTuitionCentre(TutorDArray** tutorDArrayPtr) {
 
-	if (*head == NULL) return;
+	if (tutorDArrayPtr == NULL) return;
 
-	struct Tutor* node = *head;
+	TutorDArray* tutorArr = *tutorDArrayPtr;
+
+	if (tutorArr->size <= 1) return;
+
+	struct Tutor* node = tutorArr->data;
+
 
 	string input;
 	int option = -1;
@@ -470,7 +386,7 @@ void SearchTutorByTuitionCentre(struct Tutor** head) {
 
 	if (tc_node == NULL) {
 		tc_node->deleteTuitionCentreList();
-		node->displayTutors(false);
+		node->displayTutors(false, tutorArr->size);
 		return;
 	}
 
@@ -488,34 +404,41 @@ void SearchTutorByTuitionCentre(struct Tutor** head) {
 	catch (exception) {
 		tc_node->deleteTuitionCentreList();
 		cout << "Invalid Input!" << endl;
-		node->displayTutors(false);
+		node->displayTutors(false, tutorArr->size);
 		return;
 	}
 
 	if (tc_ptr == NULL) {
 		tc_node->deleteTuitionCentreList();
-		node->displayTutors(false);
+		node->displayTutors(false, tutorArr->size);
 		return;
 	}
 
 	string tc_code = (*tc_ptr)->code;
 	tc_node->deleteTuitionCentreList();
 
-	while (node != NULL) {
-		if (node->searchByTuitionCentre(tc_code)) {
-			node->printTutorFull();
+	int count = 0;
+
+	while (count < tutorArr->size) {
+		if (node[count].searchByTuitionCentre(tc_code)) {
+			node[count].printTutorFull();
 		}
 
-		node = node->next;
+		count++;
 	}
 
 }
 
-void SearchTutorBySubject(struct Tutor** head) {
+void SearchTutorBySubject(TutorDArray** tutorDArrayPtr) {
 
-	if (*head == NULL) return;
+	if (tutorDArrayPtr == NULL) return;
 
-	struct Tutor* node = *head;
+	TutorDArray* tutorArr = *tutorDArrayPtr;
+
+	if (tutorArr->size <= 1) return;
+
+	struct Tutor* node = tutorArr->data;
+
 
 	string input;
 	int option = -1;
@@ -526,7 +449,7 @@ void SearchTutorBySubject(struct Tutor** head) {
 
 	if (sub_node == NULL) {
 		sub_node->deleteSubjectList();
-		node->displayTutors(false);
+		node->displayTutors(false, tutorArr->size);
 		return;
 	}
 
@@ -544,108 +467,117 @@ void SearchTutorBySubject(struct Tutor** head) {
 	catch (exception) {
 		sub_node->deleteSubjectList();
 		cout << "Invalid Input!" << endl;
-		node->displayTutors(false);
+		node->displayTutors(false, tutorArr->size);
 		return;
 	}
 
 	if (sub_ptr == NULL) {
 		sub_node->deleteSubjectList();
-		node->displayTutors(false);
+		node->displayTutors(false, tutorArr->size);
 		return;
 	}
 
 	string sub_code = (*sub_ptr)->code;
 	sub_node->deleteSubjectList();
+	int count = 0;
 
-	while (node != NULL) {
-		if (node->searchBySubject(sub_code)) {
-			node->printTutorFull();
+	while (count < tutorArr->size) {
+		if (node[count].searchBySubject(sub_code)) {
+			node[count].printTutorFull();
 		}
 
-		node = node->next;
+		count++;
 	}
 
 }
 
 
-void SortTutorById(struct Tutor** head) {
-	if (*head == NULL) return;
+void SortTutorById(TutorDArray** tutorDArrayPtr) {
+	if (tutorDArrayPtr == NULL) return;
+
+	TutorDArray* tutorArr = *tutorDArrayPtr;
+
+	if (tutorArr->size <= 1) return;
+
+	struct Tutor* node = tutorArr->data;
 
 	bool pass = false;
 
 	while (!pass) {
 
 		pass = true;
-		struct Tutor* current_node = *head;
-		struct Tutor* next_node = current_node->next;
+		int count = 0;
+		struct Tutor* current_node = &node[count];
+		struct Tutor* next_node = &node[count + 1];
 		struct Tutor temp_node;
 
-		while (next_node != NULL) {
+		while (count + 1 < tutorArr->size) {
 
-			if (current_node->sortById()) {
+			current_node = &node[count];
+			next_node = &node[count + 1];
+
+			if (current_node->sortById(&next_node)) {
 				pass = false;
 				temp_node = *current_node;
 				*current_node = *next_node;
 				*next_node = temp_node;
-
-				next_node->next = current_node->next;
-				current_node->next = next_node;
-
-				current_node->prev = next_node->prev;
-				next_node->prev = current_node;
 			}
 
-			current_node = current_node->next;
-			next_node = current_node->next;
+			count++;
 		}
 	}
 
-	(*head)->displayTutors(false);
+	tutorArr->data->displayTutors(false, tutorArr->size);
 
 }
 
-void SortTutorByRating(struct Tutor** head) {
-	if (*head == NULL) return;
+void SortTutorByRating(TutorDArray** tutorDArrayPtr) {
+	if (tutorDArrayPtr == NULL) return;
 
-	struct Tutor* node = *head;
+	TutorDArray* tutorArr = *tutorDArrayPtr;
+
+	if (tutorArr->size <= 1) return;
+
+	struct Tutor* node = tutorArr->data;
 
 	bool pass = false;
 
 	while (!pass) {
 
 		pass = true;
-		struct Tutor* current_node = *head;
-		struct Tutor* next_node = current_node->next;
+		int count = 0;
+		struct Tutor* current_node = &node[count];
+		struct Tutor* next_node = &node[count + 1];
 		struct Tutor temp_node;
 
-		while (next_node != NULL) {
+		while (count + 1 < tutorArr->size) {
 
-			if (current_node->sortByRating()) {
+			current_node = &node[count];
+			next_node = &node[count + 1];
+
+			if (current_node->sortByRating(&next_node)) {
 				pass = false;
 				temp_node = *current_node;
 				*current_node = *next_node;
 				*next_node = temp_node;
-
-				next_node->next = current_node->next;
-				current_node->next = next_node;
-
-				current_node->prev = next_node->prev;
-				next_node->prev = current_node;
 			}
 
-			current_node = current_node->next;
-			next_node = current_node->next;
+			count++;
 		}
 	}
 
-	(*head)->displayTutors(false);
+	tutorArr->data->displayTutors(false, tutorArr->size);
 
 }
 
-void SortTutorByHourlyPayRate(struct Tutor** head) {
-	if (*head == NULL) return;
+void SortTutorByHourlyPayRate(TutorDArray** tutorDArrayPtr) {
+	if (tutorDArrayPtr == NULL) return;
 
-	struct Tutor* node = *head;
+	TutorDArray* tutorArr = *tutorDArrayPtr;
+
+	if (tutorArr->size <= 1) return;
+
+	struct Tutor* node = tutorArr->data;
 
 	//retrieve subjects
 	struct Subject* subjectList = new Subject[5];
@@ -653,7 +585,7 @@ void SortTutorByHourlyPayRate(struct Tutor** head) {
 
 	if (subjectList == NULL) {
 		subjectList->deleteSubjectList();
-		node->displayTutors(false);
+		node->displayTutors(false, tutorArr->size);
 		return;
 	}
 
@@ -662,60 +594,54 @@ void SortTutorByHourlyPayRate(struct Tutor** head) {
 	while (!pass) {
 
 		pass = true;
-		struct Tutor* current_node = *head;
-		struct Tutor* next_node = current_node->next;
+		int count = 0;
+		struct Tutor* current_node = NULL;
+		struct Tutor* next_node = NULL;
 		struct Tutor temp_node;
 
-		while (next_node != NULL) {
+		while (count + 1 < tutorArr->size) {
 
-			if (current_node->sortByHourlyPayRate(&subjectList)) {
+			current_node = &node[count];
+			next_node = &node[count + 1];
+
+			if (current_node->sortByHourlyPayRate(&subjectList, &next_node)) {
 				pass = false;
+
 				temp_node = *current_node;
 				*current_node = *next_node;
 				*next_node = temp_node;
 
-				next_node->next = current_node->next;
-				current_node->next = next_node;
-
-				current_node->prev = next_node->prev;
-				next_node->prev = current_node;
 			}
 
-			current_node = current_node->next;
-			next_node = current_node->next;
+			count++;
 		}
 	}
 
 	//delete subject list
 	subjectList->deleteSubjectList();
 
-	(*head)->displayTutors(false);
+	tutorArr->data->displayTutors(false, tutorArr->size);
 
 }
 
 
 void AddTutor() {
 
-	struct Tutor* tutorList = NULL;
-	RetrieveTutors(&tutorList);
+	TutorDArray* tutorArr =	*RetrieveTutorByTermination(false);
+	struct Tutor* tutorList = tutorArr->data;
 
 	if (tutorList == NULL) {
-		tutorList->deleteTutorList();
+		tutorArr->~TutorDArray();
 		return;
 	}
 
-	//count active tutors
-	int count = GetTutorSize(&tutorList, true);
-
-	if (count >= 10) {
+	if (tutorArr->size - 1 >= 10) {
 		cout << "Maximum number of tutors has reached!" << endl;
-		tutorList->deleteTutorList();
+		tutorArr->~TutorDArray();
 		return;
 	}
 
-	//free memory
-	tutorList->deleteTutorList();
-
+	tutorArr->~TutorDArray();
 
 	//retrieve tuition centres
 	string tuition_centre_code = "";
@@ -853,23 +779,31 @@ void AddTutor() {
 		return;
 	}
 
-	//re-retrieve tutor list
-	tutorList = NULL;
-	RetrieveTutors(&tutorList);
-
+	//re-retrieve
+	tutorArr = *RetrieveTutors();
+	tutorList = tutorArr->data;
+	
 	//get id
-	int id = tutorList->generateId();
+	int id = tutorArr->generateId();
 
 	//create new struct
 	struct Tutor* newTutor = new Tutor(id, firstname, lastname, gender, phone, address, date_joined, no_termination_date, subject_code, tuition_centre_code, 0.0f);
 
+	//Increase size
+	tutorArr->increaseSize(1);
+
+	struct TutorDArray* newArray = new TutorDArray(*tutorArr);
+	tutorArr->~TutorDArray();
+	tutorArr = newArray;
+
 	//add to list
-	AddTutorToLast(&tutorList, newTutor);
+	tutorArr->AddTutorToLast(newTutor);
+	tutorList = tutorArr->data;
 
 	system("CLS");
 
 	//write to file
-	if (tutorList->printFile()) {
+	if (tutorList->printFile(tutorArr->size)) {
 		newTutor->printTutorBrief();
 		cout << "Tutor is added!" << endl << endl;
 	}
@@ -878,35 +812,20 @@ void AddTutor() {
 	}
 
 	//free memory space
-	tutorList->deleteTutorList();
-
-}
-
-void AddTutorToLast(struct Tutor** head, struct Tutor* newTutor) {
-	struct Tutor* node = *head;
-
-	if (node == NULL) {
-		*head = newTutor;
-	}
-	else {
-		while (node->next != NULL) {
-			node = node->next;
-		}
-
-		node->next = newTutor;
-	}
-
+	tutorArr->~TutorDArray();
+	free(newTutor);
 }
 
 
 void EditTutor() {
-	struct Tutor* tutorList = NULL;
-	RetrieveTutors(&tutorList);
+	TutorDArray* tutorArr = new TutorDArray(100);
+	RetrieveTutors();
+	struct Tutor* tutorList = tutorArr->data;
 
 	string str_tutor_id;
 	int tutor_id = -1;
 
-	tutorList->displayTutors(true);
+	tutorList->displayTutors(true, tutorArr->size);
 
 	cout << "Enter a tutor ID to edit: ";
 	cin >> str_tutor_id;
@@ -915,7 +834,7 @@ void EditTutor() {
 		tutor_id = stoi(str_tutor_id);
 	}
 	catch (exception) {
-		tutorList->deleteTutorList();
+		tutorArr->~TutorDArray();
 		system("CLS");
 		cout << "Invalid Input" << endl << endl;
 		TutorManagementMenu();
@@ -924,10 +843,10 @@ void EditTutor() {
 
 
 	//availability check
-	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id);
+	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id, tutorArr->size);
 
 	if (tutorPtr == NULL) {
-		tutorList->deleteTutorList();
+		tutorArr->~TutorDArray();
 		system("CLS");
 		cout << "Tutor not found!" << endl;
 		return;
@@ -936,7 +855,7 @@ void EditTutor() {
 
 	//termination check
 	if (tutorNode->isTerminated()) {
-		tutorList->deleteTutorList();
+		tutorArr->~TutorDArray();
 		system("CLS");
 		cout << "Tutor was already terminated!" << endl;
 		return;
@@ -958,7 +877,7 @@ void EditTutor() {
 
 	}
 	catch (exception) {
-		tutorList->deleteTutorList();
+		tutorArr->~TutorDArray();
 		cout << "Invalid Input!" << endl;
 		return;
 	}
@@ -971,7 +890,7 @@ void EditTutor() {
 	switch (option) {
 	default:
 	case 0:
-		tutorList->deleteTutorList();
+		tutorArr->~TutorDArray();
 		return;
 	case 1:
 		system("CLS");
@@ -991,7 +910,7 @@ void EditTutor() {
 	//save to file
 	system("CLS");
 
-	if (tutorList->printFile()) {
+	if (tutorList->printFile(tutorArr->size)) {
 		tutorNode->printTutorFull();
 		cout << "Tutor's information updated!" << endl << endl;;
 	}
@@ -1000,18 +919,19 @@ void EditTutor() {
 	}
 
 	//free memory
-	tutorList->deleteTutorList();
+	tutorArr->~TutorDArray();
 
 }
 
 void TerminateTutor() {
-	struct Tutor* tutorList = NULL;
-	RetrieveTutors(&tutorList);
+	TutorDArray* tutorArr = new TutorDArray(100);
+	RetrieveTutors();
+	struct Tutor* tutorList = tutorArr->data;
 
 	string str_tutor_id;
 	int tutor_id = -1;
 
-	tutorList->displayTutors(true);
+	tutorList->displayTutors(true, tutorArr->size);
 
 	cout << "Enter a tutor ID to terminate: ";
 	cin >> str_tutor_id;
@@ -1020,7 +940,7 @@ void TerminateTutor() {
 		tutor_id = stoi(str_tutor_id);
 	}
 	catch (exception) {
-		tutorList->deleteTutorList();
+		tutorArr->~TutorDArray();
 		system("CLS");
 		cout << "Invalid Input" << endl << endl;
 		TutorManagementMenu();
@@ -1029,10 +949,10 @@ void TerminateTutor() {
 
 
 	//availability check
-	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id);
+	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id, tutorArr->size);
 
 	if (tutorPtr == NULL) {
-		tutorList->deleteTutorList();
+		tutorArr->~TutorDArray();
 		system("CLS");
 		cout << "Tutor not found!" << endl;
 		return;
@@ -1041,7 +961,7 @@ void TerminateTutor() {
 
 	//termination check
 	if (tutorNode->isTerminated()) {
-		tutorList->deleteTutorList();
+		tutorArr->~TutorDArray();
 		system("CLS");
 		cout << "Tutor was already terminated!" << endl;
 		return;
@@ -1062,7 +982,7 @@ void TerminateTutor() {
 
 	}
 	catch (exception) {
-		tutorList->deleteTutorList();
+		tutorArr->~TutorDArray();
 		cout << "Invalid Input!" << endl;
 		return;
 	}
@@ -1074,7 +994,7 @@ void TerminateTutor() {
 	default:
 		system("CLS");
 		cout << "Tutor was not terminated!" << endl << endl;
-		tutorList->deleteTutorList();
+		tutorArr->~TutorDArray();
 		return;
 	case 1:
 		tutorNode->terminateTutor();
@@ -1084,7 +1004,7 @@ void TerminateTutor() {
 	//save to file
 	system("CLS");
 
-	if (tutorList->printFile()) {
+	if (tutorList->printFile(tutorArr->size)) {
 		tutorNode->printTutorFull();
 		cout << "Tutor's has been terminated!" << endl << endl;;
 	}
@@ -1093,92 +1013,200 @@ void TerminateTutor() {
 	}
 
 	//free memory
-	tutorList->deleteTutorList();
+	tutorArr->~TutorDArray();
 }
 
-void FilterTutorByTermination(struct Tutor** head, bool isTerminated) {
-	struct Tutor* toDelete = *head;
-	struct Tutor* prev_node = NULL;
-	struct Tutor* next_node = NULL;
+class TutorDArray** RetrieveTutors() {
 
-	if (*head == NULL) return;
+	TutorDArray* tutorArr = new TutorDArray(1);
 
-	while (toDelete != NULL) {
-		if (toDelete->isTerminated() == isTerminated) {
-			prev_node = toDelete;
-			toDelete = toDelete->next;
-			continue;
-		}
+	ifstream inData;
+	inData.open("Tutors.txt");
 
-		//delete current node
-		next_node = toDelete->next;
+	int id;
+	string str_id, firstname, lastname, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code, str_rating;
+	char gender;
 
-		if (next_node != NULL) {
-			next_node->prev = prev_node;
-		}
-
-		if (prev_node != NULL) {
-			prev_node->next = next_node;
-		}
-		else {
-			*head = next_node;
-		}
-
-		free(toDelete);
-		toDelete = next_node;
-	}
-}
-
-void FilterTutorByTuitionCentre(struct Tutor** head, string tuitionCentreCode) {
-	struct Tutor* toDelete = *head;
-	struct Tutor* prev_node = NULL;
-	struct Tutor* next_node = NULL;
-
-	if (*head == NULL) return;
-
-	while (toDelete != NULL) {
-		if (toDelete->getTuitionCentre() == tuitionCentreCode) {
-			prev_node = toDelete;
-			toDelete = toDelete->next;
-			continue;
-		}
-
-		//delete current node
-		next_node = toDelete->next;
-		if (prev_node != NULL) {
-			prev_node->next = next_node;
-		}
-		else {
-			*head = next_node;
-		}
-		free(toDelete);
-		toDelete = next_node;
-	}
-}
-
-int GetTutorSize(struct Tutor** head, bool terminationCondition) {
 	int count = 0;
+
+	while (inData >> str_id >> firstname >> lastname >> gender >> phone >> address >> date_Joined >> date_Terminated >> subject_Code >> tuition_Centre_Code >> str_rating) {
+
+		id = stoi(str_id);
+
+
+		//Calculatate rating
+		//-Retrieve-
+		struct Rating* ratingList = NULL;
+		RetrieveRatings(&ratingList);
+
+		float rating = 0;
+
+		if (ratingList != NULL) {
+			//-Calculate-
+			rating = CalculateRatings(&ratingList, id);
+		}
+
+		struct Tutor input = Tutor(id, firstname, lastname, gender, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code, rating);
+
+		if (count >= tutorArr->size) {
+			//increase array size
+			tutorArr->increaseSize(1);
+
+			struct TutorDArray* newArray = new TutorDArray(*tutorArr);
+			tutorArr->~TutorDArray();
+			tutorArr = newArray;
+		}
+
+		//input tutor element into array
+		tutorArr->data[count] = input;
+
+		count++;
+
+	}
+
+	return &tutorArr;
+
+}
+
+class TutorDArray** RetrieveTutorByTermination(bool isTerminated) {
+
+	TutorDArray* tutorArr = new TutorDArray(1);
+
+	ifstream inData;
+	inData.open("Tutors.txt");
+
+	int id;
+	string str_id, firstname, lastname, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code, str_rating;
+	char gender;
+
+	int count = 0;
+
+	while (inData >> str_id >> firstname >> lastname >> gender >> phone >> address >> date_Joined >> date_Terminated >> subject_Code >> tuition_Centre_Code >> str_rating) {
+
+		if (isTerminated) {
+			if (date_Terminated == no_termination_date) continue;
+		}
+		else {
+			if (date_Terminated != no_termination_date) continue;
+		}
+		
+		id = stoi(str_id);
+
+		//Calculatate rating
+		//-Retrieve-
+		struct Rating* ratingList = NULL;
+		RetrieveRatings(&ratingList);
+
+		float rating = 0;
+
+		if (ratingList != NULL) {
+			//-Calculate-
+			rating = CalculateRatings(&ratingList, id);
+		}
+
+		struct Tutor input = Tutor(id, firstname, lastname, gender, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code, rating);
+
+		if (count >= tutorArr->size) {
+			//increase array size
+			tutorArr->increaseSize(1);
+
+			struct TutorDArray* newArray = new TutorDArray(*tutorArr);
+			tutorArr->~TutorDArray();
+			tutorArr = newArray;
+		}
+
+		//input tutor element into array
+		tutorArr->data[count] = input;
+
+		count++;
+
+	}
+
+	return &tutorArr;
+}
+
+class TutorDArray** RetrieveTutorByTuitionCentre(string tuitionCentreCode) {
+
+	TutorDArray* tutorArr = new TutorDArray(1);
+
+	ifstream inData;
+	inData.open("Tutors.txt");
+
+	int id;
+	string str_id, firstname, lastname, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code, str_rating;
+	char gender;
+
+	int count = 0;
+
+	while (inData >> str_id >> firstname >> lastname >> gender >> phone >> address >> date_Joined >> date_Terminated >> subject_Code >> tuition_Centre_Code >> str_rating) {
+
+		if (tuitionCentreCode != tuition_Centre_Code || date_Terminated != no_termination_date) continue;
+
+
+		id = stoi(str_id);
+
+		//Calculatate rating
+		//-Retrieve-
+		struct Rating* ratingList = NULL;
+		RetrieveRatings(&ratingList);
+
+		float rating = 0;
+
+		if (ratingList != NULL) {
+			//-Calculate-
+			rating = CalculateRatings(&ratingList, id);
+		}
+
+		struct Tutor input = Tutor(id, firstname, lastname, gender, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code, rating);
+
+		if (count >= tutorArr->size) {
+			//increase array size
+			tutorArr->increaseSize(1);
+
+			struct TutorDArray* newArray = new TutorDArray(*tutorArr);
+			tutorArr->~TutorDArray();
+			tutorArr = newArray;
+		}
+
+		//input tutor element into array
+		tutorArr->data[count] = input;
+
+		count++;
+
+	}
+	return &tutorArr;
+
+}
+
+int GetTutorSize(struct Tutor** head, bool terminationCondition, int size) {
+	int count = 0;
+	int index = 0;
 	struct Tutor* node = *head;
 
-	while (node != NULL) {
+	while (index < size) {
 
 		if (terminationCondition) {
-			if (!node->isTerminated()) count++;
+			if (!node[index].isTerminated()) count++;
 		}
 		else {
 			count++;
 		}
 
-		node = node->next;
+		index++;
 	}
 
 	return count;
 }
 
-void ViewTutor(struct Tutor** head) {
-	if (*head == NULL) return;
 
-	struct Tutor* tutor = *head;
+void ViewTutor(TutorDArray** tutorDArrayPtr) {
+	if (tutorDArrayPtr == NULL) return;
+
+	TutorDArray* tutorDArray = *tutorDArrayPtr;
+
+	if (tutorDArray->size == 0) return;
+
+	struct Tutor* tutor = tutorDArray->data;
 
 	struct TuitionCentre* tuitionCentreList = new TuitionCentre[3];
 	RetrieveTuitionCentres(&tuitionCentreList);
@@ -1196,5 +1224,5 @@ void ViewTutor(struct Tutor** head) {
 	tuitionCentreList->deleteTuitionCentreList();
 	subjectList->deleteSubjectList();
 
-	TutorNavigationMenu(head, tutor);
+	TutorNavigationMenu(tutorDArrayPtr, 0);
 }

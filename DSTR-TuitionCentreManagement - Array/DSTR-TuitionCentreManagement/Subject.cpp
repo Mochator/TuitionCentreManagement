@@ -25,7 +25,7 @@ void Subject::displaySubjects(int indexStart, bool withPayRate) {
 
 	if (this == NULL) return;
 
-	while (node != NULL) {
+	while (indexStart - 1 < 5) {
 		if (withPayRate) {
 			node[indexStart - 1].printCodeNamePay(indexStart);
 		}
@@ -47,7 +47,7 @@ struct Subject** Subject::searchByIndex(int index) {
 	struct Subject* result = NULL;
 
 	if (this == NULL) return &result;
-	if (index - 1 < 1 || index - 1 >= 5) return &result;
+	if (index - 1 < 0 || index - 1 >= 5) return &result;
 
 	result = &node[index - 1];
 
@@ -61,8 +61,8 @@ struct Subject** Subject::searchByCode(string code) {
 	if (node == NULL) return &result;
 
 	int count = 0;
-	while (node != NULL) {
-		if (node->code == code) {
+	while (count < 5) {
+		if (node[count].code == code) {
 			result = &node[count];
 			return &result;
 		}

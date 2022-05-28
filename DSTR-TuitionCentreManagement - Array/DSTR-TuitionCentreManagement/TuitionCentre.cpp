@@ -37,7 +37,7 @@ struct TuitionCentre** TuitionCentre::searchByIndex(int index) {
 	struct TuitionCentre* result = NULL;
 
 	if (this == NULL) return &result;
-	if (index -1 < 1 || index-1 >= 3) return &result;
+	if (index - 1 < 0 || index-1 >= 3) return &result;
 
 	result = &node[index-1];
 

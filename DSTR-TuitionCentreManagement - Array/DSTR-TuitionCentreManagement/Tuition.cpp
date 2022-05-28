@@ -132,15 +132,14 @@ void AddTuition() {
 
 	//select tutors
 	//-retrieve tutors-
-	struct Tutor* tutorList = NULL;
-	RetrieveTutors(&tutorList);
-	FilterTutorByTermination(&tutorList, false);
-	FilterTutorByTuitionCentre(&tutorList, getTuitionCentreCode());
+	TutorDArray* tutorArr = new TutorDArray(10);
+	RetrieveTutorByTuitionCentre(getTuitionCentreCode());
+	struct Tutor* tutorList = tutorArr->data;
 
 	string str_tutor_id;
 	int tutor_id = -1;
 
-	tutorList->displayTutors(true);
+	tutorList->displayTutors(true, tutorArr->size);
 
 	cout << "Enter a tutor ID to edit: ";
 	cin >> str_tutor_id;
@@ -149,7 +148,7 @@ void AddTuition() {
 		tutor_id = stoi(str_tutor_id);
 	}
 	catch (exception) {
-		tutorList->deleteTutorList();
+		tutorArr->~TutorDArray();
 		system("CLS");
 		cout << "Invalid Input" << endl << endl;
 		return;
@@ -157,10 +156,10 @@ void AddTuition() {
 
 
 	//availability check
-	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id);
+	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id, tutorArr->size);
 
 	if (tutorPtr == NULL) {
-		tutorList->deleteTutorList();
+		tutorArr->~TutorDArray();
 		system("CLS");
 		cout << "Tutor not found / terminated!" << endl;
 		return;
@@ -169,7 +168,7 @@ void AddTuition() {
 	tutor_id = (*tutorPtr)->getId();
 
 	//free up tutorList
-	tutorList->deleteTutorList();
+	tutorArr->~TutorDArray();
 
 	//request hours
 	string str_hour;

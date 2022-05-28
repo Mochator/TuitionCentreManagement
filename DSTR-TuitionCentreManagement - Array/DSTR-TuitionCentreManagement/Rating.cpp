@@ -65,8 +65,9 @@ void Rating::displayRatings() {
 	RetrieveTuitions(&tuitionList);
 
 	//retrieve tutors
-	struct Tutor* tutorList = NULL;
-	RetrieveTutors(&tutorList);
+	TutorDArray* tutorArr = new TutorDArray(10);
+	RetrieveTutorByTermination(false);
+	struct Tutor* tutorList = tutorArr->data;
 
 	//retrieve subjects
 	struct Subject* subjectList = new Subject[5];
@@ -82,7 +83,7 @@ void Rating::displayRatings() {
 		struct Tuition** tuitionPtr = tuitionList->retrieveById(node->tuition_id);
 		struct Tuition* tuitionNode = *tuitionPtr;
 
-		struct Tutor** tutorPtr = tutorList->retrieveById(node->tutor_id);
+		struct Tutor** tutorPtr = tutorList->retrieveById(node->tutor_id, tutorArr->size);
 		struct Tutor* tutorNode = *tutorPtr;
 
 		string subject_code = tutorNode->getSubject();
@@ -95,7 +96,7 @@ void Rating::displayRatings() {
 
 	//free memory
 	tuitionList->deleteTuitionList();
-	tutorList->deleteTutorList();
+	tutorArr->~TutorDArray();
 	subjectList->deleteSubjectList();
 }
 
