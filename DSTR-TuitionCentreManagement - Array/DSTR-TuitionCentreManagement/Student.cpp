@@ -1,5 +1,6 @@
 #include "General.h"
 
+Student::Student() {}
 
 Student::Student(int id, string firstname, string lastname, string username, string password, string contact) {
 	this->id = id;

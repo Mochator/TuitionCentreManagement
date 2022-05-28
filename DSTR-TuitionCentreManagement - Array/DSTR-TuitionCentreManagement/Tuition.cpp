@@ -189,7 +189,7 @@ void AddTuition() {
 
 	//get students
 	//-retrieve students-
-	struct Student* studentList = NULL;
+	struct Student* studentList = new Student[50];
 	RetrieveStudents(&studentList);
 
 	if (studentList == NULL) {

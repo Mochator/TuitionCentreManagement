@@ -1,2 +1,8 @@
-﻿  Login.cpp
+﻿  Student.cpp
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\Student.cpp(59): warning C4172: returning address of local variable or temporary: result
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\Student.cpp(39): warning C4172: returning address of local variable or temporary: result
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\Student.cpp(66): warning C4172: returning address of local variable or temporary: result
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\Student.cpp(71): warning C4172: returning address of local variable or temporary: result
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\Student.cpp(46): warning C4172: returning address of local variable or temporary: result
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\Student.cpp(52): warning C4172: returning address of local variable or temporary: result
   DSTR-TuitionCentreManagement.vcxproj -> C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\x64\Debug\DSTR-TuitionCentreManagement.exe

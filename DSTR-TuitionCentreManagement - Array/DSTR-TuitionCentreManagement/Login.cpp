@@ -85,7 +85,7 @@ void loginAsStudent() {
 	cin >> password;
 
 	//Retrieve students
-	struct Student* studentList = NULL;
+	struct Student* studentList = new Student[50];
 	RetrieveStudents(&studentList);
 
 	//Find student based on username
