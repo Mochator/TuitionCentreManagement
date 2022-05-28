@@ -86,11 +86,11 @@ void GenerateReport() {
 		outData.open(fileName);
 
 		//Retrieve tuition centres
-		struct TuitionCentre* tuitionCentreList = NULL;
+		struct TuitionCentre* tuitionCentreList = new TuitionCentre[3];
 		RetrieveTuitionCentres(&tuitionCentreList);
 
 		//Retrieve subjects
-		struct Subject* subjectList = NULL;
+		struct Subject* subjectList = new Subject[5];
 		RetrieveSubjects(&subjectList);
 
 		//Retrieve tutors

@@ -68,8 +68,8 @@ void Rating::displayRatings() {
 	struct Tutor* tutorList = NULL;
 	RetrieveTutors(&tutorList);
 
-	//retrieve tutors
-	struct Subject* subjectList = NULL;
+	//retrieve subjects
+	struct Subject* subjectList = new Subject[5];
 	RetrieveSubjects(&subjectList);
 
 	while (node != NULL) {

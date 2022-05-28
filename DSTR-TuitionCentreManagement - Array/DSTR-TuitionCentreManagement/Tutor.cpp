@@ -172,12 +172,12 @@ void Tutor::previousTutor(struct Tutor** tutorList) {
 		tutor = node;
 	}
 
-	struct TuitionCentre* tuitionCentreList = NULL;
+	struct TuitionCentre* tuitionCentreList = new TuitionCentre[3];
 	RetrieveTuitionCentres(&tuitionCentreList);
 	struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByCode(tutor->getTuitionCentre());
 	struct TuitionCentre* tuitionCentreNode = *tuitionCentrePtr;
 
-	struct Subject* subjectList = NULL;
+	struct Subject* subjectList = new Subject[5];
 	RetrieveSubjects(&subjectList);
 	struct Subject** subjectPtr = subjectList->searchByCode(tutor->getSubject());
 	struct Subject* subjectNode = *subjectPtr;
@@ -201,12 +201,12 @@ void Tutor::nextTutor(struct Tutor** tutorList) {
 		tutor = node;
 	}
 
-	struct TuitionCentre* tuitionCentreList = NULL;
+	struct TuitionCentre* tuitionCentreList = new TuitionCentre[3];
 	RetrieveTuitionCentres(&tuitionCentreList);
 	struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByCode(tutor->tuition_Centre_code);
 	struct TuitionCentre* tuitionCentreNode = *tuitionCentrePtr;
 
-	struct Subject* subjectList = NULL;
+	struct Subject* subjectList = new Subject[5];
 	RetrieveSubjects(&subjectList);
 	struct Subject** subjectPtr = subjectList->searchByCode(tutor->subject_Code);
 	struct Subject* subjectNode = *subjectPtr;
@@ -465,7 +465,7 @@ void SearchTutorByTuitionCentre(struct Tutor** head) {
 	int option = -1;
 
 	//Display tuition centres
-	struct TuitionCentre* tc_node = NULL;
+	struct TuitionCentre* tc_node = new TuitionCentre[3];
 	RetrieveTuitionCentres(&tc_node);
 
 	if (tc_node == NULL) {
@@ -521,7 +521,7 @@ void SearchTutorBySubject(struct Tutor** head) {
 	int option = -1;
 
 	//Display subjects
-	struct Subject* sub_node = NULL;
+	struct Subject* sub_node = new Subject[5];
 	RetrieveSubjects(&sub_node);
 
 	if (sub_node == NULL) {
@@ -648,7 +648,7 @@ void SortTutorByHourlyPayRate(struct Tutor** head) {
 	struct Tutor* node = *head;
 
 	//retrieve subjects
-	struct Subject* subjectList = NULL;
+	struct Subject* subjectList = new Subject[5];
 	RetrieveSubjects(&subjectList);
 
 	if (subjectList == NULL) {
@@ -719,7 +719,7 @@ void AddTutor() {
 
 	//retrieve tuition centres
 	string tuition_centre_code = "";
-	struct TuitionCentre* tuitionCentreList = NULL;
+	struct TuitionCentre* tuitionCentreList = new TuitionCentre[3];
 	RetrieveTuitionCentres(&tuitionCentreList);
 
 	if (tuitionCentreList == NULL) {
@@ -729,7 +729,7 @@ void AddTutor() {
 
 	//retrieve subjects
 	string subject_code = "";
-	struct Subject* subjectList = NULL;
+	struct Subject* subjectList = new Subject[5];
 	RetrieveSubjects(&subjectList);
 
 	if (subjectList == NULL) {
@@ -1180,12 +1180,12 @@ void ViewTutor(struct Tutor** head) {
 
 	struct Tutor* tutor = *head;
 
-	struct TuitionCentre* tuitionCentreList = NULL;
+	struct TuitionCentre* tuitionCentreList = new TuitionCentre[3];
 	RetrieveTuitionCentres(&tuitionCentreList);
 	struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByCode(tutor->getTuitionCentre());
 	struct TuitionCentre* tuitionCentreNode = *tuitionCentrePtr;
 
-	struct Subject* subjectList = NULL;
+	struct Subject* subjectList = new Subject[5];
 	RetrieveSubjects(&subjectList);
 	struct Subject** subjectPtr = subjectList->searchByCode(tutor->getSubject());
 	struct Subject* subjectNode = *subjectPtr;

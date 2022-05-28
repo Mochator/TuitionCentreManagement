@@ -201,14 +201,12 @@ public:
 
 	//Subject Constructor: code, name, hourly_pay_rate
 	struct Subject(string, string, float);
+	struct Subject();
 
 	//Functions
-	void addSubject(struct Subject** head, struct Subject* newSubject);
-
 	void displaySubjects(int, bool);
 	void deleteSubjectList();
 
-	void printFile();
 	void printCodeName(int);
 	void printCodeNamePay(int);
 
