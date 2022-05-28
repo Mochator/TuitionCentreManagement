@@ -230,18 +230,16 @@ public:
 
 	//Tuition Constructor: code, name, address, password
 	struct TuitionCentre(string, string, string, string);
+	struct TuitionCentre();
 
 	~TuitionCentre() {};
 
 	//Functions
-	void addTuitionCentre(struct TuitionCentre** head, struct TuitionCentre* newTuitionCentre);
-
 	void displayTuitionCentres(int, bool);
 	void deleteTuitionCentreList();
 
 	void printCodeName(int);
 	void printCodeNameAddress(int);
-	void printFile();
 
 	struct TuitionCentre** searchByIndex(int);
 

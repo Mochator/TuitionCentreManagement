@@ -123,7 +123,7 @@ void loginAsAdmin() {
 	string strTuitionCentre, password;
 
 	//Retrieve tuition centres
-	struct TuitionCentre* tuitionCentreList = NULL;
+	struct TuitionCentre* tuitionCentreList = new TuitionCentre[3];
 	RetrieveTuitionCentres(&tuitionCentreList);
 
 	tuitionCentreList->displayTuitionCentres(1, false);
@@ -148,7 +148,7 @@ void loginAsAdmin() {
 		//Find tuition centre based on index
 		struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByIndex(idxTuitionCentre);
 
-		if (tuitionCentrePtr != NULL) {
+		if (*tuitionCentrePtr != NULL) {
 			struct TuitionCentre* tuitionCentre = *tuitionCentrePtr;
 
 			if (tuitionCentre->passwordComparison(password)) {
