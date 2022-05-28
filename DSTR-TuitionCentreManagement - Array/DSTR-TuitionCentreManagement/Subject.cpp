@@ -84,16 +84,8 @@ void Subject::displaySubjects(int indexStart, bool withPayRate) {
 	}
 }
 
-string Subject::getCode() {
-	return this->code;
-}
-
 string Subject::getInfo() {
 	return (this->name + "(" + this->code + ")");
-}
-
-float Subject::getHourlyPayRate() {
-	return this->hourly_pay_rate;
 }
 
 struct Subject** Subject::searchByIndex(int index) {

@@ -55,10 +55,6 @@ string Tuition::getInfo() {
 	return result;
 }
 
-int Tuition::getTutorId(){
-	return this->tutor_id;
-}
-
 //retrieve by id
 struct Tuition** Tuition::retrieveById(int id) {
 	struct Tuition* node = this;

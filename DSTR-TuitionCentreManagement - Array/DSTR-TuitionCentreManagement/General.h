@@ -159,13 +159,15 @@ struct Student {
 
 private:
 	int id;
+
+public:
 	string firstname;
 	string lastname;
 	string username;
 	string password;
 	string contact;
 
-public:
+
 	struct Student* next;
 
 	//Student Constructor: id, firstname, lastname, username, password, contact
@@ -190,12 +192,11 @@ public:
 
 struct Subject {
 
-private:
+public:
 	string code;
 	string name;
 	float hourly_pay_rate;
 
-public:
 	struct Subject* next;
 
 	//Subject Constructor: code, name, hourly_pay_rate
@@ -213,21 +214,18 @@ public:
 
 	struct Subject** searchByIndex(int);
 	struct Subject** searchByCode(string);
-	string getCode();
 	string getInfo();
-	float getHourlyPayRate();
 
 };
 
 struct TuitionCentre {
 
-private:
+public:
 	string code;
 	string name;
 	string address;
 	string password;
 
-public:
 	struct TuitionCentre* next;
 
 	//Tuition Constructor: code, name, address, password
@@ -250,7 +248,6 @@ public:
 	bool passwordComparison(string);
 
 	string getCodeName();
-	string getCode();
 	string getInfo();
 
 	struct TuitionCentre** searchByCode (string);
@@ -260,11 +257,12 @@ public:
 struct Tuition {
 private:
 	int id;
+
+public:
 	int tutor_id;
 	int hour;
 	string date;
 
-public:
 	struct Tuition* next;
 
 	// Tuition Constructor : id, tutor_Id, hour, date
@@ -276,7 +274,6 @@ public:
 	void deleteTuitionList();
 
 	int generateId();
-	int getTutorId();
 	string getInfo();
 
 	struct Tuition** retrieveById(int);
@@ -285,13 +282,12 @@ public:
 };
 
 struct Rating {
-private:
+
 	int tuition_id;
 	int tutor_id;
 	int student_id;
 	int rating;
 
-public:
 	struct Rating* next;
 
 	// Rating Constructor : id, tutor_Id, student_id, rating
@@ -304,10 +300,6 @@ public:
 	void printInfo(struct Tuition*, struct Tutor*, struct Subject*);
 	bool printFile();
 	bool editRating(int);
-
-	int getTutorId();
-	int getRating();
-	int getStudentId();
 
 	struct Rating** retrieveByTuitionId(int);
 
