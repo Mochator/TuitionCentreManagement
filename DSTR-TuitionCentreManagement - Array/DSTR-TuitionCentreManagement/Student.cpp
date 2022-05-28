@@ -12,60 +12,6 @@ Student::Student(int id, string firstname, string lastname, string username, str
 }
 
 
-std::string genPhone() {
-	string result = "01";
-
-	for (int i = 0; i < 8; i++) {
-		result += to_string(rand() % 10);
-	}
-	return result;
-}
-
-//void predefineStudent() {
-//	int i = 1;
-//	struct Student* newStudent = NULL;
-//
-//	newStudent->addStudent(&newStudent, new Student(i++, "Carmen", "Lim", "carmenlim", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Keith", "Koh", "keithkoh", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Ryan", "Lim", "ryanlim", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Law", "LiYaw", "lawliyaw", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "David", "Tee", "davidtee", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Ben", "Tan", "bentan", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Jessi", "J", "jessij", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Amanda", "Ooi", "amandaooi", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Irene", "Tang", "irenetang", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Grace", "Ong", "graceong", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Boh", "Leong", "bohleong", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Shawn", "Lee", "shawnlee", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Bryan", "Lo", "bryanlo", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Loh", "WeiWei", "lohweiwei", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Ong", "Ann", "ongann", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Teoh", "WeiQing", "teohweiqing", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Park", "CheeYee", "parkcheeyee", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Soon", "Nam", "soonnam", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Prince", "Lee", "princelee", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Kingsten", "Liew", "kingstenliew", "apu12345", genPhone()));
-//
-//	newStudent->printFile();
-//
-//}
-
-//void Student::addStudent(struct Student* newStudent) {
-//	struct Student* node = *head;
-//
-//	if (*head == NULL) {
-//		*head = newStudent;
-//	}
-//	else {
-//		while (node->next != NULL) {
-//			node = node->next;
-//		}
-//
-//		node->next = newStudent;
-//	}
-//
-//}
-
 void Student::displayStudents() {
 	//struct Student* node = *head;
 
@@ -79,23 +25,6 @@ void Student::displayStudents() {
 	}
 }
 
-void Student::printFile() {
-
-	struct Student* node = this;
-
-	if (node == NULL) {
-		return;
-	}
-
-	ofstream outData;
-	outData.open("Students.txt");
-
-	while (node != NULL) {
-		outData << node->id << "\t" << node->firstname << "\t" << node->lastname << "\t" << node->username << "\t" << node->password << "\t" << node->contact << endl;
-		node = node->next;
-	}
-
-}
 
 void Student::printInfo() {
 	cout << this->id << "\t" << this->firstname << " " << this->lastname << " (" << this->username << ")" << endl;
@@ -104,40 +33,41 @@ void Student::printInfo() {
 
 struct Student** Student::searchByUsername(string username) {
 	struct Student* node = this;
-	struct Student** result = NULL;
+	struct Student* result = NULL;
 
-	if (node == NULL) return result;
+	if (node == NULL) return &result;
+
+	int count = 0;
 
 	while (node != NULL) {
 		if (node->username == username) {
-			result = &node;
-			return result;
+			result = &node[count];
+			return &result;
 		}
-		else {
-			node = node->next;
-		}
+
+		count++;
 	}
 
-	return result;
+	return &result;
 }
 
 struct Student** Student::retrieveById(int id) {
 	struct Student* node = this;
-	struct Student** result = NULL;
+	struct Student* result = NULL;
 
-	if (node == NULL) return result;
+	if (node == NULL) return &result;
+
+	int count = 0;
 
 	while (node != NULL) {
 		if (node->id == id) {
-			result = &node;
-			return result;
+			result = &node[count];
+			return &result;
 		}
-		else {
-			node = node->next;
-		}
-	}
 
-	return result;
+		count++;
+	}
+	return &result;
 }
 
 bool Student::passwordComparison(string pw) {
@@ -155,19 +85,11 @@ int Student::getId() {
 
 void Student::deleteStudentList() {
 
-	if (this == NULL) {
-		return;
-	}
+	if (this == NULL) return;
 
-	Student* current = this;
-	Student* next = NULL;
+	Student* node = this;
 
-	while (current != NULL)
-	{
-		next = current->next;
-		free(current);
-		current = next;
-	}
+	delete[50] node;
 }
 
 //External Functions (Not in Struct)
@@ -194,25 +116,20 @@ void RetrieveStudents(struct Student** head) {
 
 	int id;
 	string strid, firstname, lastname, username, contact, password;
+	int count = 0;
 
-	while (inData >> strid >> firstname >> lastname >> username >> password >> contact) {
+	while ((inData >> strid >> firstname >> lastname >> username >> password >> contact) && count < 50) {
 		id = stoi(strid);
-		struct Student* inpStudent = new Student(id, firstname, lastname, username, password, contact);
+		struct Student inpStudent = Student(id, firstname, lastname, username, password, contact);
 
-		if (*head == NULL) {
-			*head = inpStudent;
-			node = *head;
-		}
-		else {
-			node->next = inpStudent;
-			node = node->next;
-
-		}
+		node[count] = inpStudent;
+		count++;
 
 	}
 
 }
 
+//[dyanmic]
 void AddStudentToLast(struct Student** head, struct Student* newStudent) {
 	struct Student* node = *head;
 
@@ -229,7 +146,7 @@ void AddStudentToLast(struct Student** head, struct Student* newStudent) {
 
 }
 
-//remove not delete node
+//remove not delete node [dynamic]
 void RemoveStudentFromList(struct Student** head, int id) {
 	struct Student* toDelete = *head;
 	struct Student* prev_node = NULL;

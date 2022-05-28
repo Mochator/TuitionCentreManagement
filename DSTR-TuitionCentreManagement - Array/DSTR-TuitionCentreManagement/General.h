@@ -172,10 +172,10 @@ public:
 
 	//Student Constructor: id, firstname, lastname, username, password, contact
 	struct Student(int, string, string, string, string, string);
+	struct Student();
 
 	//Functions
 	//void addStudent(struct Student**, struct Student*);
-	void printFile();
 	void printInfo();
 
 	void displayStudents();
@@ -263,6 +263,7 @@ public:
 
 	// Tuition Constructor : id, tutor_Id, hour, date
 	struct Tuition(int, int, int, string);
+	struct Tuition();
 
 	//Functions
 	bool printFile();
@@ -288,6 +289,7 @@ struct Rating {
 
 	// Rating Constructor : id, tutor_Id, student_id, rating
 	struct Rating(int, int, int, int);
+	struct Rating();
 
 	//Functions
 	void displayRatings();

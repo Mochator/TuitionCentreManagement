@@ -84,6 +84,8 @@ void TuitionCentre::displayTuitionCentres(int indexStart, bool withAddress) {
 
 		indexStart++;
 	}
+
+
 }
 
 //Free up memory
