@@ -1,5 +1,6 @@
 #include "General.h"
 
+Rating::Rating() {};
 
 Rating::Rating(int tuition_Id, int tutor_Id, int student_Id, int rating) {
 	this->tuition_id = tuition_Id;

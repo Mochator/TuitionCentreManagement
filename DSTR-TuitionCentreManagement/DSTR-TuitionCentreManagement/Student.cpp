@@ -1,5 +1,6 @@
 #include "General.h"
 
+Student::Student() {};
 
 Student::Student(int id, string firstname, string lastname, string username, string password, string contact) {
 	this->id = id;
@@ -10,61 +11,6 @@ Student::Student(int id, string firstname, string lastname, string username, str
 	this->contact = contact;
 	this->next = NULL;
 }
-
-
-std::string genPhone() {
-	string result = "01";
-
-	for (int i = 0; i < 8; i++) {
-		result += to_string(rand() % 10);
-	}
-	return result;
-}
-
-//void predefineStudent() {
-//	int i = 1;
-//	struct Student* newStudent = NULL;
-//
-//	newStudent->addStudent(&newStudent, new Student(i++, "Carmen", "Lim", "carmenlim", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Keith", "Koh", "keithkoh", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Ryan", "Lim", "ryanlim", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Law", "LiYaw", "lawliyaw", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "David", "Tee", "davidtee", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Ben", "Tan", "bentan", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Jessi", "J", "jessij", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Amanda", "Ooi", "amandaooi", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Irene", "Tang", "irenetang", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Grace", "Ong", "graceong", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Boh", "Leong", "bohleong", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Shawn", "Lee", "shawnlee", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Bryan", "Lo", "bryanlo", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Loh", "WeiWei", "lohweiwei", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Ong", "Ann", "ongann", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Teoh", "WeiQing", "teohweiqing", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Park", "CheeYee", "parkcheeyee", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Soon", "Nam", "soonnam", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Prince", "Lee", "princelee", "apu12345", genPhone()));
-//	newStudent->addStudent(&newStudent, new Student(i++, "Kingsten", "Liew", "kingstenliew", "apu12345", genPhone()));
-//
-//	newStudent->printFile();
-//
-//}
-
-//void Student::addStudent(struct Student* newStudent) {
-//	struct Student* node = *head;
-//
-//	if (*head == NULL) {
-//		*head = newStudent;
-//	}
-//	else {
-//		while (node->next != NULL) {
-//			node = node->next;
-//		}
-//
-//		node->next = newStudent;
-//	}
-//
-//}
 
 void Student::displayStudents() {
 	//struct Student* node = *head;

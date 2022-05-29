@@ -1,5 +1,7 @@
 #include "General.h"
 
+Tuition::Tuition() {};
+
 Tuition::Tuition(int id, int tutor_id, int hour, string date) {
 
 	this->id = id;
