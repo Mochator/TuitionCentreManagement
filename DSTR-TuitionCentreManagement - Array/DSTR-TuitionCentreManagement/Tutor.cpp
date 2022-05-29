@@ -290,7 +290,7 @@ void DisplayAllTutors() {
 
 void SearchTutorById(TutorDArray** tutorDArrayPtr) {
 
-	if (tutorDArrayPtr == NULL) return;
+	if (*tutorDArrayPtr == NULL) return;
 
 	TutorDArray* tutorArr = *tutorDArrayPtr;
 
@@ -327,7 +327,7 @@ void SearchTutorById(TutorDArray** tutorDArrayPtr) {
 
 void SearchTutorByRating(TutorDArray** tutorDArrayPtr) {
 
-	if (tutorDArrayPtr == NULL) return;
+	if (*tutorDArrayPtr == NULL) return;
 
 	TutorDArray *tutorDArray = *tutorDArrayPtr;
 
@@ -368,7 +368,7 @@ void SearchTutorByRating(TutorDArray** tutorDArrayPtr) {
 
 void SearchTutorByTuitionCentre(TutorDArray** tutorDArrayPtr) {
 
-	if (tutorDArrayPtr == NULL) return;
+	if (*tutorDArrayPtr == NULL) return;
 
 	TutorDArray* tutorArr = *tutorDArrayPtr;
 
@@ -431,7 +431,7 @@ void SearchTutorByTuitionCentre(TutorDArray** tutorDArrayPtr) {
 
 void SearchTutorBySubject(TutorDArray** tutorDArrayPtr) {
 
-	if (tutorDArrayPtr == NULL) return;
+	if (*tutorDArrayPtr == NULL) return;
 
 	TutorDArray* tutorArr = *tutorDArrayPtr;
 
@@ -493,7 +493,7 @@ void SearchTutorBySubject(TutorDArray** tutorDArrayPtr) {
 
 
 void SortTutorById(TutorDArray** tutorDArrayPtr) {
-	if (tutorDArrayPtr == NULL) return;
+	if (*tutorDArrayPtr == NULL) return;
 
 	TutorDArray* tutorArr = *tutorDArrayPtr;
 
@@ -532,7 +532,7 @@ void SortTutorById(TutorDArray** tutorDArrayPtr) {
 }
 
 void SortTutorByRating(TutorDArray** tutorDArrayPtr) {
-	if (tutorDArrayPtr == NULL) return;
+	if (*tutorDArrayPtr == NULL) return;
 
 	TutorDArray* tutorArr = *tutorDArrayPtr;
 
@@ -571,7 +571,7 @@ void SortTutorByRating(TutorDArray** tutorDArrayPtr) {
 }
 
 void SortTutorByHourlyPayRate(TutorDArray** tutorDArrayPtr) {
-	if (tutorDArrayPtr == NULL) return;
+	if (*tutorDArrayPtr == NULL) return;
 
 	TutorDArray* tutorArr = *tutorDArrayPtr;
 
@@ -600,7 +600,6 @@ void SortTutorByHourlyPayRate(TutorDArray** tutorDArrayPtr) {
 		struct Tutor temp_node;
 
 		while (count + 1 < tutorArr->size) {
-
 			current_node = &node[count];
 			next_node = &node[count + 1];
 
@@ -621,7 +620,6 @@ void SortTutorByHourlyPayRate(TutorDArray** tutorDArrayPtr) {
 	subjectList->deleteSubjectList();
 
 	tutorArr->data->displayTutors(false, tutorArr->size);
-
 }
 
 
