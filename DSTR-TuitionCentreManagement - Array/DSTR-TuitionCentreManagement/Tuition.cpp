@@ -163,7 +163,7 @@ void AddTuition() {
 	//availability check
 	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id);
 
-	if (tutorPtr == NULL) {
+	if (*tutorPtr == NULL) {
 		tutorList->deleteTutorList();
 		system("CLS");
 		cout << "Tutor not found / terminated!" << endl;
@@ -226,7 +226,7 @@ void AddTuition() {
 		//-retrival-
 		struct Student** studentPtr = studentList->retrieveById(student_id);
 
-		if (studentPtr == NULL) {
+		if (*studentPtr == NULL) {
 			cout << "Invalid Input!" << endl << endl;
 			continue;
 		}

@@ -91,7 +91,7 @@ void loginAsStudent() {
 	//Find student based on username
 	struct Student** studentPtr = studentList->searchByUsername(username);
 
-	if (studentPtr != NULL) {
+	if (*studentPtr != NULL) {
 		struct Student* student = *studentPtr;
 		if (student->passwordComparison(password)) {
 			setRole("Student");
@@ -148,7 +148,7 @@ void loginAsAdmin() {
 		//Find tuition centre based on index
 		struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByIndex(idxTuitionCentre);
 
-		if (tuitionCentrePtr != NULL) {
+		if (*tuitionCentrePtr != NULL) {
 			struct TuitionCentre* tuitionCentre = *tuitionCentrePtr;
 
 			if (tuitionCentre->passwordComparison(password)) {

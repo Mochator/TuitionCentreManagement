@@ -271,7 +271,7 @@ void GiveRating() {
 	//retrieve rating record based on tuition id
 	struct Rating** ratingPtr = ratingList->retrieveByTuitionId(tuition_id);
 
-	if (ratingPtr == NULL) {
+	if (*ratingPtr == NULL) {
 		system("CLS");
 		ratingList->deleteRatingList();
 		cout << "Invalid Input!" << endl << endl;

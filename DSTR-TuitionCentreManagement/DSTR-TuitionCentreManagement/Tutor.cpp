@@ -492,7 +492,7 @@ void SearchTutorByTuitionCentre(struct Tutor** head) {
 		return;
 	}
 
-	if (tc_ptr == NULL) {
+	if (*tc_ptr == NULL) {
 		tc_node->deleteTuitionCentreList();
 		node->displayTutors(false);
 		return;
@@ -548,7 +548,7 @@ void SearchTutorBySubject(struct Tutor** head) {
 		return;
 	}
 
-	if (sub_ptr == NULL) {
+	if (*sub_ptr == NULL) {
 		sub_node->deleteSubjectList();
 		node->displayTutors(false);
 		return;
@@ -766,7 +766,7 @@ void AddTutor() {
 	}
 
 	//tuition centre retrieval check, if unavailable back to tutor management menu
-	if (tuitionCentrePtr == NULL) {
+	if (*tuitionCentrePtr == NULL) {
 		tuitionCentreList->deleteTuitionCentreList();
 		subjectList->deleteSubjectList();
 		system("CLS");
@@ -800,7 +800,7 @@ void AddTutor() {
 	}
 
 	//-subject retrieval check, if unavailable back to tutor management menu-
-	if (subjectPtr == NULL) {
+	if (*subjectPtr == NULL) {
 		subjectList->deleteSubjectList();
 		system("CLS");
 		cout << "Invalid Input!" << endl;
@@ -926,7 +926,7 @@ void EditTutor() {
 	//availability check
 	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id);
 
-	if (tutorPtr == NULL) {
+	if (*tutorPtr == NULL) {
 		tutorList->deleteTutorList();
 		system("CLS");
 		cout << "Tutor not found!" << endl;
@@ -1031,7 +1031,7 @@ void TerminateTutor() {
 	//availability check
 	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id);
 
-	if (tutorPtr == NULL) {
+	if (*tutorPtr == NULL) {
 		tutorList->deleteTutorList();
 		system("CLS");
 		cout << "Tutor not found!" << endl;
