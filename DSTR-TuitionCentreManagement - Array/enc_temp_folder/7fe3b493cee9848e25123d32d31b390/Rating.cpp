@@ -150,7 +150,7 @@ float CalculateRatings(struct Rating** head, int tutor_Id, int size) {
 		}
 
 		if (node[index].tutor_id == tutor_Id) {
-			total = total + node[index].rating;
+			total = total + node->rating;
 			count++;
 		}
 

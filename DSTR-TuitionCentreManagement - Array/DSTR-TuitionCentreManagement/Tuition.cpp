@@ -146,11 +146,7 @@ void AddTuition() {
 	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id, tutorArr->size);
 
 	if (*tutorPtr == NULL) {
-<<<<<<< HEAD
-		tutorList->deleteTutorList();
-=======
 		tutorArr->~TutorDArray();
->>>>>>> Carmen-Array2
 		system("CLS");
 		cout << "Tutor not found / terminated!" << endl;
 		return;
@@ -214,11 +210,7 @@ void AddTuition() {
 		struct Student** studentPtr = studentList->retrieveById(student_id, studArr->size);
 		struct Student* newStud = *studentPtr;
 
-<<<<<<< HEAD
 		if (*studentPtr == NULL) {
-=======
-		if (newStud == NULL) {
->>>>>>> Carmen-Array2
 			cout << "Invalid Input!" << endl << endl;
 			continue;
 		}

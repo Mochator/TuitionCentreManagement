@@ -845,11 +845,7 @@ void EditTutor() {
 	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id, tutorArr->size);
 
 	if (*tutorPtr == NULL) {
-<<<<<<< HEAD
-		tutorList->deleteTutorList();
-=======
 		tutorArr->~TutorDArray();
->>>>>>> Carmen-Array2
 		system("CLS");
 		cout << "Tutor not found!" << endl;
 		return;
@@ -955,13 +951,8 @@ void TerminateTutor() {
 	//availability check
 	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id, tutorArr->size);
 
-<<<<<<< HEAD
 	if (*tutorPtr == NULL) {
-		tutorList->deleteTutorList();
-=======
-	if (tutorPtr == NULL) {
 		tutorArr->~TutorDArray();
->>>>>>> Carmen-Array2
 		system("CLS");
 		cout << "Tutor not found!" << endl;
 		return;
