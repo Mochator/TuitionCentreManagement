@@ -1,5 +1,7 @@
 #include "General.h"
 
+Tuition::Tuition() {};
+
 Tuition::Tuition(int id, int tutor_id, int hour, string date) {
 
 	this->id = id;
@@ -9,44 +11,34 @@ Tuition::Tuition(int id, int tutor_id, int hour, string date) {
 	this->next = NULL;
 }
 
-bool Tuition::printFile() {
+bool Tuition::printFile(int size) {
+
+	bool success = false;
 
 	struct Tuition* node = this;
 
-	if (node == NULL) {
-		return false;
+	if (size == 0) {
+		return success;
 	}
 
 	ofstream outData;
 	outData.open("Tuition.txt");
 
-	while (node != NULL) {
-		outData << node->id << "\t" << node->tutor_id << "\t" << node->hour << "\t" << node->date << endl;
-		node = node->next;
+	int count = 0;
+
+	while (count < size) {
+		outData << node[count].id << "\t" << node[count].tutor_id << "\t" << node[count].hour << "\t" << node[count].date << endl;
+		count++;
 	}
 
-	return true;
+	success = true;
+
+	return success;
 
 }
 
-//generate id based on last record
-int Tuition::generateId() {
-	int current = 1;
-
-	struct Tuition* node = this;
-
-	if (this == NULL) return current;
-
-	while (node != NULL) {
-
-		if (node->id > current) {
-			current = node->id;
-		}
-
-		node = node->next;
-	}
-
-	return current + 1;
+int Tuition::getId() {
+	return this->id;
 }
 
 //get info
@@ -55,55 +47,39 @@ string Tuition::getInfo() {
 	return result;
 }
 
-int Tuition::getTutorId(){
-	return this->tutor_id;
-}
-
 //retrieve by id
-struct Tuition** Tuition::retrieveById(int id) {
+struct Tuition** Tuition::retrieveById(int id, int size) {
 	struct Tuition* node = this;
-	struct Tuition** result = NULL;
+	struct Tuition* result = NULL;
 
-	if (node == NULL) return result;
+	if (node == NULL || size == 0) return &result;
 
-	while (node != NULL) {
-		if (node->id == id) {
-			result = &node;
-			return result;
+	int count = 0;
+	while (count < size) {
+		if (node[count].getId() == id) {
+			result = &node[count];
+			return &result;
 		}
 		else {
-			node = node->next;
+			count++;
 		}
 	}
 
-	return result;
+	return &result;
 }
 
-//Free up memory
-void Tuition::deleteTuitionList()
-{
-	if (this == NULL) return;
-
-	Tuition* current = this;
-	Tuition* next = NULL;
-
-	while (current != NULL)
-	{
-		next = current->next;
-		free(current);
-		current = next;
-	}
-}
 
 //External Functions (Not in Struct)
-void RetrieveTuitions(struct Tuition** head) {
+class TuitionDArray** RetrieveTuitions() {
+	TuitionDArray* tuitionArr = new TuitionDArray(1);
+
 	ifstream inData;
 	inData.open("Tuition.txt");
 
-	struct Tuition* node = *head;
-
 	int id, tutor_id, hour;
 	string str_id, str_tutor_id, str_hour, date;
+
+	int count = 0;
 
 	while (inData >> str_id >> str_tutor_id >> str_hour >> date) {
 
@@ -111,18 +87,26 @@ void RetrieveTuitions(struct Tuition** head) {
 		tutor_id = stoi(str_tutor_id);
 		hour = stoi(str_hour);
 
-		struct Tuition* input = new Tuition(id, tutor_id, hour, date);
+		struct Tuition input = Tuition(id, tutor_id, hour, date);
 
-		if (*head == NULL) {
-			*head = input;
-			node = *head;
-		}
-		else {
-			node->next = input;
-			node = node->next;
+		if (count >= tuitionArr->size) {
+			//increase array size
+			tuitionArr->increaseSize(1);
 
+			TuitionDArray* newArray = new TuitionDArray(*tuitionArr);
+			tuitionArr->~TuitionDArray();
+			tuitionArr = newArray;
 		}
+
+		//input tutor element into array
+		tuitionArr->data[count] = input;
+
+		count++;
+
 	}
+
+	return &tuitionArr;
+
 }
 
 void AddTuition() {
@@ -136,15 +120,13 @@ void AddTuition() {
 
 	//select tutors
 	//-retrieve tutors-
-	struct Tutor* tutorList = NULL;
-	RetrieveTutors(&tutorList);
-	FilterTutorByTermination(&tutorList, false);
-	FilterTutorByTuitionCentre(&tutorList, getTuitionCentreCode());
+	TutorDArray* tutorArr = *RetrieveTutorByTuitionCentre(getTuitionCentreCode());
+	struct Tutor* tutorList = tutorArr->data;
 
 	string str_tutor_id;
 	int tutor_id = -1;
 
-	tutorList->displayTutors(true);
+	tutorList->displayTutors(true, tutorArr->size);
 
 	cout << "Enter a tutor ID to edit: ";
 	cin >> str_tutor_id;
@@ -153,7 +135,7 @@ void AddTuition() {
 		tutor_id = stoi(str_tutor_id);
 	}
 	catch (exception) {
-		tutorList->deleteTutorList();
+		tutorArr->~TutorDArray();
 		system("CLS");
 		cout << "Invalid Input" << endl << endl;
 		return;
@@ -161,10 +143,14 @@ void AddTuition() {
 
 
 	//availability check
-	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id);
+	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id, tutorArr->size);
 
 	if (*tutorPtr == NULL) {
+<<<<<<< HEAD
 		tutorList->deleteTutorList();
+=======
+		tutorArr->~TutorDArray();
+>>>>>>> Carmen-Array2
 		system("CLS");
 		cout << "Tutor not found / terminated!" << endl;
 		return;
@@ -173,7 +159,7 @@ void AddTuition() {
 	tutor_id = (*tutorPtr)->getId();
 
 	//free up tutorList
-	tutorList->deleteTutorList();
+	tutorArr->~TutorDArray();
 
 	//request hours
 	string str_hour;
@@ -193,8 +179,8 @@ void AddTuition() {
 
 	//get students
 	//-retrieve students-
-	struct Student* studentList = NULL;
-	RetrieveStudents(&studentList);
+	StudentDArray* studArr = *RetrieveStudents();
+	struct Student* studentList = studArr->data;
 
 	if (studentList == NULL) {
 		system("CLS");
@@ -205,9 +191,10 @@ void AddTuition() {
 	//-request students-
 	string str_student_id;
 	int student_id = -1;
-	struct Student* selectedStudents = NULL;
 
-	studentList->displayStudents();
+	StudentDArray* selectedStudents = new StudentDArray(0);
+
+	studentList->displayStudents(studArr->size);
 
 	while (student_id != 0){
 		cout << "Enter a student ID to add or 0 to stop adding: ";
@@ -224,33 +211,50 @@ void AddTuition() {
 		if (student_id == 0) continue;
 
 		//-retrival-
-		struct Student** studentPtr = studentList->retrieveById(student_id);
+		struct Student** studentPtr = studentList->retrieveById(student_id, studArr->size);
+		struct Student* newStud = *studentPtr;
 
+<<<<<<< HEAD
 		if (*studentPtr == NULL) {
+=======
+		if (newStud == NULL) {
+>>>>>>> Carmen-Array2
 			cout << "Invalid Input!" << endl << endl;
 			continue;
 		}
 
-		struct Student *toAdd = *studentPtr;
-		RemoveStudentFromList(&studentList, student_id);
-		toAdd->next = NULL;
-		AddStudentToLast(&selectedStudents, toAdd);
+		//check if has been added
+		if (selectedStudents->size > 0) {
+			if (selectedStudents->data->retrieveById(student_id, selectedStudents->size) == NULL) {
+				cout << "Student was already added!" << endl << endl;
+				continue;
+			}
+		}
+
+		//Increase size of selectedStudents
+		selectedStudents->increaseSize(1);
+
+		StudentDArray* newArray = new StudentDArray(*selectedStudents);
+		selectedStudents->~StudentDArray();
+		selectedStudents = newArray;
+
+		selectedStudents->AddStudentToLast(newStud);
 
 	} 
 
+
 	//-check any student added-
-	if (selectedStudents == NULL) {
+	if (selectedStudents->size < 1) {
 		system("CLS");
 		cout << "No student added!" << endl;
 		return;
 	}
 
 	//retrieve tuition list
-	struct Tuition* tuitionList = NULL;
-	RetrieveTuitions(&tuitionList);
+	TuitionDArray* tuitionArr = *RetrieveTuitions();
 
 	//get id
-	int id = tuitionList->generateId();
+	int id = tuitionArr->generateId();
 
 	//get today date
 	string now = date("/", NULL, NULL, NULL);
@@ -258,13 +262,20 @@ void AddTuition() {
 	//create new struct
 	struct Tuition* newTuition = new Tuition(id, tutor_id, hour, now);
 
-	//add to list
-	AddTuitionToLast(&tuitionList, newTuition);
-
 	system("CLS");
 
+	//Increase size of tuitionList
+	tuitionArr->increaseSize(1);
+
+	TuitionDArray* newArray = new TuitionDArray(*tuitionArr);
+	tuitionArr->~TuitionDArray();
+	tuitionArr = newArray;
+
+	//add to list
+	tuitionArr->AddTuitiontToLast(newTuition);
+
 	//write to file
-	if (tuitionList->printFile()) {
+	if (tuitionArr->data->printFile(tuitionArr->size)) {
 		cout << "Tuition is added!" << endl;
 	}
 	else {
@@ -273,19 +284,30 @@ void AddTuition() {
 	}
 
 	//retrieve rating list
-	struct Rating* ratingList = NULL;
-	RetrieveRatings(&ratingList);
+	RatingDArray* ratingArr = *RetrieveRatings();
 
 	//create rating permission for students
-	while (selectedStudents != NULL) {
+	int count = 0;
+	struct Student* selectedStudentList = studArr->data;
 
-		struct Rating *toAdd = new Rating(id, tutor_id, selectedStudents->getId(), 0);
-		AddRatingToLast(&ratingList, toAdd);
+	while (count < selectedStudents->size) {
 
-		selectedStudents = selectedStudents->next;
+		struct Rating* toAdd = new Rating(id, tutor_id, selectedStudentList[count].getId(), 0);
+
+		//Increase size of ratinglist
+		ratingArr->increaseSize(1);
+
+		RatingDArray* newArray = new RatingDArray(*ratingArr);
+		ratingArr->~RatingDArray();
+		ratingArr = newArray;
+
+		ratingArr->AddRatingToLast(toAdd);
+
+		count++;
+		//delete toAdd;
 	}
 
-	if (ratingList->printFile()) {
+	if (ratingArr->data->printFile(ratingArr->size)) {
 		cout << "Rating access given!" << endl << endl;
 	}
 	else {
@@ -294,23 +316,10 @@ void AddTuition() {
 	}
 
 	//free memory space
-	tuitionList->deleteTuitionList();
-	studentList->deleteStudentList();
+	tuitionArr->~TuitionDArray();
+	studArr->~StudentDArray();
+	selectedStudents->~StudentDArray();
+	ratingArr->~RatingDArray();
 }
 
-void AddTuitionToLast(struct Tuition** head, struct Tuition* newTuition) {
-	struct Tuition* node = *head;
-
-	if (node == NULL) {
-		*head = newTuition;
-	}
-	else {
-		while (node->next != NULL) {
-			node = node->next;
-		}
-
-		node->next = newTuition;
-	}
-
-}
 

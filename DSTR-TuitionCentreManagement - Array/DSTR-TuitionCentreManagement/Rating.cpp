@@ -1,5 +1,6 @@
 #include "General.h"
 
+Rating::Rating() {};
 
 Rating::Rating(int tuition_Id, int tutor_Id, int student_Id, int rating) {
 	this->tuition_id = tuition_Id;
@@ -9,35 +10,26 @@ Rating::Rating(int tuition_Id, int tutor_Id, int student_Id, int rating) {
 	this->next = NULL;
 }
 
-int Rating::getTutorId() {
-	return this->tutor_id;
-}
-
-int Rating::getStudentId() {
-	return this->student_id;
-}
-
-int Rating::getRating() {
-	return this->rating;
-}
-
-bool Rating::printFile() {
+bool Rating::printFile(int size) {
+	bool success = false;
 
 	struct Rating* node = this;
 
-	if (node == NULL) {
-		return false;
+	if (size == 0) {
+		return success;
 	}
 
 	ofstream outData;
 	outData.open("Ratings.txt");
 
-	while (node != NULL) {
-		outData << node->tuition_id << "\t" << node->tutor_id << "\t" << node->student_id << "\t" << node->rating << endl;
-		node = node->next;
-	}
+	int count = 0;
 
-	return true;
+	while (count < size) {
+		outData << node[count].tuition_id << "\t" << node[count].tutor_id << "\t" << node[count].student_id << "\t" << node[count].rating << endl;
+		count++;
+	}
+	success = true;
+	return success;
 }
 
 bool Rating::editRating(int rate) {
@@ -46,55 +38,58 @@ bool Rating::editRating(int rate) {
 	bool result = false;
 	struct Rating* modifiedRating = this;
 
-	struct Rating* ratingList = NULL;
-	RetrieveRatings(&ratingList);
-	struct Rating** head = &ratingList;
+	RatingDArray* ratingArr = *RetrieveRatings();
+	struct Rating* ratingList = ratingArr->data;
+	
+	int count = 0;
 
-	while (ratingList != NULL) {
-		if (ratingList->tuition_id == modifiedRating->tuition_id && ratingList->tutor_id == modifiedRating->tutor_id && ratingList->student_id == modifiedRating->student_id) {
-			ratingList->rating = modifiedRating->rating;
+	while (count < ratingArr->size) {
+		if (ratingList[count].tuition_id == modifiedRating->tuition_id && ratingList[count].tutor_id == modifiedRating->tutor_id && ratingList[count].student_id == modifiedRating->student_id) {
+			ratingArr->data[count].rating = modifiedRating->rating;
 			break;
 		}
 
-		ratingList = ratingList->next;
+		count++;
 	}
 
-	result = (*head)->printFile();
+	result = ratingArr->data->printFile(ratingArr->size);
 
-	ratingList->deleteRatingList();
+	ratingArr->~RatingDArray();
 
 	return result;
 }
 
-void Rating::displayRatings() {
+void Rating::displayRatings(int size) {
 
-	if (this == NULL) return;
+	if (size == 0) return;
 
 	struct Rating* node = this;
 
 	//retrieve tuitions
-	struct Tuition* tuitionList = NULL;
-	RetrieveTuitions(&tuitionList);
+	TuitionDArray* tuitionArr = *RetrieveTuitions();
+	struct Tuition* tuitionList = tuitionArr->data;
 
 	//retrieve tutors
-	struct Tutor* tutorList = NULL;
-	RetrieveTutors(&tutorList);
+	TutorDArray* tutorArr = *RetrieveTutorByTermination(false);
+	struct Tutor* tutorList = tutorArr->data;
 
-	//retrieve tutors
-	struct Subject* subjectList = NULL;
+	//retrieve subjects
+	struct Subject* subjectList = new Subject[5];
 	RetrieveSubjects(&subjectList);
 
-	while (node != NULL) {
+	int count = 0;
 
-		if (node->rating != 0) {
-			node = node->next;
+	while (count < size) {
+
+		if (node[count].rating != 0 || node[count].student_id != getStudentId()) {
+			count++;
 			continue;
 		}
 
-		struct Tuition** tuitionPtr = tuitionList->retrieveById(node->tuition_id);
+		struct Tuition** tuitionPtr = tuitionList->retrieveById(node[count].tuition_id, tuitionArr->size);
 		struct Tuition* tuitionNode = *tuitionPtr;
 
-		struct Tutor** tutorPtr = tutorList->retrieveById(node->tutor_id);
+		struct Tutor** tutorPtr = tutorList->retrieveById(node[count].tutor_id, tutorArr->size);
 		struct Tutor* tutorNode = *tutorPtr;
 
 		string subject_code = tutorNode->getSubject();
@@ -102,12 +97,12 @@ void Rating::displayRatings() {
 		struct Subject* subjectNode = *subjectPtr;
 
 		node->printInfo(tuitionNode, tutorNode, subjectNode);
-		node = node->next;
+		count++;
 	}
 
 	//free memory
-	tuitionList->deleteTuitionList();
-	tutorList->deleteTutorList();
+	tuitionArr->~TuitionDArray();
+	tutorArr->~TutorDArray();
 	subjectList->deleteSubjectList();
 }
 
@@ -116,67 +111,50 @@ void Rating::printInfo(struct Tuition* tuition, struct Tutor* tutor, struct Subj
 }
 
 //retrieve by id
-struct Rating** Rating::retrieveByTuitionId(int id) {
+struct Rating** Rating::retrieveByTuitionId(int id, int size) {
 	struct Rating* node = this;
-	struct Rating** result = NULL;
+	struct Rating* result = NULL;
 
-	if (node == NULL) return result;
+	if (node == NULL || size == 0) return &result;
+	int count = 0;
 
-	while (node != NULL) {
-		if (node->tuition_id == id) {
-			result = &node;
-			return result;
+	while (count < size) {
+		if (node[count].tuition_id == id && node[count].student_id == getStudentId()) {
+			result = &node[count];
+			return &result;
 		}
-		else {
-			node = node->next;
-		}
+		
+		count++;
 	}
 
-	return result;
+	return &result;
 }
 
-//free memory
-void Rating::deleteRatingList() {
-
-	if (this == NULL) {
-		return;
-	}
-
-	Rating* current = this;
-	Rating* next = NULL;
-
-	while (current != NULL)
-	{
-		next = current->next;
-		free(current);
-		current = next;
-	}
-}
 
 //External function
-float CalculateRatings(struct Rating** head, int tutor_Id) {
+float CalculateRatings(struct Rating** head, int tutor_Id, int size) {
 
 	float result = 0;
 
-	if (*head == NULL) return result;
+	if (size == 0 || *head == NULL) return result;
 
 	struct Rating* node = *head;
 
-	int total = 0, count = 0;
+	int total = 0, count = 0, index = 0;
 
-	while (node != NULL) {
+	while (index < size) {
 
-		if (node->getRating() == 0) {
-			node = node->next;
+		if (node[index].rating == 0) {
+			index++;
 			continue;
 		}
 
-		if (node->getTutorId() == tutor_Id) {
-			total = total + node->getRating();
+		if (node[index].tutor_id == tutor_Id) {
+			total = total + node->rating;
 			count++;
 		}
 
-		node = node->next;
+		index++;
 	}
 
 	result = count != 0? total / count : 0;
@@ -184,14 +162,15 @@ float CalculateRatings(struct Rating** head, int tutor_Id) {
 	return result;
 }
 
-void RetrieveRatings(struct Rating** head) {
+class RatingDArray** RetrieveRatings() {
+	RatingDArray* ratingArr = new RatingDArray(1);
+
 	ifstream inData;
 	inData.open("Ratings.txt");
 
-	struct Rating* node = *head;
-
 	int tuition_id, tutor_id, student_id, rating;
 	string str_tuition_id, str_tutor_id, str_student_id, str_rating;
+	int count = 0;
 
 	while (inData >> str_tuition_id >> str_tutor_id >> str_student_id >> str_rating) {
 
@@ -200,53 +179,45 @@ void RetrieveRatings(struct Rating** head) {
 		student_id = stoi(str_student_id);
 		rating = stoi(str_rating);
 
-		struct Rating* input = new Rating(tuition_id, tutor_id, student_id, rating);
+		struct Rating input = Rating(tuition_id, tutor_id, student_id, rating);
+		
 
-		if (*head == NULL) {
-			*head = input;
-			node = *head;
-		}
-		else {
-			node->next = input;
-			node = node->next;
+		if (count >= ratingArr->size) {
+			//increase array size
+			ratingArr->increaseSize(1);
 
+			RatingDArray* newArray = new RatingDArray(*ratingArr);
+			ratingArr->~RatingDArray();
+			ratingArr = newArray;
 		}
+
+		//input tutor element into array
+		ratingArr->data[count] = input;
+
+		count++;
 
 	}
+
+	return &ratingArr;
 
 }
 
-void AddRatingToLast(struct Rating** head, struct Rating* newRating) {
-	struct Rating* node = *head;
 
-	if (node == NULL) {
-		*head = newRating;
-	}
-	else {
-		while (node->next != NULL) {
-			node = node->next;
-		}
-
-		node->next = newRating;
-	}
-
-}
 
 void GiveRating() {
 	system("CLS");
 
 	//Retrieve rating list;
-	struct Rating* ratingList = NULL;
-	RetrieveRatings(&ratingList);
+	RatingDArray* ratingArr = *RetrieveRatings();
 
-	if (ratingList == NULL) {
+	if (ratingArr->size < 1) {
 		DisplayStudentMenu();
 		return;
 	}
 
 	cout << "Tuition_ID" << "\t" << "Date" << "\t\t" << "Tutor" << "\t\t" << "Subject" << endl;;
-	FilterRating(&ratingList);
-	ratingList->displayRatings();
+	//FilterRating(&ratingList);
+	ratingArr->data->displayRatings(ratingArr->size);
 
 	string str_tuition_id, str_rating;
 	int tuition_id = -1, rating = 0;
@@ -260,7 +231,7 @@ void GiveRating() {
 	}
 	catch (exception) {
 		system("CLS");
-		ratingList->deleteRatingList();
+		ratingArr->~RatingDArray();
 		cout << "Invalid Input!" << endl << endl;
 		DisplayStudentMenu();
 		return;
@@ -268,24 +239,24 @@ void GiveRating() {
 
 	if (tuition_id == 0) {
 		system("CLS");
-		ratingList->deleteRatingList();
+		ratingArr->~RatingDArray();
 		DisplayStudentMenu();
 	}
 
 	if (tuition_id < 0) {
 		system("CLS");
-		ratingList->deleteRatingList();
+		ratingArr->~RatingDArray();
 		cout << "Invalid Input!" << endl << endl;
 		DisplayStudentMenu();
 		return;
 	}
 
 	//retrieve rating record based on tuition id
-	struct Rating** ratingPtr = ratingList->retrieveByTuitionId(tuition_id);
+	struct Rating** ratingPtr = ratingArr->data->retrieveByTuitionId(tuition_id, ratingArr->size);
 
 	if (*ratingPtr == NULL) {
 		system("CLS");
-		ratingList->deleteRatingList();
+		ratingArr->~RatingDArray();
 		cout << "Invalid Input!" << endl << endl;
 		DisplayStudentMenu();
 		return;
@@ -294,9 +265,9 @@ void GiveRating() {
 	//rated check
 	struct Rating* ratingNode = *ratingPtr;
 
-	if (ratingNode->getRating() != 0) {
+	if (ratingNode->rating != 0) {
 		system("CLS");
-		ratingList->deleteRatingList();
+		ratingArr->~RatingDArray();
 		cout << "Invalid Input!" << endl << endl;
 		DisplayStudentMenu();
 		return;
@@ -314,7 +285,7 @@ void GiveRating() {
 	}
 	catch (exception) {
 		system("CLS");
-		ratingList->deleteRatingList();
+		ratingArr->~RatingDArray();
 		cout << "Invalid Input!" << endl << endl;
 		DisplayStudentMenu();
 		return;
@@ -322,7 +293,7 @@ void GiveRating() {
 
 	if (rating < 1 || rating > 5) {
 		system("CLS");
-		ratingList->deleteRatingList();
+		ratingArr->~RatingDArray();
 		cout << "Invalid Input!" << endl << endl;
 		DisplayStudentMenu();
 		return;
@@ -338,36 +309,36 @@ void GiveRating() {
 	}
 
 	//Free memory;
-	ratingList->deleteRatingList();
+	ratingArr->~RatingDArray();
 	GiveRating();
 
 }
 
 //for student only
-void FilterRating(struct Rating** head) {
-
-	struct Rating* toDelete = *head;
-	struct Rating* prev_node = NULL;
-	struct Rating* next_node = NULL;
-
-	if (*head == NULL) return;
-
-	while (toDelete != NULL) {
-		if (toDelete->getStudentId() == getStudentId()) {
-			prev_node = toDelete;
-			toDelete = toDelete->next;
-			continue;
-		}
-
-		//delete current node
-		next_node = toDelete->next;
-		if (prev_node != NULL) {
-			prev_node->next = next_node;
-		}
-		else {
-			*head = next_node;
-		}
-		free(toDelete);
-		toDelete = next_node;
-	}
-}
+//void FilterRating(struct Rating** head) {
+//
+//	struct Rating* toDelete = *head;
+//	struct Rating* prev_node = NULL;
+//	struct Rating* next_node = NULL;
+//
+//	if (*head == NULL) return;
+//
+//	while (toDelete != NULL) {
+//		if (toDelete->student_id == getStudentId()) {
+//			prev_node = toDelete;
+//			toDelete = toDelete->next;
+//			continue;
+//		}
+//
+//		//delete current node
+//		next_node = toDelete->next;
+//		if (prev_node != NULL) {
+//			prev_node->next = next_node;
+//		}
+//		else {
+//			*head = next_node;
+//		}
+//		free(toDelete);
+//		toDelete = next_node;
+//	}
+//}

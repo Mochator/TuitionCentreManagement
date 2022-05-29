@@ -85,11 +85,11 @@ void loginAsStudent() {
 	cin >> password;
 
 	//Retrieve students
-	struct Student* studentList = NULL;
-	RetrieveStudents(&studentList);
+	StudentDArray* studentArr = *RetrieveStudents();
+	struct Student* studentList = studentArr->data;
 
 	//Find student based on username
-	struct Student** studentPtr = studentList->searchByUsername(username);
+	struct Student** studentPtr = studentList->searchByUsername(username, studentArr->size);
 
 	if (*studentPtr != NULL) {
 		struct Student* student = *studentPtr;
@@ -97,10 +97,10 @@ void loginAsStudent() {
 			setRole("Student");
 			setStudentId(student->getId());
 			system("CLS");
-			cout << "Welcome back " << student->getFullName() << " !";
+			cout << "Welcome back " << student->getFullName() << " !" << endl;;
 
 			//free up memory space
-			studentList->deleteStudentList();
+			studentArr->~StudentDArray();
 
 			DisplayStudentMenu();
 			return;
@@ -123,7 +123,7 @@ void loginAsAdmin() {
 	string strTuitionCentre, password;
 
 	//Retrieve tuition centres
-	struct TuitionCentre* tuitionCentreList = NULL;
+	struct TuitionCentre* tuitionCentreList = new TuitionCentre[3];
 	RetrieveTuitionCentres(&tuitionCentreList);
 
 	tuitionCentreList->displayTuitionCentres(1, false);
@@ -148,12 +148,12 @@ void loginAsAdmin() {
 		//Find tuition centre based on index
 		struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByIndex(idxTuitionCentre);
 
-		if (tuitionCentrePtr != NULL) {
+		if (*tuitionCentrePtr != NULL) {
 			struct TuitionCentre* tuitionCentre = *tuitionCentrePtr;
 
 			if (tuitionCentre->passwordComparison(password)) {
 				setRole("Admin");
-				setTuitionCentreCode(tuitionCentre->getCode());
+				setTuitionCentreCode(tuitionCentre->code);
 				system("CLS");
 				cout << "Welcome back Admin - " << tuitionCentre->getCodeName() << " !" << endl;
 

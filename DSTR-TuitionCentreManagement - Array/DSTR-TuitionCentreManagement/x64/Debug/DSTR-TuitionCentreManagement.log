@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿  Login.cpp
   main.cpp
   Menu.cpp
@@ -19,4 +20,15 @@ C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManage
 C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\Student.cpp(114): warning C4172: returning address of local variable or temporary: node
 C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\Rating.cpp(128): warning C4172: returning address of local variable or temporary: node
   LINK : C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\x64\Debug\DSTR-TuitionCentreManagement.exe not found or not built by the last incremental link; performing full link
+=======
+﻿  main.cpp
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\main.cpp(172,23): warning C4099: 'TutorDArray': type name first seen using 'class' now seen using 'struct'
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\General.h(297): message : see declaration of 'TutorDArray'
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\main.cpp(185,23): warning C4099: 'TutorDArray': type name first seen using 'class' now seen using 'struct'
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\General.h(297): message : see declaration of 'TutorDArray'
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\main.cpp(220,26): warning C4099: 'TuitionDArray': type name first seen using 'class' now seen using 'struct'
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\General.h(413): message : see declaration of 'TuitionDArray'
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\main.cpp(257,25): warning C4099: 'RatingDArray': type name first seen using 'class' now seen using 'struct'
+C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\DSTR-TuitionCentreManagement\General.h(469): message : see declaration of 'RatingDArray'
+>>>>>>> Carmen-Array2
   DSTR-TuitionCentreManagement.vcxproj -> C:\Users\Mocha\Documents\GitHub\TuitionCentreManagement\DSTR-TuitionCentreManagement - Array\x64\Debug\DSTR-TuitionCentreManagement.exe
