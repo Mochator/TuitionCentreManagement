@@ -51,9 +51,7 @@ void ViewTutor(TutorDArray**);
 int GetTutorSize(struct Tutor**, bool, int);
 
 //Students
-void RetrieveStudents(struct Student**);
-void AddStudentToLast(struct Student**, struct Student*);
-void RemoveStudentFromList(struct Student**, int);
+class StudentDArray** RetrieveStudents();
 
 //Menu
 void DisplayHRMenu();
@@ -79,16 +77,13 @@ void RetrieveTuitionCentres(struct TuitionCentre**);
 void DisplayAllTuitionCentres();
 
 //Rating
-float CalculateRatings(struct Rating**, int);
-void RetrieveRatings(struct Rating**);
-void AddRatingToLast(struct Rating**, struct Rating*);
+float CalculateRatings(struct Rating**, int, int);
+class RatingDArray** RetrieveRatings();
 void GiveRating();
-void FilterRating(struct Rating**);
 
 //Tuition
-void RetrieveTuitions(struct Tuition**);
+class TuitionDArray** RetrieveTuitions();
 void AddTuition();
-void AddTuitionToLast(struct Tuition**, struct Tuition*);
 
 
 //---end::All main method headers---
@@ -120,8 +115,6 @@ public:
 	//Functions
 	void terminateTutor();
 	void viewTutor(struct TuitionCentre*, struct Subject*);
-	void nextTutor(class TutorDArray**, int);
-	void previousTutor(class TutorDArray**, int);
 
 	bool printFile(int);
 	void printTutorFull();
@@ -175,12 +168,11 @@ public:
 	//void addStudent(struct Student**, struct Student*);
 	void printInfo();
 
-	void displayStudents();
-	void deleteStudentList();
+	void displayStudents(int);
 
-	struct Student** searchByUsername(string);
+	struct Student** searchByUsername(string, int);
 
-	struct Student** retrieveById(int);
+	struct Student** retrieveById(int, int);
 
 	bool passwordComparison(string);
 	string getFullName();
@@ -263,14 +255,12 @@ public:
 	struct Tuition();
 
 	//Functions
-	bool printFile();
+	bool printFile(int);
 
-	void deleteTuitionList();
-
-	int generateId();
 	string getInfo();
+	int getId();
 
-	struct Tuition** retrieveById(int);
+	struct Tuition** retrieveById(int, int);
 
 
 };
@@ -289,14 +279,13 @@ struct Rating {
 	struct Rating();
 
 	//Functions
-	void displayRatings();
-	void deleteRatingList();
+	void displayRatings(int);
 
 	void printInfo(struct Tuition*, struct Tutor*, struct Subject*);
-	bool printFile();
+	bool printFile(int);
 	bool editRating(int);
 
-	struct Rating** retrieveByTuitionId(int);
+	struct Rating** retrieveByTuitionId(int, int);
 
 };
 
@@ -315,12 +304,12 @@ public:
 		data = new Tutor[size];
 	}
 
-	TutorDArray(TutorDArray& tutorDArray) {
-		size = tutorDArray.size;
+	TutorDArray(TutorDArray& oldArray) {
+		size = oldArray.size;
 		data = new Tutor[size];
 
 		for (int i = 0; i < size - 1; i++) {
-			data[i] = tutorDArray.data[i];
+			data[i] = oldArray.data[i];
 		}
 	}
 
@@ -367,26 +356,150 @@ public:
 
 class StudentDArray {
 public:
-	int size;
-	struct Student* data;
+	int size = 0;
+	struct Student* data = new Student[size];
 
 	StudentDArray(int s) {
 		size = s;
 		data = new Student[size];
 	}
 
+	StudentDArray(StudentDArray& oldArray) {
+		size = oldArray.size;
+		data = new Student[size];
+
+		for (int i = 0; i < size - 1; i++) {
+			data[i] = oldArray.data[i];
+		}
+	}
+
 	void increaseSize(int s) {
 		size += s;
-		data = new Student[size];
 	}
 
 	void decreaseSize(int s) {
 		size -= s;
-		data = new Student[size];
+	}
+
+
+	void AddStudentToLast(struct Student* newStud) {
+		data[size - 1] = *newStud;
+	}
+
+
+	int generateId() {
+		int current = 1;
+
+		if (data == NULL) return current;
+
+		int count = 0;
+		while (count < size) {
+
+			if (data[count].getId() > current) {
+				current = data[count].getId();
+			}
+
+			count++;
+		}
+
+		return current + 1;
 	}
 
 	~StudentDArray() {
-		delete[size] data;
+		delete[] data;
+	}
+};
+
+class TuitionDArray {
+public:
+	int size = 0;
+	struct Tuition* data = new Tuition[size];
+
+	TuitionDArray(int s) {
+		size = s;
+		data = new Tuition[size];
+	}
+
+	TuitionDArray(TuitionDArray& oldArray) {
+		size = oldArray.size;
+		data = new Tuition[size];
+
+		for (int i = 0; i < size - 1; i++) {
+			data[i] = oldArray.data[i];
+		}
+	}
+
+	void increaseSize(int s) {
+		size += s;
+	}
+
+	void decreaseSize(int s) {
+		size -= s;
+	}
+
+
+	void AddTuitiontToLast(struct Tuition* newTuition) {
+		data[size - 1] = *newTuition;
+	}
+
+
+	int generateId() {
+		int current = 1;
+
+		if (data == NULL) return current;
+
+		int count = 0;
+		while (count < size) {
+
+			if (data[count].getId() > current) {
+				current = data[count].getId();
+			}
+
+			count++;
+		}
+
+		return current + 1;
+	}
+
+	~TuitionDArray() {
+		delete[] data;
+	}
+};
+
+class RatingDArray {
+public:
+	int size = 0;
+	struct Rating* data = new Rating[size];
+
+	RatingDArray(int s) {
+		size = s;
+		data = new Rating[size];
+	}
+
+	RatingDArray(RatingDArray& oldArray) {
+		size = oldArray.size;
+		data = new Rating[size];
+
+		for (int i = 0; i < size - 1; i++) {
+			data[i] = oldArray.data[i];
+		}
+	}
+
+	void increaseSize(int s) {
+		size += s;
+	}
+
+	void decreaseSize(int s) {
+		size -= s;
+	}
+
+
+	void AddRatingToLast(struct Rating* newRating) {
+		data[size - 1] = *newRating;
+	}
+
+	~RatingDArray() {
+		delete[] data;
 	}
 };
 

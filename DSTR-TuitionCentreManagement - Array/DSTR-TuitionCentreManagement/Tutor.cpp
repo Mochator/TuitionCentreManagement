@@ -844,7 +844,7 @@ void EditTutor() {
 	//availability check
 	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id, tutorArr->size);
 
-	if (tutorPtr == NULL) {
+	if (*tutorPtr == NULL) {
 		tutorArr->~TutorDArray();
 		system("CLS");
 		cout << "Tutor not found!" << endl;
@@ -1036,14 +1036,14 @@ class TutorDArray** RetrieveTutors() {
 
 		//Calculatate rating
 		//-Retrieve-
-		struct Rating* ratingList = NULL;
-		RetrieveRatings(&ratingList);
+		RatingDArray* ratingArr = *RetrieveRatings();
+		struct Rating* ratingList = ratingArr->data;
 
 		float rating = 0;
 
 		if (ratingList != NULL) {
 			//-Calculate-
-			rating = CalculateRatings(&ratingList, id);
+			rating = CalculateRatings(&ratingList, id, ratingArr->size);
 		}
 
 		struct Tutor input = Tutor(id, firstname, lastname, gender, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code, rating);
@@ -1094,14 +1094,14 @@ class TutorDArray** RetrieveTutorByTermination(bool isTerminated) {
 
 		//Calculatate rating
 		//-Retrieve-
-		struct Rating* ratingList = NULL;
-		RetrieveRatings(&ratingList);
+		RatingDArray* ratingArr = *RetrieveRatings();
+		struct Rating* ratingList = ratingArr->data;
 
 		float rating = 0;
 
 		if (ratingList != NULL) {
 			//-Calculate-
-			rating = CalculateRatings(&ratingList, id);
+			rating = CalculateRatings(&ratingList, id, ratingArr->size);
 		}
 
 		struct Tutor input = Tutor(id, firstname, lastname, gender, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code, rating);
@@ -1147,14 +1147,14 @@ class TutorDArray** RetrieveTutorByTuitionCentre(string tuitionCentreCode) {
 
 		//Calculatate rating
 		//-Retrieve-
-		struct Rating* ratingList = NULL;
-		RetrieveRatings(&ratingList);
+		RatingDArray* ratingArr = *RetrieveRatings();
+		struct Rating* ratingList = ratingArr->data;
 
 		float rating = 0;
 
 		if (ratingList != NULL) {
 			//-Calculate-
-			rating = CalculateRatings(&ratingList, id);
+			rating = CalculateRatings(&ratingList, id, ratingArr->size);
 		}
 
 		struct Tutor input = Tutor(id, firstname, lastname, gender, phone, address, date_Joined, date_Terminated, subject_Code, tuition_Centre_Code, rating);

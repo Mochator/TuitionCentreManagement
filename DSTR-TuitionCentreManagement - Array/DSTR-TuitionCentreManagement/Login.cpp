@@ -85,22 +85,22 @@ void loginAsStudent() {
 	cin >> password;
 
 	//Retrieve students
-	struct Student* studentList = new Student[50];
-	RetrieveStudents(&studentList);
+	StudentDArray* studentArr = *RetrieveStudents();
+	struct Student* studentList = studentArr->data;
 
 	//Find student based on username
-	struct Student** studentPtr = studentList->searchByUsername(username);
+	struct Student** studentPtr = studentList->searchByUsername(username, studentArr->size);
 
-	if (studentPtr != NULL) {
+	if (*studentPtr != NULL) {
 		struct Student* student = *studentPtr;
 		if (student->passwordComparison(password)) {
 			setRole("Student");
 			setStudentId(student->getId());
 			system("CLS");
-			cout << "Welcome back " << student->getFullName() << " !";
+			cout << "Welcome back " << student->getFullName() << " !" << endl;;
 
 			//free up memory space
-			studentList->deleteStudentList();
+			studentArr->~StudentDArray();
 
 			DisplayStudentMenu();
 			return;
