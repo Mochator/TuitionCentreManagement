@@ -202,7 +202,7 @@ void TutorManagementMenu() {
 	}
 }
 
-void TutorListMenu(struct Tutor** head) {
+void TutorListMenu(TutorDArray** tutorDArrayPtr) {
 	string input;
 	int option = -1;
 
@@ -219,17 +219,20 @@ void TutorListMenu(struct Tutor** head) {
 
 	}
 	catch (exception) {
-		TutorListMenu(head);
+		TutorListMenu(tutorDArrayPtr);
 	}
 
 	if (option == -1) {
-		TutorListMenu(head);
+		TutorListMenu(tutorDArrayPtr);
 	}
+
+	TutorDArray* tutorDArray = *tutorDArrayPtr;
+
 
 	switch (option) {
 	default:
 	case 0: 
-		(*head)->deleteTutorList();
+		tutorDArray->~TutorDArray();
 		if (getRole() == "HR") {
 			system("CLS");
 			TutorManagementMenu();
@@ -244,18 +247,18 @@ void TutorListMenu(struct Tutor** head) {
 		}
 		break;
 	case 1:
-		SearchMenu(head);
+		SearchMenu(tutorDArrayPtr);
 		break;
 	case 2: 
-		SortMenu(head);
+		SortMenu(tutorDArrayPtr);
 		break;
 	case 3:
-		ViewTutor(head);
+		ViewTutor(tutorDArrayPtr);
 		break;
 	}
 }
 
-void SearchMenu(struct Tutor** head) {
+void SearchMenu(TutorDArray** tutorDArrayPtr) {
 	string input;
 	int option = -1;
 
@@ -273,39 +276,41 @@ void SearchMenu(struct Tutor** head) {
 
 	}
 	catch (exception) {
-		SearchMenu(head);
+		SearchMenu(tutorDArrayPtr);
 	}
 
 	if (option == -1) {
-		SearchMenu(head);
+		SearchMenu(tutorDArrayPtr);
 	}
+
+	TutorDArray* tutorDArray = *tutorDArrayPtr;
 
 	switch (option) {
 	default:
 	case 0: 
-		(*head)->displayTutors(false);
-		TutorListMenu(head);
+		tutorDArray->data->displayTutors(false, tutorDArray->size);
+		TutorListMenu(tutorDArrayPtr);
 		break;
 	case 1:
-		SearchTutorById(head);
-		TutorListMenu(head);
+		SearchTutorById(tutorDArrayPtr);
+		TutorListMenu(tutorDArrayPtr);
 		break;
 	case 2:
-		SearchTutorByRating(head);
-		TutorListMenu(head);
+		SearchTutorByRating(tutorDArrayPtr);
+		TutorListMenu(tutorDArrayPtr);
 		break;
 	case 3: 
-		SearchTutorByTuitionCentre(head);
-		TutorListMenu(head);
+		SearchTutorByTuitionCentre(tutorDArrayPtr);
+		TutorListMenu(tutorDArrayPtr);
 		break;
 	case 4: 
-		SearchTutorBySubject(head);
-		TutorListMenu(head);
+		SearchTutorBySubject(tutorDArrayPtr);
+		TutorListMenu(tutorDArrayPtr);
 		break;
 	}
 }
 
-void SortMenu(struct Tutor** head) {
+void SortMenu(TutorDArray** tutorDArrayPtr) {
 	string input;
 	int option = -1;
 
@@ -322,35 +327,38 @@ void SortMenu(struct Tutor** head) {
 
 	}
 	catch (exception) {
-		SortMenu(head);
+		SortMenu(tutorDArrayPtr);
 	}
 
 	if (option == -1) {
-		SortMenu(head);
+		SortMenu(tutorDArrayPtr);
 	}
+
+	TutorDArray* tutorDArray = *tutorDArrayPtr;
+
 
 	switch (option) {
 	default:
 	case 0:
-		(*head)->displayTutors(false);
-		TutorListMenu(head);
+		tutorDArray->data->displayTutors(false, tutorDArray->size);
+		TutorListMenu(tutorDArrayPtr);
 		break;
 	case 1:
-		SortTutorById(head);
-		TutorListMenu(head);
+		SortTutorById(tutorDArrayPtr);
+		TutorListMenu(tutorDArrayPtr);
 		break;
 	case 2:
-		SortTutorByRating(head);
-		TutorListMenu(head);
+		SortTutorByRating(tutorDArrayPtr);
+		TutorListMenu(tutorDArrayPtr);
 		break;
 	case 3:
-		SortTutorByHourlyPayRate(head);
-		TutorListMenu(head);
+		SortTutorByHourlyPayRate(tutorDArrayPtr);
+		TutorListMenu(tutorDArrayPtr);
 		break;
 	}
 }
 
-void TutorNavigationMenu(struct Tutor** head, struct Tutor* current) {
+void TutorNavigationMenu(TutorDArray** tutorDArrayPtr, int current) {
 	string input;
 	int option = -1;
 
@@ -366,24 +374,26 @@ void TutorNavigationMenu(struct Tutor** head, struct Tutor* current) {
 
 	}
 	catch (exception) {
-		TutorNavigationMenu(head, current);
+		TutorNavigationMenu(tutorDArrayPtr, current);
 	}
 
 	if (option == -1) {
-		TutorNavigationMenu(head, current);
+		TutorNavigationMenu(tutorDArrayPtr, current);
 	}
+
+	TutorDArray* tutorDArray = *tutorDArrayPtr;
 
 	switch (option) {
 	default:
 	case 0:
-		(*head)->displayTutors(false);
-		TutorListMenu(head);
+		tutorDArray->data->displayTutors(false, tutorDArray->size);
+		TutorListMenu(tutorDArrayPtr);
 		break;
 	case 1:
-		current->previousTutor(head);
+		tutorDArray->previousTutor(current);
 		break;
 	case 2:
-		current->nextTutor(head);
+		tutorDArray->nextTutor(current);
 		break;
 	}
 }

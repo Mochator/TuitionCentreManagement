@@ -1,5 +1,6 @@
 #include "General.h"
 
+Rating::Rating() {};
 
 Rating::Rating(int tuition_Id, int tutor_Id, int student_Id, int rating) {
 	this->tuition_id = tuition_Id;
@@ -7,18 +8,6 @@ Rating::Rating(int tuition_Id, int tutor_Id, int student_Id, int rating) {
 	this->student_id = student_Id;
 	this->rating = rating;
 	this->next = NULL;
-}
-
-int Rating::getTutorId() {
-	return this->tutor_id;
-}
-
-int Rating::getStudentId() {
-	return this->student_id;
-}
-
-int Rating::getRating() {
-	return this->rating;
 }
 
 bool Rating::printFile() {
@@ -166,13 +155,13 @@ float CalculateRatings(struct Rating** head, int tutor_Id) {
 
 	while (node != NULL) {
 
-		if (node->getRating() == 0) {
+		if (node->rating == 0) {
 			node = node->next;
 			continue;
 		}
 
-		if (node->getTutorId() == tutor_Id) {
-			total = total + node->getRating();
+		if (node->tutor_id == tutor_Id) {
+			total = total + node->rating;
 			count++;
 		}
 
@@ -283,7 +272,7 @@ void GiveRating() {
 	//retrieve rating record based on tuition id
 	struct Rating** ratingPtr = ratingList->retrieveByTuitionId(tuition_id);
 
-	if (ratingPtr == NULL) {
+	if (*ratingPtr == NULL) {
 		system("CLS");
 		ratingList->deleteRatingList();
 		cout << "Invalid Input!" << endl << endl;
@@ -294,7 +283,7 @@ void GiveRating() {
 	//rated check
 	struct Rating* ratingNode = *ratingPtr;
 
-	if (ratingNode->getRating() != 0) {
+	if (ratingNode->rating != 0) {
 		system("CLS");
 		ratingList->deleteRatingList();
 		cout << "Invalid Input!" << endl << endl;
@@ -353,7 +342,7 @@ void FilterRating(struct Rating** head) {
 	if (*head == NULL) return;
 
 	while (toDelete != NULL) {
-		if (toDelete->getStudentId() == getStudentId()) {
+		if (toDelete->student_id == getStudentId()) {
 			prev_node = toDelete;
 			toDelete = toDelete->next;
 			continue;

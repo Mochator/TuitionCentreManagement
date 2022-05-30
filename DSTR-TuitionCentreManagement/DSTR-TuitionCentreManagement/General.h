@@ -68,15 +68,11 @@ void TutorNavigationMenu(struct Tutor**, struct Tutor*);
 
 //Subjects
 void RetrieveSubjects(struct Subject**);
-//void DisplaySubjects(struct Subject**, int, bool);
-//void DeleteSubjectList(struct Subject**);
 void DisplayAllSubjects();
 
 
 //Tuition Centre
 void RetrieveTuitionCentres(struct TuitionCentre**);
-//void DisplayTuitionCentres(struct TuitionCentre**, int, bool);
-//void DeleteTuitionCentreList(struct TuitionCentre**);
 void DisplayAllTuitionCentres();
 
 //Rating
@@ -122,7 +118,6 @@ public:
 	void viewTutor(struct TuitionCentre*, struct Subject*);
 	void nextTutor(struct Tutor**);
 	void previousTutor(struct Tutor**);
-	//void predefineTutor();
 
 	bool printFile();
 	void printTutorFull();
@@ -159,17 +154,20 @@ struct Student {
 
 private:
 	int id;
+
+public:
 	string firstname;
 	string lastname;
 	string username;
 	string password;
 	string contact;
 
-public:
+
 	struct Student* next;
 
 	//Student Constructor: id, firstname, lastname, username, password, contact
 	struct Student(int, string, string, string, string, string);
+	struct Student();
 
 	//Functions
 	//void addStudent(struct Student**, struct Student*);
@@ -190,16 +188,16 @@ public:
 
 struct Subject {
 
-private:
+public:
 	string code;
 	string name;
 	float hourly_pay_rate;
 
-public:
 	struct Subject* next;
 
 	//Subject Constructor: code, name, hourly_pay_rate
 	struct Subject(string, string, float);
+	struct Subject();
 
 	//Functions
 	void addSubject(struct Subject** head, struct Subject* newSubject);
@@ -213,31 +211,25 @@ public:
 
 	struct Subject** searchByIndex(int);
 	struct Subject** searchByCode(string);
-	string getCode();
 	string getInfo();
-	float getHourlyPayRate();
 
 };
 
 struct TuitionCentre {
 
-private:
+public:
 	string code;
 	string name;
 	string address;
 	string password;
 
-public:
 	struct TuitionCentre* next;
 
 	//Tuition Constructor: code, name, address, password
 	struct TuitionCentre(string, string, string, string);
-
-	~TuitionCentre() {};
+	struct TuitionCentre();
 
 	//Functions
-	void addTuitionCentre(struct TuitionCentre** head, struct TuitionCentre* newTuitionCentre);
-
 	void displayTuitionCentres(int, bool);
 	void deleteTuitionCentreList();
 
@@ -250,7 +242,6 @@ public:
 	bool passwordComparison(string);
 
 	string getCodeName();
-	string getCode();
 	string getInfo();
 
 	struct TuitionCentre** searchByCode (string);
@@ -260,15 +251,17 @@ public:
 struct Tuition {
 private:
 	int id;
+
+public:
 	int tutor_id;
 	int hour;
 	string date;
 
-public:
 	struct Tuition* next;
 
 	// Tuition Constructor : id, tutor_Id, hour, date
 	struct Tuition(int, int, int, string);
+	struct Tuition();
 
 	//Functions
 	bool printFile();
@@ -276,7 +269,6 @@ public:
 	void deleteTuitionList();
 
 	int generateId();
-	int getTutorId();
 	string getInfo();
 
 	struct Tuition** retrieveById(int);
@@ -285,17 +277,17 @@ public:
 };
 
 struct Rating {
-private:
+
 	int tuition_id;
 	int tutor_id;
 	int student_id;
 	int rating;
 
-public:
 	struct Rating* next;
 
 	// Rating Constructor : id, tutor_Id, student_id, rating
 	struct Rating(int, int, int, int);
+	struct Rating();
 
 	//Functions
 	void displayRatings();
@@ -304,10 +296,6 @@ public:
 	void printInfo(struct Tuition*, struct Tutor*, struct Subject*);
 	bool printFile();
 	bool editRating(int);
-
-	int getTutorId();
-	int getRating();
-	int getStudentId();
 
 	struct Rating** retrieveByTuitionId(int);
 

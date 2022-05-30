@@ -202,7 +202,7 @@ void DeleteTutor() {
 			struct Tutor* deletedNode = *deletedNodePtr;
 
 			while (deletedNode) {
-				if (tuitionList->getTutorId() == deletedNode->getId()) {
+				if (tuitionList->tutor_id == deletedNode->getId()) {
 					//delete current node
 					tuition_next_node = tuitionList->next;
 
@@ -235,7 +235,7 @@ void DeleteTutor() {
 			struct Tutor* deletedNode = *deletedNodePtr;
 
 			while (deletedNode != NULL) {
-				if (ratingList->getTutorId() == deletedNode->getId()) {
+				if (ratingList->tutor_id == deletedNode->getId()) {
 					//delete current node
 					rating_next_node = ratingList->next;
 

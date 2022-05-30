@@ -1,5 +1,7 @@
 #include "General.h"
 
+Tuition::Tuition() {};
+
 Tuition::Tuition(int id, int tutor_id, int hour, string date) {
 
 	this->id = id;
@@ -53,10 +55,6 @@ int Tuition::generateId() {
 string Tuition::getInfo() {
 	string result = to_string(this->id) + "\t\t" + this->date;
 	return result;
-}
-
-int Tuition::getTutorId(){
-	return this->tutor_id;
 }
 
 //retrieve by id
@@ -163,7 +161,7 @@ void AddTuition() {
 	//availability check
 	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id);
 
-	if (tutorPtr == NULL) {
+	if (*tutorPtr == NULL) {
 		tutorList->deleteTutorList();
 		system("CLS");
 		cout << "Tutor not found / terminated!" << endl;
@@ -226,7 +224,7 @@ void AddTuition() {
 		//-retrival-
 		struct Student** studentPtr = studentList->retrieveById(student_id);
 
-		if (studentPtr == NULL) {
+		if (*studentPtr == NULL) {
 			cout << "Invalid Input!" << endl << endl;
 			continue;
 		}

@@ -86,40 +86,42 @@ void GenerateReport() {
 		outData.open(fileName);
 
 		//Retrieve tuition centres
-		struct TuitionCentre* tuitionCentreList = NULL;
+		struct TuitionCentre* tuitionCentreList = new TuitionCentre[3];
 		RetrieveTuitionCentres(&tuitionCentreList);
 
 		//Retrieve subjects
-		struct Subject* subjectList = NULL;
+		struct Subject* subjectList = new Subject[5];
 		RetrieveSubjects(&subjectList);
 
 		//Retrieve tutors
-		struct Tutor* tutorList = NULL;
-		RetrieveTutors(&tutorList);
+		TutorDArray* tutorArr = *RetrieveTutors();
+		struct Tutor* tutorList = tutorArr->data;
 
 		//calculate number of active tutors
-		int count = GetTutorSize(&tutorList, false);
+		int activeCount = GetTutorSize(&tutorArr->data, false, tutorArr->size);
 
-		while (tutorList != NULL) {
+		int count = 0;
 
-			struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByCode(tutorList->getTuitionCentre());
+		while (count < tutorArr->size) {
+
+			struct TuitionCentre** tuitionCentrePtr = tuitionCentreList->searchByCode(tutorList[count].getTuitionCentre());
 			struct TuitionCentre* tuitionCentreNode = *tuitionCentrePtr;
 
-			struct Subject** subjectPtr = subjectList->searchByCode(tutorList->getSubject());
+			struct Subject** subjectPtr = subjectList->searchByCode(tutorList[count].getSubject());
 			struct Subject* subjectNode = *subjectPtr;
 
-			outData << tutorList->getId() << "\t" << tutorList->getFullName() << "\t" << tutorList->phone << "\t" << tutorList->address
-				<< "\t" << subjectNode->getInfo() << "\t" << tuitionCentreNode->getInfo() << "\t" << tutorList->getRating() << endl;
+			outData << tutorList[count].getId() << "\t" << tutorList[count].getFullName() << "\t" << tutorList[count].phone << "\t" << tutorList[count].address
+				<< "\t" << subjectNode->getInfo() << "\t" << tuitionCentreNode->getInfo() << "\t" << tutorList[count].getRating() << endl;
 
-			tutorList = tutorList->next;
+			count++;
 		}
 		
 		cout << "================================================" << endl;
-		outData << "Number of active tutors: " + count;
+		outData << "Number of active tutors: " + activeCount;
 
 		//free memory
 		tuitionCentreList->deleteTuitionCentreList();
-		tutorList->deleteTutorList();
+		tutorArr->~TutorDArray();
 		subjectList->deleteSubjectList();
 	}
 }
@@ -143,121 +145,136 @@ void DeleteTutor() {
 
 
 		//Retrieve tutors
-		struct Tutor* tutorList = NULL;
-		struct Tutor* tutor_prev_node = NULL;
-		struct Tutor* tutor_next_node = NULL;
-		RetrieveTutors(&tutorList);
+		TutorDArray* tutorArr = *RetrieveTutors();
+		struct Tutor* tutorList = tutorArr->data;
+		
+		if (tutorArr->size < 1) return;
 
-		struct Tutor* deletedNodes = NULL;
+
+		TutorDArray* deletedArr = new TutorDArray(0);
+		TutorDArray* saveArr = new TutorDArray(0);
 
 		//Retrieve tuition
-		struct Tuition* tuitionList = NULL;
-		struct Tuition* tuition_prev_node = NULL;
-		struct Tuition* tuition_next_node = NULL;
-		RetrieveTuitions(&tuitionList);
+		TuitionDArray* tuitionArr = *RetrieveTuitions();
 
 		//Retrieve rating
-		struct Rating* ratingList = NULL;
-		struct Rating* rating_prev_node = NULL;
-		struct Rating* rating_next_node = NULL;
-		RetrieveRatings(&ratingList);
+		RatingDArray* ratingArr = *RetrieveRatings();
 
+		int count = 0;
 
-		while (tutorList != NULL) {
+		while (count < tutorArr->size) {
 
-			if (tutorList->isTerminated() && tutorList->getTerminationDate() == toDelete) {
-				//delete current node
-				tutor_next_node = tutorList->next;
+			if (tutorList[count].isTerminated() && tutorList[count].getTerminationDate() == toDelete) {
 
-				if (tutor_prev_node != NULL) {
-					tutor_prev_node->next = tutor_next_node;
-				}
+				//Increase size of deletedArr
+				deletedArr->increaseSize(1);
+
+				struct TutorDArray* newDeletedArray = new TutorDArray(*deletedArr);
+				deletedArr->~TutorDArray();
+				deletedArr = newDeletedArray;
 
 				//add to deleted node
-				tutorList->next = NULL;
-				AddTutorToLast(&deletedNodes, tutorList);
+				deletedArr->AddTutorToLast(&tutorList[count]);
 
-				tutorList = tutor_next_node;
-				continue;
+			}
+			else {
+
+				//Increase size of saveArr
+				saveArr->increaseSize(1);
+
+				struct TutorDArray* newSaveArray = new TutorDArray(*saveArr);
+				saveArr->~TutorDArray();
+				saveArr = newSaveArray;
+
+				//add to save node
+				saveArr->AddTutorToLast(&tutorList[count]);
 			}
 			
-			tutor_prev_node = tutorList;
-			tutorList = tutorList->next;
+			count++;
 			
 		}
 
 		cout << "================================================" << endl;
 		
-		tutorList->printFile();
+		saveArr->data->printFile(saveArr->size);
 
 		//free memory
-		tutorList->deleteTutorList();
+		//tutorArr->~TutorDArray();
+		saveArr->~TutorDArray();
 
-		//pointer of deleted tutors
-		struct Tutor** deletedNodePtr = &deletedNodes;
 
 		//delete tuition of deleted tutor
-		while (tuitionList != NULL) {
+		int count2 = 0;
 
-			struct Tutor* deletedNode = *deletedNodePtr;
+		while (count2 < deletedArr->size) {
 
-			while (deletedNode) {
-				if (tuitionList->getTutorId() == deletedNode->getId()) {
-					//delete current node
-					tuition_next_node = tuitionList->next;
+			TuitionDArray* saveTuitionArr = new TuitionDArray(0);
+			int index = 0;
 
-					if (tuition_prev_node != NULL) {
-						tuition_prev_node->next = tuition_next_node;
-					}
+			while (index < tuitionArr->size) {
+				if (tuitionArr->data[index].tutor_id != deletedArr->data[count].getId()) {
 
-					tuitionList = tuition_next_node;
+					//Increase size of saveTuitionArr
+					saveTuitionArr->increaseSize(1);
+
+					struct TuitionDArray* newSaveArray = new TuitionDArray(*saveTuitionArr);
+					saveTuitionArr->~TuitionDArray();
+					saveTuitionArr = newSaveArray;
+
+					//add to save node
+					saveTuitionArr->AddTuitiontToLast(&tuitionArr->data[count]);
 					break;
 				}
 
-				deletedNode = deletedNode->next;
-
+				index++;
 			}
 
-			tuition_prev_node = tuitionList;
-			tuitionList = tuitionList->next;
+			tuitionArr = saveTuitionArr;
+			count2++;
 
 		}
 
-		tuitionList->printFile();
+		tuitionArr->data->printFile(tuitionArr->size);
 
 		//free memory
-		tuitionList->deleteTuitionList();
+		tuitionArr->~TuitionDArray();
 
+
+		int count3 = 0;
 
 		//delete rating of deleted tutor
-		while (ratingList != NULL) {
+		while (count3 < deletedArr->size) {
 
-			struct Tutor* deletedNode = *deletedNodePtr;
+			RatingDArray* saveRatingArr = new RatingDArray(0);
+			int index = 0;
 
-			while (deletedNode != NULL) {
-				if (ratingList->getTutorId() == deletedNode->getId()) {
-					//delete current node
-					rating_next_node = ratingList->next;
+			while (index < ratingArr->size) {
+				if (ratingArr->data[index].tutor_id != deletedArr->data[count].getId()) {
 
-					if (rating_prev_node != NULL) {
-						rating_prev_node->next = rating_next_node;
-					}
+					//Increase size of saveTuitionArr
+					saveRatingArr->increaseSize(1);
 
-					ratingList = rating_next_node;
-					break;;
+					struct RatingDArray* newSaveArray = new RatingDArray(*saveRatingArr);
+					saveRatingArr->~RatingDArray();
+					saveRatingArr = newSaveArray;
+
+					//add to save node
+					saveRatingArr->AddRatingToLast(&ratingArr->data[count]);
+					break;
 				}
 
-				deletedNode = deletedNode->next;
+				index++;
 			}
 
-			rating_prev_node = ratingList;
-			ratingList = ratingList->next;
+			ratingArr = saveRatingArr;
+			count3++;
+
 		}
 
-		ratingList->printFile();
+		ratingArr->data->printFile(ratingArr->size);
 
 		//free memory
-		ratingList->deleteRatingList();
+		ratingArr->~RatingDArray();
 
 	}
 }

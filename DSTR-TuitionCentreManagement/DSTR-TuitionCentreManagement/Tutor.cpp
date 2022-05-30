@@ -1,5 +1,6 @@
 #include "General.h"
 
+Tutor::Tutor() {}
 
 Tutor::Tutor(int id, string firstname, string lastname, char gender, string phone, string address, string date_Joined, string date_Terminated, string subject_Code, string tuition_Centre_code, float rating) {
 	this->id = id;
@@ -17,40 +18,6 @@ Tutor::Tutor(int id, string firstname, string lastname, char gender, string phon
 	this->prev = NULL;
 }
 
-Tutor::Tutor() {}
-
-//std::string genPhoneNo() {
-//	string result = "01";
-//
-//	for (int i = 0; i < 8; i++) {
-//		result += to_string(rand() % 10);
-//	}
-//	return result;
-//}
-
-//void predefineTutor() {
-//	int i = 1;
-//	struct Tutor* newTutor = NULL;
-//
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Charlie", "Puth", 'M', genPhoneNo(), "USA", "15/4/20", "15/4/25", "1", "1", 0.0f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Helena", "Patel", 'F', genPhoneNo(), "Singapore", "20/8/20", "20/8/26", "1", "2", 4.8f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Aniela", "Gibbs", 'F', genPhoneNo(), "Grenada", "13/10/20", "0/0/0", "2", "3", 4.9f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Caelan", "Adamson", 'M', genPhoneNo(), "Malawi", "1/3/19", "15/4/25", "2", "1", 5.0f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Kristian", "Reyna", 'F', genPhoneNo(), "Bermuda", "29/11/21", "0/0/0", "3", "2", 4.7f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Kaden", "Mccann", 'M', genPhoneNo(), "El Salvador", "5/5/20", "5/5/26", "4", "3", 4.9f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Ariel", "Choi", 'F', genPhoneNo(), "Syria", "11/4/21", "0/0/0", "5", "1", 4.8f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Chad", "Hogg", 'M', genPhoneNo(), "Liberia", "3/10/22", "0/0/0", "5", "2", 3.5f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Orion", "Flynn", 'M', genPhoneNo(), "Azerbajian", "14/12/20", "14/12/25", "6", "3", 3.7f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Pamela", "Rubio", 'F', genPhoneNo(), "Eritrea", "23/12/21", "0/0/0", "7", "1", 3.8f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Shahid", "Donald", 'M', genPhoneNo(), "Swenden", "30/11/22", "30/11/24", "7", "2", 3.9f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Dawn", "Findlay", 'F', genPhoneNo(), "Indonesia", "24/8/21", "0/0/0", "8", "3", 4.5f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Jimmie", "Wynn", 'M', genPhoneNo(), "Scotland", "12/7/20", "12/7/23", "9", "1", 5.0f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Neha", "Magana", 'F', genPhoneNo(), "Portugal", "8/11/21", "8/11/25", "10", "2", 4.3f));
-//	newTutor->addTutor(&newTutor, new Tutor(i++, "Oskar", "Carney", 'M', genPhoneNo(), "South Korea", "18/5/22", "0/0/0", "10", "3", 4.2f));
-//
-//	newTutor->printFile();
-//
-//}
 
 bool Tutor::printFile() {
 
@@ -273,10 +240,10 @@ bool Tutor::sortByHourlyPayRate(struct Subject** head) {
 	float current_rate = 0, next_rate = 0;
 
 	struct Subject** current_subject = (*head)->searchByCode(this->subject_Code);
-	current_rate = current_subject == NULL ? 0 : (*current_subject)->getHourlyPayRate();
+	current_rate = current_subject == NULL ? 0 : (*current_subject)->hourly_pay_rate;
 
 	struct Subject** next_subject = (*head)->searchByCode(this->next->subject_Code);
-	next_rate = next_subject == NULL ? 0 : (*next_subject)->getHourlyPayRate();
+	next_rate = next_subject == NULL ? 0 : (*next_subject)->hourly_pay_rate;
 
 	//compare hourly pay rate
 	result = current_rate > next_rate;
@@ -492,13 +459,13 @@ void SearchTutorByTuitionCentre(struct Tutor** head) {
 		return;
 	}
 
-	if (tc_ptr == NULL) {
+	if (*tc_ptr == NULL) {
 		tc_node->deleteTuitionCentreList();
 		node->displayTutors(false);
 		return;
 	}
 
-	string tc_code = (*tc_ptr)->getCode();
+	string tc_code = (*tc_ptr)->code;
 	tc_node->deleteTuitionCentreList();
 
 	while (node != NULL) {
@@ -548,13 +515,13 @@ void SearchTutorBySubject(struct Tutor** head) {
 		return;
 	}
 
-	if (sub_ptr == NULL) {
+	if (*sub_ptr == NULL) {
 		sub_node->deleteSubjectList();
 		node->displayTutors(false);
 		return;
 	}
 
-	string sub_code = (*sub_ptr)->getCode();
+	string sub_code = (*sub_ptr)->code;
 	sub_node->deleteSubjectList();
 
 	while (node != NULL) {
@@ -766,7 +733,7 @@ void AddTutor() {
 	}
 
 	//tuition centre retrieval check, if unavailable back to tutor management menu
-	if (tuitionCentrePtr == NULL) {
+	if (*tuitionCentrePtr == NULL) {
 		tuitionCentreList->deleteTuitionCentreList();
 		subjectList->deleteSubjectList();
 		system("CLS");
@@ -774,7 +741,7 @@ void AddTutor() {
 		return;
 	}
 
-	tuition_centre_code = (*tuitionCentrePtr)->getCode();
+	tuition_centre_code = (*tuitionCentrePtr)->code;
 	tuitionCentreList->deleteTuitionCentreList();
 
 	//-request subject-
@@ -800,14 +767,14 @@ void AddTutor() {
 	}
 
 	//-subject retrieval check, if unavailable back to tutor management menu-
-	if (subjectPtr == NULL) {
+	if (*subjectPtr == NULL) {
 		subjectList->deleteSubjectList();
 		system("CLS");
 		cout << "Invalid Input!" << endl;
 		return;
 	}
 
-	subject_code = (*subjectPtr)->getCode();
+	subject_code = (*subjectPtr)->code;
 	subjectList->deleteSubjectList();
 
 	string firstname, lastname, phone, address, date_joined, str_gender;
@@ -926,7 +893,7 @@ void EditTutor() {
 	//availability check
 	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id);
 
-	if (tutorPtr == NULL) {
+	if (*tutorPtr == NULL) {
 		tutorList->deleteTutorList();
 		system("CLS");
 		cout << "Tutor not found!" << endl;
@@ -1031,7 +998,7 @@ void TerminateTutor() {
 	//availability check
 	struct Tutor** tutorPtr = tutorList->retrieveById(tutor_id);
 
-	if (tutorPtr == NULL) {
+	if (*tutorPtr == NULL) {
 		tutorList->deleteTutorList();
 		system("CLS");
 		cout << "Tutor not found!" << endl;
